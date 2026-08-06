@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>交接系統使用者回饋</title>
+  <style>
+    :root{color-scheme:dark;--bg:#111827;--card:#1f2937;--line:#374151;--text:#f9fafb;--muted:#cbd5e1;--accent:#60a5fa}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,"Microsoft JhengHei",sans-serif}
+    main{max-width:820px;margin:auto;padding:28px 18px 60px}h1{font-size:1.7rem;margin:0 0 8px}p{color:var(--muted)}
+    section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+    label{display:block;font-weight:700;margin:12px 0 6px}input[type=text],textarea{width:100%;background:#0f172a;color:var(--text);border:1px solid #475569;border-radius:9px;padding:10px}
+    textarea{min-height:86px;resize:vertical}.choices label{font-weight:400;margin:7px 0}.choices input{margin-right:8px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}
+    .primary{background:var(--accent);color:#082f49}.secondary{background:#334155;color:var(--text)}
+    #status{min-height:24px;color:#86efac;margin-top:10px}small{color:var(--muted)}
+  </style>
+</head>
+<body>
+<main>
+  <h1>交接系統使用者回饋</h1>
+  <p>約一分鐘。沒有評分與使用意願題，只記錄實際差異。內容只在本機整理；提交時只會寫入你明確選擇的資料夾。</p>
+
+  <section>
+    <label for="version">實際使用的制度版本</label>
+    <input id="version" type="text" value="1.11" aria-describedby="versionHint">
+    <small id="versionHint">已預填本問卷所屬版本；若實際使用其他版本再修改。</small>
+
+    <label>使用後，哪些操作確實變少？</label>
+    <div class="choices" id="less">
+      <label><input type="checkbox" value="不用反覆說明如何記錄與讀取">不用反覆說明如何記錄與讀取</label>
+      <label><input type="checkbox" value="接手指令更簡單">接手指令更簡單</label>
+      <label><input type="checkbox" value="較少重讀全部歷史">較少重讀全部歷史</label>
+      <label><input type="checkbox" value="沒有明顯變少">沒有明顯變少</label>
+    </div>
+
+    <label>實際遇過哪些問題？</label>
+    <div class="choices" id="issues">
+      <label><input type="checkbox" value="接手或交接仍太慢">接手或交接仍太慢</label>
+      <label><input type="checkbox" value="讀取內容仍太多">讀取內容仍太多</label>
+      <label><input type="checkbox" value="資訊過期或互相矛盾">資訊過期或互相矛盾</label>
+      <label><input type="checkbox" value="AI沒有遵守已寫規則">AI沒有遵守已寫規則</label>
+      <label><input type="checkbox" value="目前沒有遇到">目前沒有遇到</label>
+    </div>
+
+    <label for="usage">可觀察的上下文、時間或用量差異</label>
+    <input id="usage" type="text" placeholder="例如：上下文約由 50% 降到 20%；沒有資料可留空">
+
+    <label for="burden">目前最大的不便</label>
+    <textarea id="burden" placeholder="只寫最影響使用的一件事即可"></textarea>
+
+    <label for="example">一個具體例子</label>
+    <textarea id="example" placeholder="例如：某次新 AI 接手後仍記得／漏掉了什麼"></textarea>
+
+    <label for="change">如果只能改一件事，希望改什麼？</label>
+    <textarea id="change"></textarea>
+    <small>請避免輸入密碼、Token、Cookie、私密金鑰或不必要的個人資料。</small>
+  </section>
+
+  <div class="actions">
+    <button class="primary" id="submit" type="button">提交並保存</button>
+    <button class="secondary" id="save" type="button">只下載備用</button>
+    <button class="secondary" id="copy">複製內容</button>
+    <button class="secondary" id="reset">清空</button>
+  </div>
+  <div id="status" role="status" aria-live="polite"></div>
+</main>
+<script>
+  const $=id=>document.getElementById(id);
+  const checked=id=>[...$(id).querySelectorAll("input:checked")].map(x=>x.value);
+  const text=id=>$(id).value.trim();
+  const pad=n=>String(n).padStart(2,"0");
+  let outputDirectoryHandle=null;
+  function stamp(){
+    const d=new Date();
+    return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+  }
+  function suffix(){
+    if(window.crypto&&window.crypto.getRandomValues){
+      const bytes=new Uint8Array(3);window.crypto.getRandomValues(bytes);
+      return [...bytes].map(n=>n.toString(16).padStart(2,"0")).join("").toUpperCase();
+    }
+    return Math.random().toString(36).slice(2,8).toUpperCase().padEnd(6,"0");
+  }
+  function markdown(){
+    const id=`FB-USER-${stamp()}-${suffix()}`;
+    const sections=[];
+    const list=(title,items)=>{if(items.length)sections.push(`## ${title}\n\n${items.map(x=>`- ${x}`).join("\n")}`);};
+    const paragraph=(title,value)=>{if(value)sections.push(`## ${title}\n\n${value}`);};
+    list("確實減少的操作",checked("less"));
+    list("實際遇到的問題",checked("issues"));
+    paragraph("可觀察的上下文、時間或用量差異",text("usage"));
+    paragraph("目前最大的不便",text("burden"));
+    paragraph("具體例子",text("example"));
+    paragraph("如果只能改一件事",text("change"));
+    return `# 使用者回饋
+
+- 報告 ID：\`${id}\`
+- 建立時間：\`${new Date().toISOString()}\`
+- 制度版本：\`${text("version")||"未知"}\`
+
+${sections.join("\n\n")}
+`;
+  }
+  function hasResponse(){
+    return checked("less").length>0||checked("issues").length>0||
+      ["usage","burden","example","change"].some(id=>text(id));
+  }
+  function outputFile(){
+    if(!hasResponse())return null;
+    const text=markdown(), match=text.match(/FB-USER-[A-Z0-9-]+/);
+    return {text,name:`${match?match[0]:"FB-USER"}.md`};
+  }
+  function download(file){
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob(["\uFEFF",file.text],{type:"text/markdown;charset=utf-8"}));
+    a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  }
+  async function outputDirectory(){
+    if(!window.isSecureContext||typeof window.showDirectoryPicker!=="function")throw Object.assign(new Error(),{code:"UNSUPPORTED"});
+    if(!outputDirectoryHandle){
+      const picked=await window.showDirectoryPicker({id:"ai-handoff-feedback-output",mode:"readwrite"});
+      outputDirectoryHandle=picked.name==="回饋與問題_待交付"
+        ?picked
+        :await picked.getDirectoryHandle("回饋與問題_待交付",{create:true});
+    }
+    if(outputDirectoryHandle.queryPermission){
+      let permission=await outputDirectoryHandle.queryPermission({mode:"readwrite"});
+      if(permission!=="granted")permission=await outputDirectoryHandle.requestPermission({mode:"readwrite"});
+      if(permission!=="granted")throw Object.assign(new Error(),{code:"DENIED"});
+    }
+    return outputDirectoryHandle;
+  }
+  $("submit").onclick=async()=>{
+    if($("submit").disabled)return;
+    $("submit").disabled=true;
+    const file=outputFile();
+    if(!file){
+      $("status").textContent="尚未填寫任何回饋，沒有建立文件。";
+      $("submit").disabled=false;
+      return;
+    }
+    $("status").textContent="請選擇交接資料夾或「回饋與問題_待交付」。";
+    try{
+      const directory=await outputDirectory();
+      const handle=await directory.getFileHandle(file.name,{create:true});
+      const writable=await handle.createWritable();
+      await writable.write("\uFEFF"+file.text);await writable.close();
+      $("status").textContent=`提交完成：${file.name} 已保存至「回饋與問題_待交付」。`;
+    }catch(e){
+      if(e&&e.name==="AbortError")$("status").textContent="已取消，沒有建立文件。";
+      else if(e&&(e.code==="DENIED"||e.name==="NotAllowedError"))$("status").textContent="未取得寫入權限；請改用「只下載備用」。";
+      else if(e&&(e.code==="UNSUPPORTED"||e.name==="SecurityError")){
+        download(file);$("status").textContent=`此瀏覽器不支援直接保存，已改為下載 ${file.name}。`;
+      }else $("status").textContent="保存失敗，沒有宣稱提交成功；請改用「只下載備用」。";
+    }finally{
+      $("submit").disabled=false;
+    }
+  };
+  $("save").onclick=()=>{
+    const file=outputFile();
+    if(!file){$("status").textContent="尚未填寫任何回饋，沒有建立文件。";return;}
+    download(file);
+    $("status").textContent=`已下載 ${file.name}。`;
+  };
+  $("copy").onclick=async()=>{
+    if(!hasResponse()){$("status").textContent="尚未填寫任何回饋，沒有可複製內容。";return;}
+    try{await navigator.clipboard.writeText(markdown());$("status").textContent="已複製 Markdown。"}
+    catch(e){$("status").textContent="瀏覽器不允許複製，請改用下載。"}
+  };
+  $("reset").onclick=()=>{
+    document.querySelectorAll("input").forEach(x=>x.type==="checkbox"?x.checked=false:x.value="");
+    document.querySelectorAll("textarea").forEach(x=>x.value="");
+    $("version").value=$("version").defaultValue;
+    $("status").textContent="已清空。";
+  };
+  document.querySelectorAll("#issues input").forEach(input=>{
+    input.addEventListener("change",()=>{
+      const none=input.value==="目前沒有遇到";
+      if(none&&input.checked){
+        document.querySelectorAll("#issues input").forEach(other=>{if(other!==input)other.checked=false;});
+      }else if(input.checked){
+        document.querySelectorAll('#issues input[value="目前沒有遇到"]').forEach(other=>other.checked=false);
+      }
+    });
+  });
+</script>
+</body>
+</html>
