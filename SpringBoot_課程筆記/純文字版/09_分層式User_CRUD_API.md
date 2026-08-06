@@ -240,7 +240,41 @@ Map.of("count", count)
 
 Spring 會把 Map 轉成 JSON Object。
 
-## 12. 目前實作的注意事項
+## 12. SubmitController 也改用同一個 UserService
+
+這次修正把表單與 JSON 新增功能接進既有的分層架構。`SubmitController` 不再自行 `new User(...)` 後直接回傳，而是透過建構子取得 `UserService`：
+
+```java
+final UserService userService;
+
+public SubmitController(UserService userService) {
+    this.userService = userService;
+}
+```
+
+兩個 POST 方法都呼叫：
+
+```java
+userService.createUser(user.getName(), user.getEmail(), user.getAge());
+```
+
+因此下列三種新增入口會共用同一份 `UserRepository` 資料：
+
+- `POST /api/users`
+- `POST /api/submit/form`
+- `POST /api/submit/json`
+
+表單或 JSON 建立成功後，拿回傳的 `id` 呼叫：
+
+```text
+GET /api/users/{id}
+```
+
+即可查到同一個使用者。本次已用 `Daniel Chen` 的資料驗證成功。
+
+這個修正的重點不是只有「程式能跑」，而是讓不同 Controller 透過 Service 共用同一套商業邏輯與資料來源。
+
+## 13. 目前實作的注意事項
 
 - 沒有 Bean Validation，錯誤資料仍可能進入 Repository。
 - `createUser()`捕捉所有 Exception，但沒有回傳錯誤細節。

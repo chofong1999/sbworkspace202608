@@ -149,15 +149,52 @@ Postman 設定：
 | 常見工具 | 瀏覽器表單 | Postman、前端 JavaScript、其他 API Client |
 | 綁定方式 | 依參數名稱填入屬性 | 反序列化 Body 成物件 |
 
-## 7. 為什麼回傳的 ID 是新的？
+## 7. 修正：改由 UserService 建立並保存使用者
 
-兩個方法都重新建立一個 User：
+原本若只在 `SubmitController` 內使用 `new User(...)`，雖然回傳物件會有 ID，但該物件沒有進入 `UserRepository`，後續無法透過 CRUD API 查詢。
+
+修正後，`SubmitController` 使用建構子注入 `UserService`：
 
 ```java
-User u1 = new User(user.getName(), user.getEmail(), user.getAge());
+final UserService userService;
+
+public SubmitController(UserService userService) {
+    this.userService = userService;
+}
 ```
 
-這個建構子會呼叫無參數建構子並產生 UUID，因此回傳物件會帶有新 ID。
+表單與 JSON 兩種接收方式都改成呼叫同一個服務：
+
+```java
+User u1 = userService.createUser(
+        user.getName(), user.getEmail(), user.getAge());
+return ResponseEntity.ok(u1);
+```
+
+現在完整流程是：
+
+```text
+HTML 表單／JSON
+    -> SubmitController
+    -> UserService.createUser(...)
+    -> UserRepository.save(...)
+    -> 共用的記憶體 List
+```
+
+`UserService` 內建立 `User` 時會產生 UUID，接著由 Repository 保存。因此送出資料後，可使用回傳的 ID 呼叫：
+
+```text
+GET http://localhost:8080/api/users/{id}
+```
+
+本次畫面已驗證：表單建立的 `Daniel Chen` 能用 ID 查回完整 JSON，表示新增與 CRUD 查詢已串接成功。
+
+補充：
+
+- 目前 `SubmitController` 回傳的是 `200 OK`；若要更完整地表達「建立成功」，日後可改為 `201 Created`。
+- Repository 仍是記憶體資料，重新啟動程式後資料會消失。
+- 原始碼中的 `UserRepository` import 已未使用，可以移除；Controller 應只依賴 `UserService`。
+- 欄位建議寫成 `private final UserService userService;`，封裝性更清楚。
 
 ## 8. 目前驗證的限制
 
