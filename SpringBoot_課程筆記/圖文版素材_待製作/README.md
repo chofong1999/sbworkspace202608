@@ -54,6 +54,14 @@
 
 1. `24_UtilController與AppInfoBean.png`：Util Controller 注入`UtilService`與`appInfo`Bean，並顯示`/api/util/info`結果。
 
+## 第八章：HTML 表單與 JSON 資料綁定
+
+1. `25_User表單_JSON與CRUD.png`：瀏覽器表單、Postman JSON POST 與 User 回傳結果。
+
+## 第九章：分層式 User CRUD API
+
+1. 共用`25_User表單_JSON與CRUD.png`：畫面左側顯示 User Model、Repository、Service、Controller 分層及 CRUD Controller 程式。
+
 ## 後續整理規則
 
 - 新的純文字內容持續更新至`../純文字版/`。

@@ -15,6 +15,8 @@
 5. `05_Whitelabel404與套件掃描.md`
 6. `06_介面多實作與Qualifier依賴注入.md`
 7. `07_Component_Configuration與Bean.md`
+8. `08_HTML表單與JSON資料綁定.md`
+9. `09_分層式User_CRUD_API.md`
 
 後續收到新教材時，會依課程順序新增章節，或直接修訂相關的既有章節。
 
