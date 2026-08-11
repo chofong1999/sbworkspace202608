@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>HyperLink Demo</title>
+</head>
+<body>
+<h1>
+  <!-- Thymeleaf URL (自動加入 Context Path) -->
+  <a th:href="@{home}">首頁</a>
+  <!-- 帶參數的 URL -->
+  <a th:href="@{user(id=${userId})}">使用者詳情</a>
+</h1>
+</body>
+</html>

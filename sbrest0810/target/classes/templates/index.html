@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}">預設標題</title>
+</head>
+<body>
+    <h1 style="color:red">First Thymeleaf</h1>
+    <!-- Thymeleaf 內容 -->
+    <h1 th:text="${greeting}">
+        Greeting : 
+    </h1>
+    <div th:utext="${htmlContent}">HTML 內容</div>
+    <p th:text="|問候語, ${greeting}!|">你好</p>
+</body>
+</html>

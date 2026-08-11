@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>歡迎頁面</h1>
+        <p th:text="${message}">歡迎訊息</p>
+        <a th:href="@{/web/hello?name=Spring}">測試 Hello</a>
+    </div>
+</body>
+</html>

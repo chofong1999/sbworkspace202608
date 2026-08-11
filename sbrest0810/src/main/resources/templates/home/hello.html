@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Page</title>   
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="'Hello, ' + ${name} + '!'">Hello, World!</h1>
+        <p th:text="${message}">歡迎訊息</p>
+        <a th:href="@{/web/welcome}">返回首頁</a>
+    </div>
+</body>
+</html>

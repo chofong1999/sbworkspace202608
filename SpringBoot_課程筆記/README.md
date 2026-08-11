@@ -17,6 +17,8 @@
 7. `07_Component_Configuration與Bean.md`
 8. `08_HTML表單與JSON資料綁定.md`
 9. `09_分層式User_CRUD_API.md`
+10. `10_Swagger_OpenAPI_API文件.md`
+11. `11_REST_JSON與Thymeleaf模板.md`
 
 後續收到新教材時，會依課程順序新增章節，或直接修訂相關的既有章節。
 
@@ -38,5 +40,7 @@
 `C:\sbworkspace202608\sbfirstapp`
 
 `C:\sbworkspace202608\mysecondapp`
+
+`C:\sbworkspace202608\sbrest0810`
 
 整理筆記時，若截圖內容不完整或需要核對實際設定，可以直接查看這些專案的`src/`、`pom.xml`及其他相關原始檔；除非使用者另行要求，不修改專案程式碼。

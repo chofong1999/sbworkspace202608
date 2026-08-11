@@ -11,6 +11,9 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+
 @RestController
 @RequestMapping("/api/submit")
 public class SubmitController {
@@ -20,6 +23,7 @@ public class SubmitController {
     }
 	
 	@PostMapping("/form")
+	@Parameter(name="user",description="用戶",required=true)
     public ResponseEntity<User> receiveModel(@ModelAttribute User user){
     	if(user.getName()!=null) {
     		System.out.println("user:"+user);
@@ -30,7 +34,10 @@ public class SubmitController {
     	}	
     }
 	@PostMapping("/json")
-    public ResponseEntity<User> receiveJson(@RequestBody User user){
+	@Operation(summary = "Json 方式",
+    description = "用Json的方式接收User的資料")
+//    public ResponseEntity<User> receiveJson(@RequestBody User user){
+	   public ResponseEntity<User> receiveJson(@RequestBody User user){
     	if(user.getName()!=null) {
     		System.out.println("user:"+user);
     		User u1=userService.createUser(user.getName(),user.getEmail(),user.getAge());

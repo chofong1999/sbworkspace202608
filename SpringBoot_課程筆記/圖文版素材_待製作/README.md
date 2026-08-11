@@ -57,10 +57,34 @@
 ## 第八章：HTML 表單與 JSON 資料綁定
 
 1. `25_User表單_JSON與CRUD.png`：瀏覽器表單、Postman JSON POST 與 User 回傳結果。
+2. `26_SubmitController_UserService_CRUD.png`：`SubmitController`改用`UserService`保存資料，並以`/api/users/{id}`成功查回表單建立的使用者。
 
 ## 第九章：分層式 User CRUD API
 
 1. 共用`25_User表單_JSON與CRUD.png`：畫面左側顯示 User Model、Repository、Service、Controller 分層及 CRUD Controller 程式。
+2. 共用`26_SubmitController_UserService_CRUD.png`：驗證 Submit API 與 User CRUD API 共用同一個 Repository。
+
+## 第十章：Swagger／OpenAPI API 文件
+
+1. `27_Swagger_UI_API總覽.png`：Swagger UI 自動列出 User CRUD、Submit、Util 與 Notification Controller 的 API。
+2. `28_OpenAPI註解_UserController.png`：UserController 使用`@Tag`與`@Operation`補充 API 分組、摘要與說明。
+
+## 第十一章：REST JSON 與 Thymeleaf 模板
+
+1. `29_Book_REST_API_JSON.png`：瀏覽器呼叫`GET /api/books`，Book Java 物件經 Jackson 轉成 JSON。
+2. `30_Thymeleaf_text與utext.png`：比較`th:text`跳脫 HTML、`th:utext`渲染 HTML，以及文字模板中的跳脫結果。
+3. `31_Thymeleaf_thtext取代原內容.png`：`th:text`會取代元素原本的全部內容，因此`Greeting :`不是執行時的預設值。
+4. `32_Thymeleaf_thsrc靜態與動態圖片.png`：`th:src`載入固定芒果及由 Model 隨機選擇的動態水果圖片，並顯示瀏覽器收到的最終`src`。
+5. `33_Thymeleaf_if_switch_case條件判斷.png`：`isLogin="false"`顯示「請先登入」；`role=orange`未符合 admin／user，因此進入`th:case="*"`顯示「未知角色」。
+6. `34_Thymeleaf內建物件舊語法參考.png`：舊式`#request`／`#session`與集合、日期、字串、數字工具物件的教材參考。
+7. `35_HttpSession加入Model寫法.png`：老師以 HttpSession 保存 user，再把 Session 物件加入 Model 的示範寫法。
+8. `36_Session不加入Model仍可讀取.png`：兩個`model.addAttribute(...)`均註解後，`${session['user']}`仍成功顯示 John Lee，證明 Thymeleaf 自動提供 Session namespace。
+9. `37_th_href相對網址與查詢參數.png`：`th:href`產生首頁連結及帶`userId`查詢參數的使用者詳情連結；目前兩者都是沒有開頭斜線的相對網址。
+10. `38_Thymeleaf使用者列表與動態操作連結.png`：`/web/users`以`th:each`顯示三筆記憶體使用者，並為每列產生詳情、編輯及 POST 刪除操作。
+11. `39_SpringMVC_ViewName與Redirect回傳差異.png`：比較`return "user/form"`直接渲染 View，以及新增／更新後以`redirect:`執行 Post／Redirect／Get。
+12. `40_Eclipse_CSS色碼預覽色塊.png`：Eclipse Wild Web Developer／LSP4E 對 CSS 十六進位色碼顯示的 IDE 顏色預覽，不是原始碼內容。
+13. `41_Thymeleaf新增使用者後列表結果.png`：新增 Harry Potter 後列表由三筆變成四筆，驗證表單、Model binding、Service、記憶體 Repository 與 Redirect 流程。
+14. `42_Thymeleaf三元運算動態form_action.png`：第 20 行以`${isEdit} ? A : B`在編輯與建立模式間選擇不同的`th:action`網址。
 
 ## 後續整理規則
 

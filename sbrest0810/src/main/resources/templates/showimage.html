@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Show Images</title>
+</head>
+<body>
+<img th:src="@{/images/mango.png}" width="320" height="240">
+<img th:src="@{|/images/${fruitImage}|}" width="320" height="240">
+</body>
+</html>

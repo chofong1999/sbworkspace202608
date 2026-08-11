@@ -1,8 +1,8 @@
 {
   "system_id": "AI-HANDOFF-ZH",
   "system_name": "AI工作交接通用樣板",
-  "version": "1.11",
-  "schema": 2,
+  "version": "1.12",
+  "schema": 3,
   "encoding": "UTF-8",
   "entry": "00_先讀_身分與啟動.md",
   "active_core_files": [
@@ -10,6 +10,7 @@
     "01_日常接手與交接.md",
     "80_按需/00_首次交接.md",
     "80_按需/10_異常處理.md",
+    "80_按需/15_規則執行契約.md",
     "80_按需/20_知識庫管理.md",
     "80_按需/30_版本升級.md",
     "80_按需/60_回饋與問題/00_執行規則.md",
@@ -47,6 +48,7 @@
     "stable_background": "10_工作完整說明.md",
     "stable_result_location": "10_工作完整說明.md",
     "stable_rules": "11_本工作規則.md",
+    "rule_execution_contracts": "80_按需/15_規則執行契約.md",
     "current_work": "12_當前工作.md",
     "current_result_version": "12_當前工作.md",
     "employees": "20_員工表.md",

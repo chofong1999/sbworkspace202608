@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Roles</title>
+</head>
+<body>
+<h1>
+<!-- th:switch - 多重條件 -->
+<p th:text="|Role:${role}|">Role</p>
+<div th:switch="${role}">
+    <p th:case="'admin'">管理員面板</p>
+    <p th:case="'user'">使用者面板</p>
+    <p th:case="*">未知角色</p>
+</div>
+</h1>
+</body>
+</html>

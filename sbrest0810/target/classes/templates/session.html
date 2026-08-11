@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Session</title>
+</head>
+<body>
+<h1>
+
+<p th:text="${session['user']}">Session 資料</p>
+<p th:text="${#numbers.formatDecimal(price, 1, 2)}">價格</p>
+<p th:text="${#dates.format(today, 'yyyy-MM-dd HH:mm:ss')}">日期</p>
+
+</h1>
+</body>
+</html>
