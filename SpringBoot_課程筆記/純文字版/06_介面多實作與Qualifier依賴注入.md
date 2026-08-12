@@ -4,6 +4,16 @@
 - 範例專案：`sbfirstapp`
 - 原始碼位置：`C:\sbworkspace202608\sbfirstapp\src\main\java\com\example\demo`
 
+## 0. 前置條件與重現步驟
+
+1. 先完成第2章，並確認`sbfirstapp`已加入Spring Web。
+2. 在`com.example.demo`底下建立`service`與`controller`package。
+3. 依本章第3～5節建立介面與兩個Service實作。
+4. 依第8節建立Controller。
+5. 啟動主要類別後，依第9節測試兩個網址。
+
+兩個網址分別顯示Email與簡訊文字，才代表兩個Bean與`@Qualifier`對應成功。
+
 ## 1. 本章範例的目的
 
 同一種通知功能可能有不同傳送方式，例如：
@@ -23,7 +33,7 @@
 
 ## 2. 專案結構
 
-已直接核對原始碼，相關檔案為：
+需要建立的檔案為：
 
 ```text
 com.example.demo

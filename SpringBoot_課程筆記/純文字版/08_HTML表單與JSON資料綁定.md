@@ -5,6 +5,15 @@
 - HTML：`src/main/resources/static/userform.html`
 - Controller：`SubmitController.java`
 
+## 0. 前置條件與兩階段重現方式
+
+先使用已加入Spring Web、而且能正常啟動的`sbfirstapp`。本章分成兩個完成層級：
+
+1. **只重現資料綁定：**建立`User`、`SubmitController`與`userform.html`，送出後直接回傳新的User。
+2. **重現建立後可由CRUD API查回：**還必須完成第9章的`UserRepository`與`UserService`，再使用第7節的Service版本。
+
+若尚未完成第9章，不應期待`GET /api/users/{id}`能查回表單資料；那是加入共用Repository後才成立的結果。
+
 ## 1. 本章目的
 
 同一份 User 資料可以用不同格式送到 Spring Boot：
@@ -129,7 +138,7 @@ Postman 設定：
 }
 ```
 
-畫面中收到`200 OK`，回傳內容包含新 UUID：
+送出成功時應收到`200 OK`，回傳內容包含新UUID：
 
 ```json
 {
@@ -187,7 +196,7 @@ HTML 表單／JSON
 GET http://localhost:8080/api/users/{id}
 ```
 
-本次畫面已驗證：表單建立的 `Daniel Chen` 能用 ID 查回完整 JSON，表示新增與 CRUD 查詢已串接成功。
+完成第9章並採用Service版本後，可用表單建立`Daniel Chen`，再以回傳ID呼叫`GET /api/users/{id}`。若能查回相同姓名、Email與年齡，就代表新增與CRUD查詢已共用同一個Repository。
 
 補充：
 
@@ -212,6 +221,106 @@ user.getName() != null
 
 這是基礎練習。正式專案通常會使用 Bean Validation，例如`@NotBlank`、`@Email`、`@Min`與`@Valid`。
 
+## 9. 可直接重現的最小完整版本
+
+先用本節版本完成「資料綁定」；完成第9章後，再把Controller中的`new User(...)`替換成`UserService.createUser(...)`。
+
+### 9.1 `model/User.java`
+
+```java
+package com.example.demo.model;
+
+import java.util.UUID;
+
+public class User {
+    private String id;
+    private String name;
+    private String email;
+    private int age;
+
+    public User() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public User(String name, String email, int age) {
+        this();
+        this.name = name;
+        this.email = email;
+        this.age = age;
+    }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+}
+```
+
+### 9.2 `controller/SubmitController.java`
+
+```java
+package com.example.demo.controller;
+
+import com.example.demo.model.User;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/submit")
+public class SubmitController {
+
+    @PostMapping("/form")
+    public ResponseEntity<User> receiveForm(
+            @ModelAttribute User user) {
+        if (user.getName() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(
+                new User(user.getName(), user.getEmail(), user.getAge()));
+    }
+
+    @PostMapping("/json")
+    public ResponseEntity<User> receiveJson(
+            @RequestBody User user) {
+        if (user.getName() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(
+                new User(user.getName(), user.getEmail(), user.getAge()));
+    }
+}
+```
+
+### 9.3 `resources/static/userform.html`
+
+```html
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>User Form</title>
+</head>
+<body>
+    <form action="/api/submit/form" method="post">
+        Name: <input type="text" name="name" value="Daniel Chen"><br>
+        Email: <input type="text" name="email" value="daniel@demo.com"><br>
+        Age: <input type="number" name="age" value="20"><br>
+        <button type="submit">送出</button>
+    </form>
+</body>
+</html>
+```
+
+### 9.4 驗證
+
+1. 開啟`http://localhost:8080/userform.html`並送出，應收到含UUID的User JSON。
+2. 用Postman把第5節JSON送到`POST /api/submit/json`，也應收到含UUID的User JSON。
+3. 此階段沒有Repository；重新請求或使用`GET /api/users/{id}`都不能查回剛才資料，這是預期限制。
+
 ## 檢查表
 
 - [ ] `userform.html`放在`static`資料夾
@@ -222,3 +331,4 @@ user.getName() != null
 - [ ] JSON 送到`POST /api/submit/json`
 - [ ] `@RequestBody`接收 JSON
 - [ ] 成功時回傳`200 OK`與帶 UUID 的 User
+- [ ] 能分辨第8章的純綁定版本與完成第9章後的持久化至記憶體版本

@@ -85,6 +85,13 @@
 12. `40_Eclipse_CSS色碼預覽色塊.png`：Eclipse Wild Web Developer／LSP4E 對 CSS 十六進位色碼顯示的 IDE 顏色預覽，不是原始碼內容。
 13. `41_Thymeleaf新增使用者後列表結果.png`：新增 Harry Potter 後列表由三筆變成四筆，驗證表單、Model binding、Service、記憶體 Repository 與 Redirect 流程。
 14. `42_Thymeleaf三元運算動態form_action.png`：第 20 行以`${isEdit} ? A : B`在編輯與建立模式間選擇不同的`th:action`網址。
+15. `43_SQLite設定進行中_application_properties.png`：`sbjpa0812`把DataSource改為SQLite時的進度畫面；此圖拍攝當下仍有錯，只是歷史進度，不單獨代表設定成功。
+
+## 第十四章：Spring Data JPA、SQLite與Docker／Render部署
+
+1. `44_Render部署初始_no-server與本機正常.png`：相同`GET /api/products`在本機成功，但Render端只顯示`Not Found`；HTTP回應後續確認為Render路由層`no-server`，請求尚未進入Spring Boot。
+2. `45_Git_push非fast-forward遭拒.png`：本機port修正提交因GitHub已有README提交而被`fetch first`拒絕；需先整合遠端歷史，不能直接Force Push。
+3. `46_Render與本機_API成功一致.png`：合併並Push後，Render與本機都回傳Apple、Apple iPhone 17、Banana三筆商品JSON，作為SQLite與部署成功證據。
 
 ## 後續整理規則
 

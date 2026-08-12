@@ -5,6 +5,12 @@
 - 範例專案：`mysecondapp`
 - 原始碼位置：`C:\sbworkspace202608\mysecondapp`
 
+## 0. 前置條件與完成結果
+
+- 需要瀏覽器、網路連線與可匯入Maven專案的Eclipse。
+- 完成本章後，應得到一個可在Eclipse中匯入並啟動的`mysecondapp`專案。
+- 若要與第1章環境一致，產生專案時選Java 21；若要精確重現既有課堂範例，則選Java 17。兩條路線不可混寫成同一個實際狀態。
+
 ## 1. Spring Initializr 是什麼？
 
 Spring Initializr 是 Spring 提供的專案產生器，可以在瀏覽器中選擇專案類型、Java 版本、Spring Boot 版本及依賴，然後下載已建立好的專案壓縮檔。
@@ -22,7 +28,7 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 
 ## 3. 選擇專案與語言
 
-畫面中的設定為：
+建立範例時使用：
 
 | 項目 | 選擇 |
 |---|---|
@@ -30,7 +36,7 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 | Language | `Java` |
 | Spring Boot | `4.1.0` |
 
-版本名稱含`SNAPSHOT`代表開發中的快照版。課堂畫面選擇的是沒有`SNAPSHOT`的`4.1.0`。
+版本名稱含`SNAPSHOT`代表開發中的快照版；本章範例選擇不含`SNAPSHOT`的`4.1.0`。
 
 ## 4. 填寫 Project Metadata
 
@@ -44,7 +50,7 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 
 ## 5. 選擇 Java 版本
 
-畫面目前勾選：
+既有課堂範例選用：
 
 `Java 17`
 
@@ -56,9 +62,9 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 </properties>
 ```
 
-因此目前畫面與原始碼是一致的，都是 Java 17。
+因此既有課堂範例的產生設定與`pom.xml`一致，都是Java 17。
 
-> 如果本課程要統一使用前面安裝的 JDK 21，應在按`GENERATE`以前改選`21`。Java 21 是目標設定；目前這份`mysecondapp`實際仍是 Java 17，不能記成已完成 Java 21 調整。
+> 若採用Java 21路線，應在按`GENERATE`以前改選`21`，並在匯入後確認`pom.xml`與JRE System Library都顯示21。既有`mysecondapp`則是Java 17對照範例。
 
 ## 6. 加入依賴
 
@@ -72,7 +78,7 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 
 用來建立 Web 與 RESTful 應用程式，使用 Spring MVC，並預設採用內嵌 Apache Tomcat。
 
-已檢查實際`pom.xml`，目前對應依賴為：
+既有範例的`pom.xml`對應依賴為：
 
 - `spring-boot-starter-webmvc`
 - `spring-boot-devtools`
@@ -93,9 +99,9 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 5. 指定解壓縮後、包含`pom.xml`的專案根目錄。
 6. 完成匯入並等待 Maven 下載依賴。
 
-## 8. 實際產生結果
+## 8. 產生後應有的結構
 
-目前工作區已存在：
+以既有`C:\sbworkspace202608\mysecondapp`為例：
 
 `C:\sbworkspace202608\mysecondapp`
 

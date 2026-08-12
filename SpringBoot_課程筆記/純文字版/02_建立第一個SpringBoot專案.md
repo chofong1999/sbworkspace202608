@@ -3,6 +3,11 @@
 - 整理日期：2026-08-06
 - 範例專案名稱：`sbfirstapp`
 
+## 0. 前置條件與完成結果
+
+- 先完成第1章，確認 Eclipse 已使用JDK 21，而且`Spring Starter Project`精靈可用。
+- 本章完成結果是建立可執行的Maven／Jar Spring Boot專案`sbfirstapp`，包含DevTools與Spring Web，並能由主要類別啟動。
+
 ## 1. 開啟 Spring Starter Project
 
 進入：
@@ -39,7 +44,7 @@
 
 ## 3. 選擇 Spring Boot 版本與依賴
 
-在 `New Spring Starter Project Dependencies` 畫面選擇課程使用的 Spring Boot 版本。截圖中的版本為：
+在`New Spring Starter Project Dependencies`畫面選擇範例使用的Spring Boot版本：
 
 `Spring Boot 4.1.0`
 
@@ -108,7 +113,7 @@ public class SbfirstappApplication {
 
 ## 5. Java 版本差異與修正
 
-課堂截圖中的兩個地方仍顯示 Java 17：
+既有範例的兩個地方仍顯示Java 17：
 
 - 建立專案時的 `Java Version` 是 `17`。
 - 專案建立後的 `JRE System Library` 是 `JavaSE-17`。
@@ -119,14 +124,14 @@ public class SbfirstappApplication {
 - Eclipse 的 `JRE System Library`：`JavaSE-21`
 - `pom.xml` 的 Java 版本：`21`
 
-### 目前專案的實際狀態
+### 課堂範例專案的版本差異
 
-已直接檢查相鄰的原始碼專案`C:\sbworkspace202608\sbfirstapp`。目前狀態為：
+課堂範例專案`C:\sbworkspace202608\sbfirstapp`保留了建立當時的設定：
 
 - `pom.xml`：`<java.version>17</java.version>`
 - Eclipse 畫面：`JRE System Library [JavaSE-17]`
 
-因此，Java 21 是本課程要求的目標設定；目前這份`sbfirstapp`專案尚未完成 Java 21 調整。以下步驟是待執行的修正方式，不應記成已完成事實。
+因此可選擇兩條重現路線：新建專案時直接選Java 21，或先重現Java 17範例再依下列步驟升級。只有完成最後三項檢查後，才能判定Java 21調整成功。
 
 若專案已經以 Java 17 建立，可依序修正：
 
@@ -144,7 +149,7 @@ public class SbfirstappApplication {
 5. 若仍是 Java 17，選取 `JRE System Library → Edit`，改選已安裝的 JDK 21。
 6. 最後確認 Project Explorer 顯示 `JRE System Library [JavaSE-21]`。
 
-> 這一段是針對截圖與既定 JDK 21 設定不一致所做的修正說明；不要把截圖中的 Java 17 誤認為本課程最終設定。
+> Java Version、`pom.xml`與JRE System Library是三個需要一起核對的位置；只改其中一處不足以證明專案已完整切換至Java 21。
 
 ## 建立專案檢查表
 

@@ -4,6 +4,17 @@
 - 範例專案：`sbfirstapp`
 - 測試路徑前綴：`http://localhost:8080/api/util`
 
+## 0. 前置條件與重現步驟
+
+1. 使用已能啟動的`sbfirstapp`。
+2. 在`com.example.demo`下建立`service`、`config`與`controller`package。
+3. 依第3節建立`UtilService`。
+4. 依第5節建立`AppConfig`。
+5. 依第8節建立`UtilController`。
+6. 啟動後測試第9節的三個URL。
+
+三個URL能分別回傳時間、UUID與固定應用程式資訊，才代表Component Scan、`@Bean`與`@Qualifier`均生效。
+
 ## 1. 本章範例的目的
 
 本章示範兩種把物件交給 Spring 容器管理的方式：
@@ -15,7 +26,7 @@ Controller 再透過建構子注入這些 Bean。
 
 ## 2. 相關專案結構
 
-已直接核對原始碼：
+需要建立的檔案：
 
 ```text
 com.example.demo
@@ -248,7 +259,7 @@ UUID: 123e4567-e89b-12d3-a456-426614174000
 
 `http://localhost:8080/api/util/info`
 
-實際畫面結果：
+成功時應回傳：
 
 ```text
 Spring Boot 實作練習 v1.0

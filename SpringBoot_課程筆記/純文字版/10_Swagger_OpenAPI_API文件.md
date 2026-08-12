@@ -5,6 +5,13 @@
 - Swagger UI：`http://localhost:8080/swagger-ui/index.html`
 - OpenAPI JSON：`http://localhost:8080/v3/api-docs`
 
+## 0. 前置條件與完成結果
+
+- 先完成第6～9章，使`sbfirstapp`至少已有可掃描的REST Controller。
+- 加入第3節依賴與第4節設定類別後重新啟動。
+- `/v3/api-docs`應回傳OpenAPI JSON；`/swagger-ui/index.html`應列出既有Controller。
+- 至少使用`Try it out`成功執行一個GET與一個POST，才能確認文件介面與API都可用。
+
 ## 1. Swagger UI 顏色與 HTTP Method
 
 Swagger UI 使用藍、綠、橘、紅區分不同的 HTTP Method：
@@ -54,7 +61,7 @@ OpenAPI JSON（API 規格）
 
 ## 3. Maven 依賴
 
-目前`pom.xml`加入：
+在`pom.xml`加入：
 
 ```xml
 <!-- Swagger / OpenAPI 3 文件（Spring Boot 4 相容） -->
@@ -79,9 +86,18 @@ OpenAPI JSON（API 規格）
 
 ## 4. SwaggerConfig 的工作
 
-目前專案建立`config/SwaggerConfig.java`：
+建立`src/main/java/com/example/demo/config/SwaggerConfig.java`。可直接使用的完整版本：
 
 ```java
+package com.example.demo.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 @Configuration
 public class SwaggerConfig {
 
@@ -101,6 +117,8 @@ public class SwaggerConfig {
     }
 }
 ```
+
+若主要啟動套件不是`com.example.demo`，請同步調整package，並確保設定類別仍位於主要啟動套件的子套件中。
 
 各部分作用：
 
@@ -236,9 +254,9 @@ public ResponseEntity<User> receiveModel(@ModelAttribute User user) {
 
 `@Parameter`可補充參數名稱、說明與是否必填。需要注意：`User`是包含多個欄位的複合物件，日後若希望 Swagger UI 更清楚顯示`name`、`email`、`age`，可以再研究 Model 欄位的`@Schema`或 springdoc 的物件參數支援。
 
-## 9. Swagger UI 畫面代表什麼？
+## 9. 完成後Swagger UI應列出什麼？
 
-目前畫面已列出：
+完成第6～9章的範例應列出：
 
 ### User CRUD
 

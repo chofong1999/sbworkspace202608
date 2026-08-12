@@ -6,6 +6,14 @@
 - Thymeleaf 頁面：`http://localhost:8080/thymeleaf`
 - 專案目前設定：Spring Boot 4.1.0、Java 17
 
+## 0. 前置條件與重現路線
+
+- 建立含Spring Web、Thymeleaf與Lombok的Maven／Jar專案，或使用`C:\sbworkspace202608\sbrest0810`作為完整程式對照。
+- Java類別放在主要啟動套件`com.example.demo`及其子套件。
+- 模板放在`src/main/resources/templates`，圖片放在`src/main/resources/static/images`。
+- 先完成第2～13節的Book JSON與基本Thymeleaf，再依第15節以後加入圖片、條件、Session、連結與User頁面。
+- 每個功能都應用列出的URL單獨驗證；模板可以開啟，不代表所有動態分支與CRUD都已成功。
+
 ## 1. 本章重點
 
 這一章用兩種 Controller 比較 Spring Boot 回應瀏覽器的方式：
@@ -583,7 +591,7 @@ public String statusAttr(Model model) {
 
 `th:if`為 false 的元素不是單純用 CSS 隱藏，而是在伺服器產生 HTML 時直接不輸出。因此瀏覽器的最終 DOM 通常只會留下符合條件的元素。
 
-### 目前是字串 `"false"`，不是 boolean `false`
+### 範例傳入字串 `"false"`，不是 boolean `false`
 
 目前 Controller 傳入：
 
@@ -591,7 +599,7 @@ public String statusAttr(Model model) {
 model.addAttribute("isLogin", "false");
 ```
 
-這是`String`。目前畫面已驗證 Thymeleaf 將字串`"false"`轉成 false，因此顯示「請先登入」。
+這是`String`。執行範例時，Thymeleaf會把字串`"false"`判定為false，因此應顯示「請先登入」。若要避免依賴型別轉換，Controller應直接傳入boolean值。
 
 但登入狀態本質上是布林資料，建議直接傳：
 
@@ -630,9 +638,9 @@ model.addAttribute("isLogin", false);
 
 `th:case="*"`相當於 switch 的 default；當前面沒有任何 case 符合時使用。
 
-### 為什麼這次顯示 `Role:orange`與「未知角色」？
+### 為什麼`role=orange`會顯示「未知角色」？
 
-本次亂數選到`orange`：
+當亂數選到`orange`時：
 
 1. `th:text="|Role:${role}|"`組出`Role:orange`。
 2. `orange`不等於`admin`。
@@ -685,7 +693,7 @@ ${#session.getAttribute('user')}
 
 `#lists`、`#maps`、`#dates`、`#strings`、`#numbers`等工具物件仍是另一類用途，用於集合、日期、字串與數字處理，不能和被移除的 Web API 物件混為一談。
 
-### 老師原先示範的寫法
+### 舊式教材寫法
 
 Controller：
 
@@ -704,7 +712,7 @@ Template：
 <p th:text="${session['user']}">Session 資料</p>
 ```
 
-本機實際呼叫`GET /attribute/session`已回傳`200 OK`，最終 HTML 是：
+呼叫`GET /attribute/session`成功時應回傳`200 OK`，最終HTML包含：
 
 ```html
 <p>John Lee</p>
@@ -752,7 +760,7 @@ return "session";
 
 Thymeleaf 3.1本來就提供`session`attribute namespace，所以在標準 Web Context 下，通常不必再把整個 HttpSession 物件加入 Model。
 
-#### 情況三：老師目前的示範寫法
+#### 情況三：把HttpSession物件另外放入Model
 
 ```java
 session.setAttribute("user", "John Lee");
@@ -781,8 +789,8 @@ model.addAttribute("session", session);
 
 所以：
 
-- **只看這個頁面的輸出：**你的寫法比較直接。
-- **老師要教 Session：**`session.setAttribute(...)`不是多此一舉。
+- **只需要目前頁面的輸出：**直接使用Model attribute較簡單。
+- **目標是示範Session：**`session.setAttribute(...)`是必要操作。
 - **把 Session 再放入 Model：**在標準 Thymeleaf 3.1環境通常可以省略。
 
 ### 建議的 Session 示範版本
@@ -987,7 +995,7 @@ public String user(@RequestParam int id, Model model) {
 }
 ```
 
-同時需要建立對應的`home.html`與`user.html`模板。這裡只是說明完整資料流，課堂原始碼目前未由筆記整理工作修改。
+同時必須建立對應的`home.html`與`user.html`模板；只有Controller mapping而沒有模板時，請求會在View解析階段失敗。
 
 ## 19. Thymeleaf 使用者列表與動態操作連結
 
@@ -1089,7 +1097,7 @@ public User() {
 語法可拆成：
 
 ```text
-user        ：本次迴圈中的單一 User
+user        ：目前迴圈中的單一 User
 ${users}    ：Controller 放入 Model 的使用者集合
 ```
 
@@ -1209,9 +1217,9 @@ redirectAttributes.addFlashAttribute(
 
 Flash Attribute 適合「操作完成後 redirect，再在下一個 Request 顯示一次」的訊息。顯示後通常不會一直保留。這次直接開啟列表時沒有`successMessage`，因此`th:if`為 false，最終 HTML 不會輸出該`div`。
 
-### 目前畫面的實際驗證
+### 驗證方法與預期結果
 
-本機呼叫`GET /web/users`：
+呼叫`GET /web/users`後，預期結果為：
 
 - 回傳`200 OK`。
 - 顯示`共 3 位使用者`。
@@ -2234,9 +2242,9 @@ HTML input name／email／age
     -> UserService.createUser()或updateUser()
 ```
 
-### 新增第四名使用者的結果
+### 驗證新增第四名使用者
 
-課堂畫面新增：
+送出下列資料：
 
 ```text
 姓名：Harry Potter
@@ -2244,7 +2252,7 @@ Email：daniel@demo.com
 年齡：77
 ```
 
-新增後列表從三筆變成四筆，畫面顯示`共 4 位使用者`，而且新資料取得一組 UUID。這證明目前新增流程已串接：
+新增後列表應從三筆變成四筆，顯示`共 4 位使用者`，而且新資料取得一組UUID。符合這三個條件才能證明新增流程已串接：
 
 ```text
 建立表單
@@ -2278,7 +2286,7 @@ public String getUserDetail(@PathVariable String id, Model model)
 
 找到資料時回傳`user/detail`；找不到時重新導向`/web/users`。
 
-### 目前成功訊息的顯示差異
+### 不同Redirect目標的成功訊息差異
 
 三種操作都會建立 Flash Attribute，但重新導向的目標不同：
 
@@ -2303,7 +2311,7 @@ Flash Attribute 有成功傳到 Redirect 後的 Request，不代表一定會自�
 
 編輯器在`#4CAF50`、`#dc3545`等 CSS 色碼前顯示的小方塊，是 Eclipse Web 編輯工具提供的**顏色預覽**，不是 HTML 或 CSS 原始碼的一部分。
 
-本機 Eclipse 已安裝 Wild Web Developer 與 LSP4E。CSS Language Server 辨識色碼後，LSP4E 的 Document Color／Code Mining 功能會在編輯畫面繪製對應顏色的小方塊；點擊時還能開啟選色介面。
+若Eclipse安裝Wild Web Developer與LSP4E，CSS Language Server辨識色碼後，Document Color／Code Mining功能會在編輯器繪製對應顏色的小方塊；點擊時還能開啟選色介面。
 
 因此同一份檔案在兩台電腦上可能顯示不同：
 
@@ -2319,7 +2327,7 @@ Flash Attribute 有成功傳到 Redirect 後的 Request，不代表一定會自�
 - 不會被保存成額外字元。
 - 不會出現在瀏覽器收到的 HTML。
 - 不影響 CSS 顏色與 Spring Boot 執行結果。
-- 不能據此判斷老師或學生的程式碼誰對誰錯。
+- 不能只憑是否出現色塊判斷原始碼是否正確。
 
 若兩邊想顯示一致，先比較 HTML 檔案的`Open With`編輯器，再比較 Eclipse 與 Wild Web Developer 版本，而不是修改 CSS 色碼。
 

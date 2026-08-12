@@ -4,6 +4,12 @@
 - 範例專案：`mysecondapp`
 - 測試網址：`http://localhost:8080/api/hello`
 
+## 0. 前置條件與重現目標
+
+- 先完成第4章並能啟動`mysecondapp`。
+- 先把`HelloWorld`故意放在主要套件之外，即可重現Spring Boot格式的404。
+- 再把Controller移入主要套件的子套件，重新啟動後應取得`Hello Demo Spring Boot`。
+
 ## 1. 畫面中的錯誤
 
 瀏覽器顯示：
@@ -23,9 +29,9 @@ No static resource api/hello.
 
 所以這不是「伺服器沒有啟動」，也不是單純的瀏覽器問題。
 
-## 2. 實際原始碼結構
+## 2. 會產生404的原始碼結構
 
-已直接檢查`mysecondapp`原始碼，目前結構為：
+錯誤案例的結構為：
 
 ```text
 src/main/java
@@ -85,7 +91,7 @@ src/main/java/com/example/mysecondapp/controller/HelloWorld.java
 package com.example.mysecondapp.controller;
 ```
 
-修正後完整程式可以整理為：
+修正後的完整Controller為：
 
 ```java
 package com.example.mysecondapp.controller;

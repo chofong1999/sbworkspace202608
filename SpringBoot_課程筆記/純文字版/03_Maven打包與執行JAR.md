@@ -4,6 +4,12 @@
 - 範例專案：`sbfirstapp`
 - 專案位置：`C:\sbworkspace202608\sbfirstapp`
 
+## 0. 前置條件與完成結果
+
+- 先完成第2章，並確認專案可在Eclipse中啟動。
+- 開啟命令提示字元；本章指令使用Windows CMD語法。
+- 完成結果是`target`中產生Spring Boot可執行JAR，而且能用`java -jar`啟動。
+
 ## 1. 使用 Eclipse 執行 Maven install
 
 在 `Project Explorer` 對專案按右鍵：
@@ -80,7 +86,7 @@ java -jar sbfirstapp-0.0.1-SNAPSHOT.jar
 cd ..
 ```
 
-## 5. 畫面中的啟動失敗原因
+## 5. 案例：第二份程式啟動失敗
 
 命令列畫面顯示：
 
@@ -98,7 +104,7 @@ spring.application.name=sbfirstapp
 
 `#server.port=8000`前面有`#`，所以這一行是註解，不會生效；程式仍使用預設連接埠`8080`。
 
-依畫面情境判斷，最可能的原因是 Eclipse 已經執行一份 Spring Boot 應用程式並占用 8080，接著又從命令列啟動第二份 JAR，造成連接埠衝突。
+若 Eclipse 已經執行一份 Spring Boot 應用程式並占用8080，接著又從命令列啟動第二份JAR，就會發生連接埠衝突。這個判斷必須再以錯誤最下方的Description或連接埠查詢結果確認。
 
 ## 6. 解決 8080 連接埠衝突
 
@@ -133,11 +139,11 @@ java -jar target\sbfirstapp-0.0.1-SNAPSHOT.jar --server.port=8000
 netstat -ano | findstr :8080
 ```
 
-> 啟動畫面沒有完整顯示最底部的 Description，因此「8080 被占用」是根據 Tomcat 使用 8080、設定檔仍為註解，以及同時從 Eclipse／命令列執行的情境所做的判斷。若再次發生，應以完整錯誤訊息確認。
+> 只有`APPLICATION FAILED TO START`不足以斷定是port衝突。若Description含`Port 8080 was already in use`，或`netstat`顯示其他程序正在監聽8080，才能確認這個原因。
 
 ## 7. Java 版本補充
 
-目前`pom.xml`的編譯目標仍為 Java 17，但截圖顯示 JAR 是由 Java 21.0.10 執行。Java 21 可以執行以 Java 17 目標編譯的程式，因此這本身不是畫面中啟動失敗的原因。
+範例`pom.xml`的編譯目標是Java 17，而啟動Log中的執行環境是Java 21.0.10。Java 21可以執行以Java 17為目標編譯的程式，因此這項版本組合本身不是啟動失敗的原因。
 
 若要讓專案設定也統一為 Java 21，仍需依第二章修改`pom.xml`與 Eclipse 的 JRE System Library。
 
