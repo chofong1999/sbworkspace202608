@@ -4,20 +4,19 @@
 - 主要範例：`sbrestjpa0811`（Employee完整CRUD分層）
 - 對照範例：`sbjpacoffee0811`（既有Coffee表格的唯讀查詢）
 
-## 0. 前置條件、兩條實作路線與完成判定
+## 0. 前置條件、主線與完成判定
 
-共同前置條件：
+前置條件：
 
 - 已安裝並啟動MySQL，知道可用的host、port、帳號與密碼。
 - 建立含Spring Web、Spring Data JPA、MySQL Connector與Lombok的專案。
 - 先理解第9、12章的Controller／Service／Repository分層。
 
-本章有兩條獨立路線：
+本章主線是Employee CRUD：建立`employee_db`，依第3～10節建立Entity、Repository、Service、Controller與連線設定，再依第7節測試全部CRUD。
 
-1. **Employee CRUD：**建立`employee_db`，依第3～10節建立Entity、Repository、Service、Controller與連線設定；完成後依第7節測試全部CRUD。
-2. **Coffee既有表格：**先準備`classicmodels.coffees`表，再依第11節建立映射；完成後測試`GET /api/coffees`。
+若要練習「Entity對應已存在的資料表」與`ddl-auto=validate`，另讀[Coffee既有表格案例](延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)。它不是完成Employee CRUD的必要步驟。
 
-既有編譯產物不等於資料庫連線成功。必須看到ApplicationContext正常啟動、Hibernate沒有連線／Schema錯誤，且HTTP端點取得預期資料，才能判定該路線完成。
+既有編譯產物不等於資料庫連線成功。必須看到ApplicationContext正常啟動、Hibernate沒有連線／Schema錯誤，且HTTP端點取得預期資料，才能判定主線完成。
 
 ## 1. 從記憶體Repository進入資料庫Repository
 
@@ -397,109 +396,17 @@ EmployeeRepository employeeRepository;
 
 閱讀範例時應區分「註解中的建構子注入建議」和「實際執行的欄位注入」；被註解的程式不會參與執行。
 
-## 11. Coffee範例：對應既有表格
+## 11. 延伸案例：對應既有Coffee表格
 
-Coffee專案比較精簡：
+Employee主線使用JPA建立及操作自己的資料表；若資料表已經存在，Entity映射、主鍵型別與Schema驗證會有不同限制。完整案例見[第13章延伸閱讀：JPA對應既有資料表](延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)。
 
-```text
-CoffeeController
-    ↓ 直接注入
-CoffeeRepository extends JpaRepository<Coffee, String>
-    ↓
-Coffee Entity → coffees table
-```
-
-### 11.1 Entity映射
-
-```java
-@Entity
-@Table(name = "coffees")
-@Data
-public class Coffee {
-    @Id
-    @Column(name = "COF_NAME")
-    String cofName;
-
-    @Column(name = "SUP_ID", nullable = false)
-    int supId;
-
-    @Column(nullable = false)
-    BigDecimal price;
-    // sales、total...
-}
-```
-
-和Employee不同：
-
-| 項目 | Employee | Coffee |
-|---|---|---|
-| 主鍵型別 | `Long` | `String` |
-| 主鍵產生 | `IDENTITY` | 應用程式／既有資料提供 |
-| 表格 | `employees` | `coffees` |
-| DDL設定 | `create-drop` | `validate` |
-| API | 完整CRUD | 目前只有GET全部 |
-| 分層 | Controller→Service→Repository | Controller直接→Repository |
-
-### 11.2 Repository泛型必須對應主鍵
-
-```java
-public interface CoffeeRepository
-        extends JpaRepository<Coffee, String> {
-}
-```
-
-第二個泛型是`String`，因為`@Id`欄位`cofName`是String。它不是資料表名稱，也不是任意指定的型別。
-
-### 11.3 `validate`的成立條件
-
-```properties
-spring.jpa.hibernate.ddl-auto=validate
-```
-
-Hibernate只驗證既有Schema是否符合Entity映射，不會建立缺少的表格或欄位。因此啟動成功的必要條件包括：
-
-- MySQL的`classicmodels`資料庫存在。
-- `coffees`表存在。
-- 必要欄位名稱與型別可和Entity對應。
-
-不符合時ApplicationContext可能啟動失敗。
-
-因此Coffee路線不能只建立一個空的`classicmodels`資料庫。必須先匯入包含`coffees`表的既有Schema與資料；若手上的classicmodels版本沒有這張表，應先取得課程使用的SQL腳本或自行建立與`Coffee`Entity完全相容的表格，再使用`validate`啟動。
-
-### 11.4 目前只提供查詢全部
-
-```java
-@GetMapping
-public ResponseEntity<List<Coffee>> getAll() {
-    List<Coffee> cofs = dao.findAll();
-    return ResponseEntity.ok(cofs);
-}
-```
-
-目前端點：
-
-```http
-GET /api/coffees
-```
-
-原始碼沒有POST、PUT、DELETE，因此不能把Coffee範例寫成完整CRUD。
-
-## 12. 兩種專案的啟動前檢查
-
-### Employee／create-drop
+## 12. Employee專案啟動前檢查
 
 - [ ] MySQL服務已啟動
 - [ ] `employee_db`可連線
 - [ ] 帳密正確
-- [ ] 接受啟動／關閉時Schema重建與刪除的結果
+- [ ] 接受`create-drop`在啟動／關閉時重建與刪除Schema的結果
 - [ ] 觀察Console是否出現建表與INSERT SQL
-
-### Coffee／validate
-
-- [ ] `classicmodels`可連線
-- [ ] `coffees`表及欄位已存在
-- [ ] Entity欄位名稱、型別與nullable條件相容
-- [ ] 啟動後再測`GET /api/coffees`
 
 ## 13. 常見錯誤定位順序
 
@@ -507,9 +414,10 @@ GET /api/coffees
 2. **Connection refused：**確認MySQL服務與port。
 3. **Unknown database：**確認資料庫名稱。
 4. **Access denied：**確認帳號、密碼與權限。
-5. **Schema-validation failed：**在`validate`模式核對表名、欄位名與型別。
-6. **Duplicate entry：**核對`unique=true`欄位，例如Employee email。
-7. **404：**確認Controller package掃描與Request path；這和資料庫連線錯誤不是同一層。
+5. **Duplicate entry：**核對`unique=true`欄位，例如Employee email。
+6. **404：**確認Controller package掃描與Request path；這和資料庫連線錯誤不是同一層。
+
+`Schema-validation failed`與既有資料表映射的排查方式放在Coffee延伸案例。
 
 ## 14. 下一章銜接：由MySQL改成SQLite
 
@@ -529,6 +437,5 @@ GET /api/coffees
 - [ ] 能正確填寫`JpaRepository<Entity, ID>`兩個型別
 - [ ] 知道`save()`可能使用persist或merge，不是固定等於INSERT
 - [ ] 能說明Employee新增、更新與刪除的完整分層資料流
-- [ ] 能分辨`create-drop`與`validate`的資料風險
-- [ ] 能說明Coffee為何使用String主鍵
+- [ ] 能說明`create-drop`的資料風險
 - [ ] 能說出切換至SQLite時必須同步調整哪些DataSource與Hibernate設定

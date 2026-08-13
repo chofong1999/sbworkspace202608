@@ -27,7 +27,7 @@
 6. 在Git專案根目錄建立第10節的`Dockerfile`並提交至GitHub。
 7. 在Render建立Docker Web Service，選擇該Repository與branch。
 8. 等待Build與Deploy完成，再呼叫公開網址的`GET /api/products`。
-9. 比較本機與部署端內容，並依第13節區分Render路由錯誤與Spring Boot錯誤。
+9. 比較本機與部署端內容；若Push、Deploy或公開網址異常，再查閱第12節連結的部署故障排查。
 
 > 若本機固定使用8080、部署版固定使用8002，兩者網址的port不同是預期結果。若改採`server.port=${PORT:8080}`，則由Render環境變數決定部署端內部port。
 
@@ -461,98 +461,17 @@ Render預設檔案系統是暫時性的。若沒有Persistent Disk，部署、�
 
 所以目前成功代表「API與SQLite可以執行」，不代表使用者新增的資料能永久保存。正式保存SQLite資料時需要掛載Persistent Disk，並把JDBC URL指向掛載路徑。
 
-## 12. Git Push為何被拒絕？
+## 12. 部署故障排查（延伸閱讀）
 
-SourceTree顯示：
+主章只保留正常部署流程。遇到下列情況時，改讀[第14章延伸閱讀：Git與Render部署故障排查](延伸閱讀/14_Git與Render部署故障排查.md)：
 
-```text
-[rejected] main -> main (fetch first)
-Updates were rejected because the remote contains work
-that you do not have locally.
-```
+- Push顯示`fetch first`或non-fast-forward。
+- Render只顯示`Not Found`，需要區分`no-server`與Spring Boot 404。
+- 本機已修正，但GitHub或Render仍執行舊版本。
 
-當時歷史是：
 
-```text
-                70ee83a  本機：fix server port
-               /
-f92ab33  create
-               \
-                3f61c97  GitHub：更新README部署網址
-```
 
-兩邊都從`f92ab33`開始各自新增提交，因此本機不能用fast-forward直接覆蓋遠端。
-
-### 12.1 安全處理
-
-1. 先Pull／Fetch取得GitHub提交。
-2. Merge或Rebase雙方歷史。
-3. 有衝突時逐檔確認。
-4. 再Push整合後的歷史。
-
-這次兩邊分別修改README與port設定，合併後得到：
-
-```text
-bb814c0 Merge remote-tracking branch 'origin/main'
-```
-
-接著Push成功，本機`main`與`origin/main`已同步。
-
-不要直接Force Push；Force Push可能把GitHub上別人或網頁編輯產生的提交刪掉。
-
-## 13. Render 404如何判斷是哪一層？
-
-### 13.1 案例：Render路由層沒有可用Server
-
-部署網址只顯示：
-
-```text
-Not Found
-```
-
-HTTP回應還有：
-
-```text
-x-render-routing: no-server
-```
-
-這表示Render路由層當時找不到可接收請求的Server。請求還沒有到Spring Boot，因此不是`ProductController`缺少`@GetMapping`，也不是SQLite查詢回傳404。
-
-### 13.2 依回應特徵判斷錯誤層級
-
-| 現象 | 已到哪一層 | 優先檢查 |
-|---|---|---|
-| Render純文字`Not Found`＋`no-server` | Render邊緣路由 | Deploy狀態、Logs、服務網址、是否有執行中的Instance |
-| Spring Whitelabel Error Page／Spring格式404 | 已到Spring Boot | Controller mapping、package掃描、URL |
-| 啟動Log出現DataSource／Hibernate例外 | Spring啟動資料庫階段 | Driver、Dialect、JDBC URL、Schema |
-| API成功回`[]` | Controller與Repository已工作 | 資料表是否有資料、初始化是否執行 |
-| 本機正常、部署仍是舊結果 | 部署版本未更新 | Git Push、Render使用的branch、最新Deploy commit |
-
-## 14. 案例：為何本機修正沒有進入部署版本？
-
-完整因果鏈：
-
-```text
-本機修改server.port與Dockerfile
-    ↓
-本機完成commit
-    ↓
-GitHub已另外修改README
-    ↓
-Push被non-fast-forward拒絕
-    ↓
-修正沒有進入GitHub main
-    ↓
-Render自然無法部署這筆本機修正
-```
-
-因此要分開理解：
-
-- Render的`no-server`是線上請求無法進入應用程式的現象。
-- Git Push被拒絕是修正無法送到部署來源的原因。
-- 它們不是同一種404，也不是Product程式碼錯誤。
-
-## 15. 最終驗證
+## 13. 最終驗證
 
 分別開啟：
 
@@ -571,7 +490,7 @@ http://localhost:8080/api/products
 
 兩個API內容一致只能證明當下部署可用，不能單獨證明資料具備永久性；持久化仍須用重啟／重新部署後資料是否保留來驗證。
 
-## 16. 部署檢查表
+## 14. 部署檢查表
 
 ### Git與Render
 
@@ -592,7 +511,7 @@ http://localhost:8080/api/products
 - [ ] 清楚資料來自SQL初始化還是`CommandLineRunner`
 - [ ] 若要求永久保存，已設定Persistent Disk
 
-## 17. 官方資料入口
+## 15. 官方資料入口
 
 - Render Web Service與port binding：<https://render.com/docs/web-services#port-binding>
 - Render Deploy流程：<https://render.com/docs/deploys>
@@ -601,14 +520,13 @@ http://localhost:8080/api/products
 - Spring Boot SQL資料庫初始化：<https://docs.spring.io/spring-boot/how-to/data-initialization.html>
 - Spring Data JPA：<https://docs.spring.io/spring-data/jpa/reference/>
 
-## 18. 本章複習重點
+## 16. 本章複習重點
 
 - [ ] SQLite是檔案式資料庫，但仍需要JDBC Driver與Hibernate Dialect
 - [ ] 能解釋`jdbc:sqlite:shop.db`的相對路徑意義
-- [ ] 知道`spring.sql.init.mode= never`的有效值是`never`，會停用`schema.sql`與`data.sql`
+- [ ] 知道`spring.sql.init.mode=never`會停用`schema.sql`與`data.sql`
 - [ ] 知道目前三筆資料實際來自`CommandLineRunner`
 - [ ] 能說明Docker兩階段建置的目的
 - [ ] 能區分`server.port`與Dockerfile `EXPOSE`
-- [ ] 能判斷Render路由404與Spring Boot Controller 404
-- [ ] 遇到`fetch first`不使用Force Push，先整合遠端提交
 - [ ] 知道Render上的相對SQLite檔案預設不等於永久保存
+- [ ] 遇到Push或Render異常時，知道使用第12節的故障排查入口
