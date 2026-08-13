@@ -2,6 +2,7 @@
 
 - 整理日期：2026-08-12
 - 範例專案：`sbrestcrud0807`
+- 早期對照專案：`sbrest0722`（User記憶體CRUD、Request參數與`ApiResponse<T>`）
 - 主要API前綴：`http://localhost:8080/api/products`
 
 ## 0. 前置條件、實作順序與完成判定
@@ -50,6 +51,19 @@ sbrestcrud0807
 3. 分辨`@PathVariable`、`@RequestParam`、`@RequestHeader`與`@RequestBody`。
 4. 用泛型`ApiResponse<T>`統一JSON外層格式。
 5. 用Swagger／OpenAPI註解補充API文件。
+
+### 1.1 `sbrest0722`為何不另拆一章
+
+`sbrest0722`較早以`ConcurrentHashMap<Long, User>`與`AtomicLong`實作User CRUD，並示範：
+
+- `@PathVariable`查單筆。
+- `@RequestParam`接收`begin`、`end`後用Stream的`skip()`／`limit()`截取資料。
+- `@RequestBody`接收新增與更新資料。
+- `ResponseEntity.created(location)`回傳`201 Created`及`Location`。
+- `ApiResponse<T>`統一成功／錯誤Body。
+- Controller實作`CommandLineRunner`加入三筆記憶體種子資料。
+
+這些主題都已由本章後續各節完整說明，因此它是同一學習階段的原始碼對照，不重複建立另一章。它和`sbrestcrud0807`同樣沒有資料庫，重新啟動後只會回到初始化資料。
 
 ## 2. Product與ProductDTO不是同一種角色
 

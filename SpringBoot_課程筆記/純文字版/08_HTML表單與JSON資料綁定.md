@@ -158,29 +158,11 @@ Postman 設定：
 | 常見工具 | 瀏覽器表單 | Postman、前端 JavaScript、其他 API Client |
 | 綁定方式 | 依參數名稱填入屬性 | 反序列化 Body 成物件 |
 
-## 7. 修正：改由 UserService 建立並保存使用者
+## 7. 銜接第9章：把綁定結果保存至共用Repository
 
-原本若只在 `SubmitController` 內使用 `new User(...)`，雖然回傳物件會有 ID，但該物件沒有進入 `UserRepository`，後續無法透過 CRUD API 查詢。
+本章第9節的最小版本只驗證`@ModelAttribute`與`@RequestBody`能否建立User物件，沒有保存資料。要讓表單與JSON建立的User能被CRUD API再次查到，接著完成第9章，讓`SubmitController`改由`UserService.createUser(...)`保存。
 
-修正後，`SubmitController` 使用建構子注入 `UserService`：
-
-```java
-final UserService userService;
-
-public SubmitController(UserService userService) {
-    this.userService = userService;
-}
-```
-
-表單與 JSON 兩種接收方式都改成呼叫同一個服務：
-
-```java
-User u1 = userService.createUser(
-        user.getName(), user.getEmail(), user.getAge());
-return ResponseEntity.ok(u1);
-```
-
-現在完整流程是：
+完成後的資料流是：
 
 ```text
 HTML 表單／JSON
@@ -190,20 +172,19 @@ HTML 表單／JSON
     -> 共用的記憶體 List
 ```
 
-`UserService` 內建立 `User` 時會產生 UUID，接著由 Repository 保存。因此送出資料後，可使用回傳的 ID 呼叫：
+實作程式集中放在第9章第14.4節，本章不重複貼出同一份建構子與Service呼叫。完成後，送出資料會取得UUID，可用回傳ID呼叫：
 
 ```text
 GET http://localhost:8080/api/users/{id}
 ```
 
-完成第9章並採用Service版本後，可用表單建立`Daniel Chen`，再以回傳ID呼叫`GET /api/users/{id}`。若能查回相同姓名、Email與年齡，就代表新增與CRUD查詢已共用同一個Repository。
+可用表單建立`Daniel Chen`，再以回傳ID查詢；若能查回相同姓名、Email與年齡，就代表資料綁定入口與CRUD API共用同一個Repository。
 
 補充：
 
 - 目前 `SubmitController` 回傳的是 `200 OK`；若要更完整地表達「建立成功」，日後可改為 `201 Created`。
 - Repository 仍是記憶體資料，重新啟動程式後資料會消失。
-- 原始碼中的 `UserRepository` import 已未使用，可以移除；Controller 應只依賴 `UserService`。
-- 欄位建議寫成 `private final UserService userService;`，封裝性更清楚。
+- Controller應只依賴`UserService`；若仍有未使用的`UserRepository` import可移除。
 
 ## 8. 目前驗證的限制
 

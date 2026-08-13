@@ -1,6 +1,6 @@
 # Spring Boot 圖文版素材（待製作）
 
-這個資料夾目前只保存課堂截圖，不製作圖文版筆記。純文字筆記放在相鄰的`../純文字版/`。
+這個資料夾保存課堂原始截圖。純文字筆記位於`../純文字版/`；第一章圖文試作位於[`../圖文版/01_環境設定.md`](../圖文版/01_環境設定.md)。
 
 ## 第一章：環境設定
 
@@ -93,9 +93,15 @@
 2. `45_Git_push非fast-forward遭拒.png`：本機port修正提交因GitHub已有README提交而被`fetch first`拒絕；需先整合遠端歷史，不能直接Force Push。
 3. `46_Render與本機_API成功一致.png`：合併並Push後，Render與本機都回傳Apple、Apple iPhone 17、Banana三筆商品JSON，作為SQLite與部署成功證據。
 
+## 第十六章：JPA OneToMany、ManyToOne與JSON關聯
+
+1. `47_OneToMany部門員工JSON與LEFT_JOIN.png`：`GET /api/departments`回傳部門與巢狀員工JSON；Console同時顯示Hibernate以`LEFT JOIN`查詢`departments`與`employees`。畫面中的`MeMe`是以PUT把初始`MIS`更新後的名稱。
+2. `48_Category_Product_JSON與N加1查詢.png`：`GET /api/categories`回傳3C、Fruit及各自的Product；Controller目前呼叫`findAll()`，Console可見針對兩個Category分別執行`where category_id=?`的Product查詢，用來辨認N+1。
+3. `49_Modifying依類別批次清空庫存.png`：`GET /api/products/fruit`回傳affected rows為2；Console顯示Hibernate依Category名稱產生Join Update，Workbench顯示當下四筆商品庫存皆為0。此圖只能證明fruit呼叫更新兩筆，不能證明另外兩筆也是同一次Request所改。
+
 ## 後續整理規則
 
 - 新的純文字內容持續更新至`../純文字版/`。
 - 使用者提供的新截圖依章節順序重新命名，保存至`images/`。
 - 每次加入新截圖，都要同步更新本索引，確保檔名、章節與畫面用途對得上。
-- 在使用者要求開始製作前，不建立圖文版筆記。
+- 圖文版目前只製作第一章作為版面與內容試作；其他章節須等試作確認後再開始。

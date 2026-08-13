@@ -151,21 +151,6 @@ public class SbfirstappApplication {
 
 > Java Version、`pom.xml`與JRE System Library是三個需要一起核對的位置；只改其中一處不足以證明專案已完整切換至Java 21。
 
-## 建立專案檢查表
-
-- [ ] 選擇 `Spring Starter Project`
-- [ ] 專案名稱及 Artifact 設為 `sbfirstapp`
-- [ ] Type 選擇 `Maven`
-- [ ] Packaging 選擇 `Jar`
-- [ ] Java Version 改為 `21`
-- [ ] 加入 `Spring Boot DevTools`
-- [ ] 加入 `Spring Web`
-- [ ] 按 `Finish` 並等待依賴下載完成
-- [ ] Project Explorer 出現 `sbfirstapp`
-- [ ] 找到 `SbfirstappApplication.java`
-- [ ] JRE System Library 顯示 Java 21
-- [ ] `pom.xml` 中的 `<java.version>` 為 `21`
-
 ## 6. 執行方式：Java Application 或 Spring Boot App？
 
 在主要啟動類別上按右鍵，進入`Run As`時會看到：
@@ -185,3 +170,18 @@ public class SbfirstappApplication {
 `Run As → Spring Boot App`
 
 對目前這個簡單專案而言，兩者通常都能啟動並在`localhost:8080`提供服務；主要差異是 Eclipse／Spring Tools 如何建立及管理啟動設定，而不是 Controller 的執行結果。
+
+## 建立專案檢查表
+
+- [ ] 選擇 `Spring Starter Project`
+- [ ] 專案名稱及 Artifact 設為 `sbfirstapp`
+- [ ] Type 選擇 `Maven`
+- [ ] Packaging 選擇 `Jar`
+- [ ] Java Version 改為 `21`
+- [ ] 加入 `Spring Boot DevTools`
+- [ ] 加入 `Spring Web`
+- [ ] 按 `Finish` 並等待依賴下載完成
+- [ ] Project Explorer 出現 `sbfirstapp`
+- [ ] 找到 `SbfirstappApplication.java`
+- [ ] JRE System Library 顯示 Java 21
+- [ ] `pom.xml` 中的 `<java.version>` 為 `21`

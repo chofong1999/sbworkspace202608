@@ -23,19 +23,6 @@ Swagger UI 使用藍、綠、橘、紅區分不同的 HTTP Method：
 | 橘色 | `PUT` | 更新資料 |
 | 紅色 | `DELETE` | 刪除資料 |
 
-### 容易混淆的兩種顏色情境
-
-同樣看到藍、綠、橘、紅時，要先確認自己正在看哪一種畫面：
-
-| 情境 | 顏色代表什麼 | 是否有固定技術意義 |
-|---|---|---|
-| Swagger UI 的 API 清單 | HTTP Method，例如 GET、POST、PUT、DELETE | 有，由 Swagger UI 依 Method 配色 |
-| Eclipse 的 Java 原始碼 | 關鍵字、字串、註解等語法醒目提示 | 配色會隨編輯器與佈景主題改變 |
-
-例如 Swagger UI 中綠色的`POST`表示新增類型的 HTTP Request；但 Eclipse 中某段 Java 文字剛好顯示綠色，不代表它也是 POST。
-
-如果把兩種情況混在一起，可能會只憑顏色誤判 API 的用途。判斷 Swagger API 時應同時看`GET`／`POST`文字、路徑及說明，不只看色塊。
-
 Swagger UI 的主要用途：
 
 - 由程式自動產生 API 文件。
@@ -134,7 +121,7 @@ public class SwaggerConfig {
 
 `SwaggerConfig`主要設定文件的基本資料，不負責建立`/api/users`等路由。API 路由仍由 Controller 的`@RequestMapping`、`@GetMapping`等註解決定。
 
-### 問題情境：文件寫 JPA，但程式尚未使用 JPA
+### 文件描述必須與實作一致
 
 SwaggerConfig 的文件描述目前寫成：
 
@@ -150,20 +137,7 @@ Spring Boot JPA 練習專案 API 文檔
 | Model | 通常會有`@Entity`、`@Id` | 目前沒有 JPA Entity 註解 |
 | 重新啟動 | 資料庫資料通常仍存在 | 記憶體資料會消失 |
 
-因此這句可能是預定方向或舊描述，和現在的實作不完全一致。
-
-### 會造成什麼影響？
-
-- 閱讀 API 文件的人可能誤以為資料已經持久化。
-- 測試時重新啟動程式，資料消失會讓人誤以為 Repository 發生錯誤。
-- 後續維護者可能會尋找不存在的 Entity、JPA Repository 或資料庫設定。
-
-### 處理方式
-
-有兩種合理方向：
-
-1. **目前仍要練習記憶體 CRUD：**把描述改成「Spring Boot 記憶體 User CRUD 練習專案 API 文檔」。
-2. **課程下一步要導入 JPA：**保留目標方向，但應等 Entity、JPA Repository 與資料庫真正完成後，再把文件寫成目前已使用 JPA。
+文件若寫成JPA，讀者會預期資料可持久化，並尋找Entity、JPA Repository與資料庫設定；但目前專案仍是記憶體CRUD。此階段應把描述改成「Spring Boot記憶體User CRUD練習專案API文件」，等JPA實作完成後再更新描述。
 
 文件文字應描述目前真實行為，避免文件與程式不一致。
 
