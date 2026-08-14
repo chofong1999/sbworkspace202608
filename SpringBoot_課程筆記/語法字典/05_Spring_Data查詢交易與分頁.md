@@ -2,6 +2,24 @@
 
 [返回字典首頁](README.md)｜[快速索引](00_快速索引.md)
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `JpaRepository<T, ID>` | 取得Entity內建CRUD | `extends JpaRepository<User, Long>` | [說明](#jparepository) |
+| `findBy...` | 以方法名稱產生查詢 | `findByEmail(String email)` | [規則](#derived-query) |
+| `countBy...` | 以方法名稱計算筆數 | `countByCategory(String category)` | [規則](#derived-query) |
+| `existsBy...` | 以方法名稱判斷存在 | `existsByEmail(String email)` | [規則](#derived-query) |
+| `@Query` | 自訂JPQL或原生SQL | `@Query("SELECT u FROM User u")` | [參數](#query-param) |
+| `@Param` | 綁定命名查詢參數 | `@Param("name") String name` | [說明](#query-param) |
+| `nativeQuery=true` | 把`@Query`內容改為原生SQL | `@Query(value="...", nativeQuery=true)` | [說明](#query-param) |
+| `@Modifying` | 讓`@Query`執行UPDATE／DELETE | `@Modifying` | [說明](#modifying-transactional) |
+| `@Transactional` | 建立交易邊界 | `@Transactional` | [說明](#modifying-transactional) |
+| `Pageable`／`Page<T>` | 傳入分頁條件並取得總頁數 | `PageRequest.of(0, 10)` | [說明](#paging-sort) |
+| `Sort` | 指定Entity屬性排序 | `Sort.by(DESC, "price")` | [說明](#paging-sort) |
+| `Slice<T>` | 分頁但不要求總筆數 | `Slice<User>` | [說明](#paging-sort) |
+
 <a id="jparepository"></a>
 ## `JpaRepository<T, ID>`
 
@@ -126,4 +144,3 @@ public Page<Product> list(
 ```
 
 官方參考：[Spring Data JPA Query Methods](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html)
-

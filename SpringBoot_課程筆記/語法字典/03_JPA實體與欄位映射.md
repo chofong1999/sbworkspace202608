@@ -4,6 +4,20 @@
 
 > 本頁使用`jakarta.persistence.*`。Spring Boot 3以上不要誤匯入舊的`javax.persistence.*`。
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `@Entity` | 宣告JPA管理的實體類別 | `@Entity` | [說明](#entity-table) |
+| `@Table` | 指定主要資料表 | `@Table(name="products")` | [說明](#entity-table) |
+| `@Id` | 宣告Entity主鍵 | `@Id` | [說明](#id-generatedvalue) |
+| `@GeneratedValue` | 設定主鍵產生策略 | `@GeneratedValue(strategy=IDENTITY)` | [說明](#id-generatedvalue) |
+| `@Column` | 設定欄位名稱、限制與寫入行為 | `@Column(nullable=false, length=100)` | [完整參數](#column) |
+| `@Transient` | 排除JPA欄位映射 | `@Transient` | [說明](#transient) |
+| `@CreationTimestamp` | 由Hibernate填入建立時間 | `@CreationTimestamp` | [說明](#creationtimestamp) |
+| Field／Property Access | 決定JPA直接讀欄位或getter | 把`@Id`放在欄位或getter | [說明](#field-property-access) |
+
 <a id="entity-table"></a>
 ## `@Entity`與`@Table`
 
@@ -20,6 +34,8 @@ public class Product {
 | `@Table` | 指定主要資料表 | `name`、`schema`、`catalog`、`uniqueConstraints`、`indexes` |
 
 **成立條件**：實體需有主鍵；通常提供`public`或`protected`無參數建構子。未寫`@Table`時，表名由命名策略與實體名稱推導。
+
+實際案例：[第13章Employee Entity](../純文字版/13_Spring_Data_JPA與MySQL.md#employee-entity-example)。
 
 <a id="id-generatedvalue"></a>
 ## `@Id`與`@GeneratedValue`
@@ -39,6 +55,8 @@ private Long id;
 | `UUID` | 產生UUID（需專案使用支援此列舉值的Jakarta Persistence版本） |
 
 主鍵型別與資料庫策略必須相容。使用`IDENTITY`時，新增前通常是`null`，寫入後才取得值。
+
+實際案例：[第13章Employee的MySQL自動遞增主鍵](../純文字版/13_Spring_Data_JPA與MySQL.md#employee-entity-example)。
 
 <a id="column"></a>
 ## `@Column(...)`
@@ -99,6 +117,8 @@ private LocalDateTime createdAt;
 
 官方規格：[Jakarta Persistence 3.2 `Column`](https://jakarta.ee/specifications/persistence/3.2/apidocs/jakarta.persistence/jakarta/persistence/column)
 
+實際案例：[第13章Employee的`name`與`email`欄位](../純文字版/13_Spring_Data_JPA與MySQL.md#employee-entity-example)。
+
 <a id="transient"></a>
 ## `@Transient`
 
@@ -124,6 +144,7 @@ private LocalDateTime createdAt;
 
 新增實體時由Hibernate設定建立時間。若要由資料庫預設值負責，需配合欄位DDL與`insertable = false`，不要同時讓兩邊互相覆蓋。
 
+<a id="field-property-access"></a>
 ## 欄位存取位置
 
 JPA會依`@Id`放置位置決定存取方式：
@@ -132,4 +153,3 @@ JPA會依`@Id`放置位置決定存取方式：
 - `@Id`放getter：property access，其他映射註解通常也放getter。
 
 同一個實體不要無意間混用兩種位置。
-

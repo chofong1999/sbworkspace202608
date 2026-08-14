@@ -4,6 +4,19 @@
 
 以下以「一個Department有多個Employee；每個Employee屬於一個Department」為例。
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `@ManyToOne` | 多筆Entity指向同一筆Entity | `@ManyToOne(fetch=LAZY)` | [說明](#manytoone-onetomany) |
+| `@OneToMany` | 一筆Entity持有多筆集合 | `@OneToMany(mappedBy="department")` | [說明](#manytoone-onetomany) |
+| `@JoinColumn` | 指定關聯外鍵欄位 | `@JoinColumn(name="dept_id")` | [參數](#joincolumn) |
+| `mappedBy` | 指向另一端負責外鍵的Java屬性 | `mappedBy="department"` | [條件](#mappedby) |
+| `FetchType.LAZY`／`EAGER` | 設定關聯載入策略 | `fetch=FetchType.LAZY` | [說明](#manytoone-onetomany) |
+| `CascadeType` | 傳遞Entity生命週期操作 | `cascade=CascadeType.PERSIST` | [可選值](#cascade) |
+| `orphanRemoval` | 移除孤兒子Entity | `orphanRemoval=true` | [說明](#manytoone-onetomany) |
+
 <a id="manytoone-onetomany"></a>
 ## `@ManyToOne`與`@OneToMany`
 
@@ -25,6 +38,8 @@ private List<Employee> employees = new ArrayList<>();
 | `@OneToMany` | 一方的集合屬性 | 一個Department持有多個Employee | `LAZY` |
 
 實務上常明寫`fetch = FetchType.LAZY`，並在查詢層決定何時載入；不要把`EAGER`當成解決Lazy問題的通用方法。
+
+實際案例：[第16章Employee的`@ManyToOne`](../純文字版/16_JPA_OneToMany_ManyToOne與JSON關聯.md#employee-manytoone-example)與[Department的`@OneToMany`](../純文字版/16_JPA_OneToMany_ManyToOne與JSON關聯.md#department-onetomany-example)。
 
 ### `@ManyToOne`常用參數
 
@@ -67,6 +82,8 @@ private List<Employee> employees = new ArrayList<>();
 | `insertable`／`updatable` | JPA產生INSERT／UPDATE時是否包含外鍵欄位 |
 | `foreignKey` | 自訂或停用產生的外鍵約束描述 |
 
+實際案例：[第16章`employees.dept_id`](../純文字版/16_JPA_OneToMany_ManyToOne與JSON關聯.md#employee-manytoone-example)。
+
 <a id="mappedby"></a>
 ## `mappedBy`的確切條件
 
@@ -82,6 +99,8 @@ private List<Employee> employees;
 ```
 
 寫成`mappedBy = "dept_id"`會錯，因為`dept_id`是資料庫欄位名。
+
+實際案例：[第16章`mappedBy="department"`](../純文字版/16_JPA_OneToMany_ManyToOne與JSON關聯.md#department-onetomany-example)。
 
 <a id="cascade"></a>
 ## `CascadeType`
@@ -116,4 +135,3 @@ public void removeEmployee(Employee employee) {
 ## JSON輸出的額外問題
 
 雙向關聯直接序列化可能無限循環；可使用DTO，或依需求使用Jackson關聯註解。DTO通常最能明確控制API格式。詳見[JPA關聯擁有端、級聯與JSON](延伸閱讀/JPA關聯擁有端_級聯與JSON.md)。
-

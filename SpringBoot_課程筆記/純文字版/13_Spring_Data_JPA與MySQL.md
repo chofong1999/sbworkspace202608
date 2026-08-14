@@ -80,7 +80,8 @@ MySQL employee_db
 
 JPA是持久化規格與API；Hibernate是本專案實際使用的JPA provider；MySQL Connector是資料庫Driver。三者不是同一個元件。
 
-## 3. Entity的正式成立條件
+<a id="employee-entity-example"></a>
+## 3. Employee Entity實作
 
 `Employee`：
 
@@ -106,49 +107,20 @@ public class Employee {
 }
 ```
 
-### 3.1 `@Entity`
+本章只需掌握Employee實際使用的設定：
 
-正式作用：宣告這個類別是JPA管理的Entity。
-
-基本條件包括：
-
-- 類別必須有`public`或`protected`無參數建構子。
-- 必須有主鍵欄位或property。
-- Entity不能是`final`類別。
-
-欄位模式下，沒有標記`@Transient`的普通欄位預設會參與持久化。
-
-### 3.2 `@Table(name="employees")`
-
-指定Entity的主要資料表名稱。若省略，provider會依Entity名稱與命名策略推導表名。
-
-### 3.3 `@Id`
-
-宣告Entity識別值，對應主要資料表的Primary Key。Repository第二個泛型參數必須和這個ID型別一致：
-
-```java
-JpaRepository<Employee, Long>
-```
-
-### 3.4 `@GeneratedValue(strategy=IDENTITY)`
-
-宣告主鍵值由資料庫的identity column機制產生；MySQL通常對應自動遞增欄位。
-
-使用條件：
-
-- 必須和`@Id`用在主鍵欄位／property上。
-- 底層資料庫表格必須能支援相應的主鍵產生策略。
-- 新增時通常讓`id`保持`null`，不要由Request任意指定。
-
-### 3.5 `@Column`
-
-| 寫法 | Schema語意 |
+| 本例語法 | 在Employee中的作用 |
 |---|---|
-| `nullable=false` | 欄位不允許NULL |
-| `unique=true` | 欄位值必須唯一 |
-| `name="..."` | 指定資料庫欄位名稱 |
+| `@Entity` | 讓JPA管理這個類別；類別需有主鍵及`public`／`protected`無參數建構子 |
+| `@Table(name = "employees")` | 明確對應`employees`資料表 |
+| `@Id` | 把`id`設為Entity識別值；Repository的ID型別因此是`Long` |
+| `@GeneratedValue(strategy = IDENTITY)` | 由MySQL自動遞增機制產生ID；新增Request通常不要自行指定ID |
+| `@Column(nullable = false)` | 產生／驗證Schema時要求欄位不可為NULL |
+| `@Column(unique = true)` | 對email建立單欄唯一限制 |
 
-`@Column`屬於資料庫映射與Schema限制，不等於API輸入驗證。例如Request中的email為空時，可能直到寫入資料庫才失敗；若要提早回傳可讀的400錯誤，還要加入Bean Validation與例外處理。
+要查`@Table`、主鍵策略、`@Column`完整參數、預設值與其他Model註解，使用[Model／Entity語法入口](../語法字典/Spring_Boot/Model與Entity.md)。
+
+`@Column`屬於映射與Schema限制，不等於API輸入驗證。例如Request中的email為空時，可能直到寫入資料庫才失敗；若要提早回傳可讀的400錯誤，還要加入Bean Validation與例外處理。完整差異見[`@Column`參數與資料庫限制](../語法字典/延伸閱讀/JPA_Column參數與資料庫限制.md)。
 
 ## 4. JpaRepository的定義與成立條件
 

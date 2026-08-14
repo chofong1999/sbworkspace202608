@@ -2,6 +2,25 @@
 
 [返回字典首頁](README.md)｜[快速索引](00_快速索引.md)
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `@SpringBootApplication` | 宣告主要啟動與自動設定類別 | `@SpringBootApplication` | [說明](#springbootapplication) |
+| `@Component` | 註冊一般Spring元件 | `@Component` | [說明](#stereotype) |
+| `@Service` | 註冊業務服務元件 | `@Service` | [說明](#stereotype) |
+| `@Repository` | 註冊資料存取元件 | `@Repository` | [說明](#stereotype) |
+| `@Controller` | 註冊回傳View的MVC Controller | `@Controller` | [說明](#stereotype) |
+| `@RestController` | 註冊直接回傳response body的Controller | `@RestController` | [MVC說明](02_Spring_MVC與REST.md#restcontroller) |
+| `@Configuration` | 宣告Java設定類別 | `@Configuration` | [說明](#configuration-bean) |
+| `@Bean` | 用方法回傳值註冊Bean | `@Bean` | [說明](#configuration-bean) |
+| 建構子注入 | 注入必要依賴 | `Service(Repo repo)` | [說明](#autowired) |
+| `@Autowired` | 要求Spring注入符合型別的Bean | `@Autowired` | [說明](#autowired) |
+| `@Qualifier` | 多個同型別Bean中指定一個 | `@Qualifier("emailService")` | [說明](#qualifier-primary) |
+| `@Primary` | 設定同型別Bean的預設優先者 | `@Primary` | [說明](#qualifier-primary) |
+| `@PostConstruct` | 依賴注入後執行一次初始化 | `@PostConstruct` | [說明](#postconstruct) |
+
 <a id="springbootapplication"></a>
 ## `@SpringBootApplication`
 
@@ -130,4 +149,3 @@ void loadSampleData() {
 - Bean不在主啟動類別的套件樹下：元件掃描不到。
 - 同型別有兩個Bean但沒有`@Qualifier`或`@Primary`：啟動時出現候選不唯一。
 - 手動`new Service()`：該物件不經Spring建立，注入與生命週期功能不會生效。
-

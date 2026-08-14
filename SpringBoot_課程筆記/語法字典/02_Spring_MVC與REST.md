@@ -2,6 +2,26 @@
 
 [返回字典首頁](README.md)｜[快速索引](00_快速索引.md)
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `@RestController` | 類別方法直接回傳JSON／文字Body | `@RestController` | [說明](#restcontroller) |
+| `@Controller` | 類別方法通常回傳View名稱 | `@Controller` | [說明](#restcontroller) |
+| `@RequestMapping` | 設定共同路徑或完整映射條件 | `@RequestMapping("/api/users")` | [說明](#restcontroller) |
+| `@GetMapping` | 對應GET請求 | `@GetMapping("/{id}")` | [說明](#http-mapping) |
+| `@PostMapping` | 對應POST請求 | `@PostMapping` | [說明](#http-mapping) |
+| `@PutMapping` | 對應PUT請求 | `@PutMapping("/{id}")` | [說明](#http-mapping) |
+| `@PatchMapping` | 對應PATCH請求 | `@PatchMapping("/{id}")` | [說明](#http-mapping) |
+| `@DeleteMapping` | 對應DELETE請求 | `@DeleteMapping("/{id}")` | [說明](#http-mapping) |
+| `@PathVariable` | 讀取URL路徑佔位值 | `@PathVariable Long id` | [說明](#pathvariable) |
+| `@RequestParam` | 讀取Query／表單單一參數 | `@RequestParam String name` | [說明](#requestparam) |
+| `@RequestBody` | 把JSON body轉成Java物件 | `@RequestBody UserRequest body` | [說明](#requestbody) |
+| `@ModelAttribute` | 把表單欄位綁到JavaBean | `@ModelAttribute UserForm form` | [說明](#modelattribute) |
+| `@RequestHeader` | 讀取HTTP Header | `@RequestHeader("User-Agent") String ua` | [說明](#requestheader) |
+| `ResponseEntity<T>` | 自訂狀態碼、Header與Body | `ResponseEntity.ok(data)` | [說明](#responseentity) |
+
 <a id="restcontroller"></a>
 ## `@RestController`與`@RequestMapping`
 
@@ -139,4 +159,3 @@ return ResponseEntity.noContent().build();
 | HTML form欄位 | `name=Amy&age=20` | `@ModelAttribute`或個別`@RequestParam` |
 
 深入比較：[Spring MVC參數綁定選擇](延伸閱讀/Spring_MVC參數綁定選擇.md)
-

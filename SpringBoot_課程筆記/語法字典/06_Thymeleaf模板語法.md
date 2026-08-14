@@ -4,6 +4,28 @@
 
 模板通常放在`src/main/resources/templates/`，由`@Controller`方法回傳模板名稱；直接以檔案方式開啟HTML不會執行Thymeleaf。
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `${...}` | 取得Model／Context變數 | `${user.name}` | [說明](#variable-expression) |
+| `*{...}` | 取得目前`th:object`欄位 | `*{name}` | [說明](#selection-expression) |
+| `@{...}` | 產生Context Path安全網址 | `@{/users}` | [說明](#link-expression) |
+| `#{...}` | 取得國際化訊息 | `#{home.title}` | [總表](#expressions) |
+| `~{...}` | 引用模板Fragment | `~{layout::header}` | [總表](#expressions) |
+| `th:text` | escaping後取代元素內容 | `th:text="${name}"` | [說明](#text-utext) |
+| `th:utext` | 不escaping地取代元素內容 | `th:utext="${html}"` | [風險](#text-utext) |
+| `th:each` | 迭代集合並重複元素 | `th:each="u : ${users}"` | [說明](#flow-control) |
+| `th:if` | 條件為真時保留元素 | `th:if="${isLogin}"` | [說明](#flow-control) |
+| `th:switch`／`th:case` | 依值選擇分支 | `th:case="'admin'"` | [說明](#flow-control) |
+| `th:object` | 選定表單後端物件 | `th:object="${user}"` | [表單](#form-binding) |
+| `th:field` | 綁定表單欄位 | `th:field="*{name}"` | [表單](#form-binding) |
+| `th:action` | 產生表單送出網址 | `th:action="@{/users}"` | [表單](#form-binding) |
+| `th:href` | 產生連結網址 | `th:href="@{/users}"` | [網址](#each-href-src) |
+| `th:src` | 產生圖片／資源網址 | `th:src="@{/images/a.png}"` | [網址](#each-href-src) |
+| `條件 ? A : B` | 在表達式中二選一 | `${isEdit} ? '更新' : '建立'` | [表單案例](#form-binding) |
+
 <a id="expressions"></a>
 ## 標準表達式總表
 
@@ -128,4 +150,3 @@
 ```
 
 深入說明：[Thymeleaf表達式與安全輸出](延伸閱讀/Thymeleaf表達式與安全輸出.md)。官方參考：[Using Thymeleaf 3.1](https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html)
-

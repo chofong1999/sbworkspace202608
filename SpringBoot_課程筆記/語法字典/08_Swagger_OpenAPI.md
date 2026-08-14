@@ -4,6 +4,18 @@
 
 這些註解只補充API文件，不會建立Controller路由，也不會改變實際HTTP行為。路由仍由Spring MVC註解決定。
 
+<a id="page-syntax"></a>
+## 本頁全部語法速查
+
+| 語法 | 一句用途 | 最短寫法 | 詳細 |
+|---|---|---|---|
+| `@Tag` | 替Controller API群組命名 | `@Tag(name="User CRUD")` | [參數](#tag) |
+| `@Operation` | 描述單一Controller操作 | `@Operation(summary="新增使用者")` | [參數](#operation) |
+| `@Parameter` | 描述Path／Query等參數 | `@Parameter(description="使用者ID")` | [參數](#parameter) |
+| `@Schema` | 描述DTO、Model或欄位 | `@Schema(example="399.00")` | [參數](#schema) |
+| `@ApiResponse` | 描述單一HTTP回應 | `@ApiResponse(responseCode="200")` | [參數](#apiresponse) |
+| `@ApiResponses` | 集合多個回應說明 | `@ApiResponses({...})` | [案例](#apiresponse) |
+
 <a id="tag"></a>
 ## `@Tag`
 
@@ -90,4 +102,3 @@ springdoc-openapi預設常用入口：
 - OpenAPI JSON：`http://localhost:8080/v3/api-docs`
 
 若專案修改`server.port`或context path，網址也要跟著改。依賴版本與Spring Boot主版本必須相容，詳見[springdoc-openapi官方文件](https://springdoc.org/)。
-

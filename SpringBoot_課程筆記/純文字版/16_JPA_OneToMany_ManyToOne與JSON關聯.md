@@ -58,6 +58,7 @@ employees
 
 Owning Side不是指「物件比較重要」，而是指哪一端實際負責外鍵映射與關聯更新。
 
+<a id="employee-manytoone-example"></a>
 ## 2. Employee：`@ManyToOne`擁有外鍵
 
 Employee的主鍵、name、email、salary、createdAt與無參數建構子沿用第13、15章；本章真正新增的映射是把原本的String department改成Department關聯：
@@ -67,6 +68,8 @@ Employee的主鍵、name、email、salary、createdAt與無參數建構子沿用
 @JoinColumn(name = "dept_id")
 private Department department;
 ```
+
+這段是本專案的實際寫法；要查`@ManyToOne`、`@JoinColumn`的全部參數、預設fetch與可選級聯，前往[Model／Entity語法入口](../語法字典/Spring_Boot/Model與Entity.md)或[JPA關聯字典](../語法字典/04_JPA關聯映射.md#manytoone-onetomany)。
 
 ### 2.1 `@ManyToOne`
 
@@ -86,6 +89,7 @@ private Department department;
 
 目前沒有設定`nullable=false`，所以從映射本身看，員工可以沒有部門。若業務規則要求每名員工一定要有部門，可把Join Column設為不可空並同步建立輸入驗證。
 
+<a id="department-onetomany-example"></a>
 ## 3. Department：`@OneToMany`反向集合
 
 ```java
@@ -111,6 +115,8 @@ public class Department {
     public Department() {}
 }
 ```
+
+本章保留`mappedBy="department"`、`cascade=PERSIST`與`fetch=LAZY`的專案理由；完整參數與其他`CascadeType`值集中在[JPA關聯字典](../語法字典/04_JPA關聯映射.md)。
 
 ### 3.1 `mappedBy="department"`
 
@@ -184,6 +190,7 @@ public void addEmployee(Employee employee) {
 
 課堂初始化使用`List.of(...)`，它建立不可修改List，第一次持久化已成功；若後續還要對集合執行`add()`或`remove()`，應改用`new ArrayList<>(...)`或直接使用Entity中已建立的`ArrayList`。
 
+<a id="jackson-ignore-example"></a>
 ## 5. 雙向關聯為何會造成JSON遞迴
 
 若兩端都完整序列化：
@@ -224,6 +231,7 @@ private List<Employee> employees;
 
 員工資料仍存在，只是JSON不再從Employee反向展開Department。
 
+<a id="jackson-reference-example"></a>
 ## 6. 另一組映射：`@JsonManagedReference`與`@JsonBackReference`
 
 同一專案以`Category`／`Product`實作另一組雙向關聯：
@@ -248,6 +256,8 @@ private Category category;
 - `@JsonBackReference`端的反向參照不輸出。
 
 這是Jackson的JSON序列化控制，不會決定資料庫外鍵。JPA關聯仍由`@OneToMany`、`@ManyToOne`、`mappedBy`與`@JoinColumn`決定。
+
+要比較`@JsonIgnoreProperties`、`@JsonManagedReference`、`@JsonBackReference`、`@JsonFormat`與DTO的適用位置，使用[Model／Entity語法入口](../語法字典/Spring_Boot/Model與Entity.md#json-output)。
 
 這一組已具備`CategoryRepository`、`CategoryController`與種子資料，公開端點為：
 
