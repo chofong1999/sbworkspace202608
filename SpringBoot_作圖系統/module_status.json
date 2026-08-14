@@ -1,0 +1,22 @@
+{
+  "module": "MOD-IMAGE-WORKFLOW-ZH",
+  "interface_schema": 1,
+  "work_id": "WRK-20260814-SBILLUSTRATED",
+  "module_version": "0.5",
+  "module_state": "可使用",
+  "stage": "完成",
+  "open_correction_count": 0,
+  "active_correction_id": null,
+  "blocked": false,
+  "blocker_summary": null,
+  "next_action": "收到新教材或發現關鍵缺圖時，先判斷圖片是否必要；必要時建立單張契約後補圖或安全自行重現。",
+  "detail_entry": "12_當前圖片與批次.md",
+  "updated_at": "2026-08-14 10:32:40 +08:00",
+  "generated_from": {
+    "manifest_version": "0.5",
+    "identity_last_updated": "2026-08-14 09:57:46 +08:00",
+    "state_document_version": "3",
+    "state_last_updated": "2026-08-14 10:32:40 +08:00"
+  },
+  "authority": "derived-from-manifest-00-12"
+}

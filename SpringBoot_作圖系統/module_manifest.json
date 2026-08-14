@@ -1,0 +1,115 @@
+{
+  "module_id": "MOD-IMAGE-WORKFLOW-ZH",
+  "name": "AI通用作圖系統",
+  "version": "0.5",
+  "schema": 3,
+  "status": "standalone-test",
+  "language": "zh-Hant",
+  "entry": "00_先讀_狀態與啟動.md",
+  "status_interface": "module_status.json",
+  "default_artifact_root": "../picture",
+  "future_host": "AI工作記憶與交接平台2.x",
+  "core_compatibility": "1.x可選協作；2.x協議尚未定義",
+  "purpose": "保存通用作圖流程及一份工作的規格、樣板、候選、契約、驗證方法與品質紀錄；圖片成果與系統核心分離。",
+  "owns": [
+    "做圖流程",
+    "工作視覺規格",
+    "樣板與元件",
+    "圖片任務狀態",
+    "驗證方法登錄",
+    "圖片QA紀錄"
+  ],
+  "does_not_own": [
+    "AI員工身分",
+    "交接世代",
+    "核心交接狀態",
+    "其他模組資料",
+    "圖片成果本體"
+  ],
+  "state_ownership": {
+    "system_and_work_identity": "00_先讀_狀態與啟動.md",
+    "stable_work_description": "10_本工作做圖說明.md",
+    "current_visual_spec": "11_本工作視覺規格.md",
+    "current_task_batch_and_next_action": "12_當前圖片與批次.md",
+    "work_spec_sources": "13_工作規格與來源.md",
+    "confirmed_templates": "20_樣板與元件登錄.md",
+    "candidate_solutions": "21_候選方案登錄.md",
+    "validation_methods": "22_驗證方法登錄.md",
+    "rule_regression_index": "23_規則與回歸索引.tsv",
+    "history": "30_製作與QA紀錄.md",
+    "derived_module_interface": "module_status.json"
+  },
+  "version_authority": "module_manifest.json#version",
+  "version_mirrors": [
+    {
+      "file": "00_先讀_狀態與啟動.md",
+      "field": "系統版本"
+    },
+    {
+      "file": "01_通用作圖流程.md",
+      "field": "系統版本"
+    },
+    {
+      "file": "02_通用品質規則.md",
+      "field": "規則集版本"
+    },
+    {
+      "file": "03_格式與狀態定義.md",
+      "field": "格式版本"
+    },
+    {
+      "file": "module_status.json",
+      "field": "module_version"
+    },
+    {
+      "file": "使用者_制度與使用說明.md",
+      "field": "目前系統版本"
+    }
+  ],
+  "managed_paths": {
+    "work_specs": "40_工作規格/",
+    "work_methods": "50_工作方法/",
+    "internal_history": "90_內部歷史/"
+  },
+  "integration": {
+    "handoff_mode": "optional-sibling",
+    "handoff_rule": "寫入型作圖功能在首次寫入前自動依既有交接制度檢查並取得工作權；只讀功能不接手；只同步里程碑與入口，不複製模組內部現況。",
+    "write_preflight": "auto-handoff-if-present",
+    "read_only_handoff": "none",
+    "already_owner": "continue-without-reacquire",
+    "blocked_handoff": "stop-and-report-actual-blocker",
+    "no_handoff_system": "standalone-allowed",
+    "work_spec_mode": "managed-or-referenced",
+    "artifact_mode": "separate-sibling-by-default"
+  },
+  "active_files": [
+    "module_manifest.json",
+    "module_status.json",
+    "00_先讀_狀態與啟動.md",
+    "01_通用作圖流程.md",
+    "02_通用品質規則.md",
+    "03_格式與狀態定義.md",
+    "10_本工作做圖說明.md",
+    "11_本工作視覺規格.md",
+    "12_當前圖片與批次.md",
+    "13_工作規格與來源.md",
+    "20_樣板與元件登錄.md",
+    "21_候選方案登錄.md",
+    "22_驗證方法登錄.md",
+    "23_規則與回歸索引.tsv",
+    "30_製作與QA紀錄.md",
+    "40_工作規格/README.md",
+    "50_工作方法/README.md",
+    "使用者_制度與使用說明.md",
+    "80_按需/00_首次建立.md",
+    "80_按需/10_候選方案與樣板確認.md",
+    "80_按需/20_異常與失敗處理.md",
+    "80_按需/30_規格更新與影響評估.md",
+    "80_按需/40_批次製作.md",
+    "80_按需/50_系統更新.md",
+    "80_按需/60_工作規格同步.md",
+    "80_按需/70_交接系統協作.md",
+    "90_內部歷史/索引.md"
+  ],
+  "support_files": []
+}
