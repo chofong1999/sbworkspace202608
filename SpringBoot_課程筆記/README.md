@@ -8,7 +8,7 @@
 
 本機保存的課堂專案可作為完整原始碼對照；讀者若沒有這些專案，應依各章的前置條件從Spring Initializr建立專案，再依章節順序實作。
 
-目前筆記包含純文字主章、三篇圖文版試作與原始截圖素材：
+目前筆記包含純文字版、完整圖文版與原始截圖素材：
 
 ## 1. 純文字版
 
@@ -63,21 +63,41 @@
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
-## 2. 圖文版（前三章試作）
+## 2. 圖文版
 
 位置：`圖文版/`
 
-目前完成前三章，用來共同驗收版面、圖片取捨、操作完整度與GitHub顯示：
+圖文版保留純文字主章的完整操作內容，再依教學價值加入課堂截圖、圖說與流程圖：
 
 1. [環境設定](圖文版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](圖文版/02_建立第一個SpringBoot專案.md)
 3. [Maven打包與執行JAR](圖文版/03_Maven打包與執行JAR.md)
+4. [使用Spring Initializr建立專案](圖文版/04_使用SpringInitializr建立專案.md)
+5. [Whitelabel 404與套件掃描](圖文版/05_Whitelabel404與套件掃描.md)
+6. [介面多實作與Qualifier依賴注入](圖文版/06_介面多實作與Qualifier依賴注入.md)
+7. [Component、Configuration與Bean](圖文版/07_Component_Configuration與Bean.md)
+8. [HTML表單與JSON資料綁定](圖文版/08_HTML表單與JSON資料綁定.md)
+9. [分層式User CRUD API](圖文版/09_分層式User_CRUD_API.md)
+10. [Swagger／OpenAPI API文件](圖文版/10_Swagger_OpenAPI_API文件.md)
+11. [REST JSON與Thymeleaf模板](圖文版/11_REST_JSON與Thymeleaf模板.md)
+12. [REST CRUD進階、參數DTO與統一回應](圖文版/12_REST_CRUD進階_參數DTO與統一回應.md)
+13. [Spring Data JPA與MySQL](圖文版/13_Spring_Data_JPA與MySQL.md)
+14. [Spring Data JPA、SQLite、Docker與Render部署](圖文版/14_Spring_Data_JPA與SQLite_Docker_Render部署.md)
+15. [Spring Data JPA查詢方法、Query與分頁](圖文版/15_Spring_Data_JPA查詢方法_Query與分頁.md)
+16. [JPA OneToMany、ManyToOne與JSON關聯](圖文版/16_JPA_OneToMany_ManyToOne與JSON關聯.md)
+
+### 圖文延伸閱讀
+
+- [第11章：Thymeleaf表達式與常見疑難](圖文版/延伸閱讀/11_Thymeleaf表達式與常見疑難.md)
+- [第13章：JPA對應既有資料表的Coffee案例](圖文版/延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)
+- [第14章：Git與Render部署故障排查](圖文版/延伸閱讀/14_Git與Render部署故障排查.md)
+- [第16章：JPA查詢效能、批次更新與關聯風險](圖文版/延伸閱讀/16_JPA查詢效能_批次更新與關聯風險.md)
 
 ## 3. 圖文版素材
 
 位置：`圖文版素材_待製作/`
 
-此處保存使用者提供的課堂原始截圖，供圖文版挑選及引用：
+此處保存使用者提供的49張課堂原始截圖，供圖文版引用及日後重製衍生圖：
 
 - 圖片：`圖文版素材_待製作/images/`
 - 圖片索引：`圖文版素材_待製作/README.md`
