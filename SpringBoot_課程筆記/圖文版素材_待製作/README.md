@@ -1,6 +1,6 @@
 # Spring Boot 圖文版素材索引
 
-這個資料夾保存課堂原始截圖。純文字版與圖文版入口位於[`../README.md`](../README.md)。目前已完成16個圖文主章與4份圖文延伸閱讀；49張原圖全部保留，文章共產生51次圖片引用，因第8、9章共用兩張跨章流程圖而多出兩次引用。
+這個資料夾保存課堂原始截圖。純文字版與圖文版入口位於[`../README.md`](../README.md)。目前已完成16個圖文主章與4份圖文延伸閱讀；51張原圖全部保留，正式文章目前共產生51次圖片引用，因第8、9章共用兩張跨章流程圖而多出兩次引用。第17章圖片尚未製作，新增原圖先保存在本素材庫。
 
 ## 第一章：環境設定
 
@@ -95,6 +95,11 @@
 2. `48_Category_Product_JSON與N加1查詢.png`（圖文延伸閱讀）：`GET /api/categories`回傳3C、Fruit及各自的Product；Controller目前呼叫`findAll()`，Console可見針對兩個Category分別執行`where category_id=?`的Product查詢，用來辨認N+1。
 3. `49_Modifying依類別批次清空庫存.png`（圖文延伸閱讀）：`GET /api/products/fruit`回傳affected rows為2；Console顯示Hibernate依Category名稱產生Join Update，Workbench顯示當下四筆商品庫存皆為0。此圖只能證明fruit呼叫更新兩筆，不能證明另外兩筆也是同一次Request所改。
 
+## 第十七章待製作：Book API的DTO、Bean Validation與例外處理
+
+1. `50_BookCreateRequest驗證400錯誤.png`：原始截圖。左側顯示Create Request DTO的Constraint，右側Postman以空白書名及錯誤ISBN呼叫POST後取得400與兩項欄位錯誤；保留供日後製作第17章圖文版。
+2. `51_BookNotFoundException_404_JSON.png`：原始截圖。Service以`orElseThrow`拋出`BookNotFoundException`，瀏覽器查詢不存在的id 180後取得統一格式的404 JSON；保留供日後製作第17章圖文版。
+
 ## 後續整理規則
 
 - 新的純文字內容持續更新至`../純文字版/`。
@@ -103,4 +108,4 @@
 - 需要裁切、加框、箭頭、編號或文字標示時，另存為衍生圖，並記錄來源原圖與處理目的，確保日後可追溯及重做。
 - 裁切或標記不得遮蔽操作路徑、關鍵程式碼、網址、錯誤訊息或執行結果；每張採用圖片都要有能說明其用途的圖說與替代文字。
 - 每次加入新截圖，都要同步更新本索引，確保檔名、章節與畫面用途對得上。
-- 全部圖文主章與延伸閱讀已依相同原則完成；新增課程內容時，再同步更新純文字版、圖文版與本索引。
+- 既有十六個圖文主章與四份延伸閱讀已依相同原則完成。新增課程內容時，預設先更新純文字版並保存、索引原始截圖；只有使用者明確要求後，才同步語法字典或製作正式圖文版。

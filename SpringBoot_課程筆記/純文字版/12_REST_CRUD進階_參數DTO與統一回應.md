@@ -133,7 +133,7 @@ public ResponseEntity<Product> createProduct(
 - Request格式不必和內部完整Model完全相同。
 - 日後Entity增加內部欄位時，不一定要暴露給API。
 
-目前DTO只有欄位裁減，還沒有Bean Validation註解；例如負數價格、負數庫存仍沒有在DTO層阻擋。
+目前DTO只有欄位裁減，還沒有Bean Validation註解；例如負數價格、負數庫存仍沒有在DTO層阻擋。要繼續學習Create／Update／Response DTO拆分、`@Valid`及統一驗證錯誤，接著閱讀[第17章](17_Book_API的DTO_Bean_Validation與例外處理.md)。
 
 ## 3. Lombok註解的確切作用
 

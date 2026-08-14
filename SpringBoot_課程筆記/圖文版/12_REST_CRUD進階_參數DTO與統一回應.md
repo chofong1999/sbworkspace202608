@@ -462,4 +462,3 @@ Swagger註解是文件描述，不會改變程式真正回傳的狀態碼。兩�
 - [ ] 知道`ApiResponse<T>`只統一Body，不會自行設定HTTP status
 - [ ] 知道Swagger文件註解不會改變Controller實際行為
 - [ ] 已依第0節逐支呼叫端點，而不是只確認程式可以編譯
-

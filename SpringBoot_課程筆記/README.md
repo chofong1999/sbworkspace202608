@@ -17,7 +17,7 @@
 - `sbfirstapp`、`sbemployee0812`等課堂專案名稱與本機位置是原始碼對照資訊；沒有這些專案仍可依筆記步驟自行建立。
 - 複製時要複製整個資料夾，不要只複製單一Markdown檔，否則該頁引用的圖片與相關章節可能缺失。
 
-目前筆記包含語法字典、純文字版、完整圖文版與原始截圖素材：
+目前筆記包含語法字典、純文字版、完整圖文版、原始截圖素材與老師教材封存：
 
 ## 1. 語法字典
 
@@ -53,6 +53,7 @@
 14. [Spring Data JPA、SQLite、Docker與Render部署](純文字版/14_Spring_Data_JPA與SQLite_Docker_Render部署.md)
 15. [Spring Data JPA查詢方法、Query與分頁](純文字版/15_Spring_Data_JPA查詢方法_Query與分頁.md)
 16. [JPA OneToMany、ManyToOne與JSON關聯](純文字版/16_JPA_OneToMany_ManyToOne與JSON關聯.md)
+17. [Book API的DTO、Bean Validation與例外處理](純文字版/17_Book_API的DTO_Bean_Validation與例外處理.md)
 
 ### 延伸閱讀
 
@@ -81,6 +82,7 @@
 | SQLite、Docker與Render | 第14章 | 與MySQL JPA基礎分開，集中處理資料庫切換及部署 |
 | Derived Query、JPQL與分頁 | 第15章 | 第16章直接套用JPQL處理Fetch Join與Bulk Update |
 | OneToMany、N+1與關聯JSON | 第16章 | 目前最新關聯實作主章 |
+| Request／Response DTO、Bean Validation與統一例外 | 第17章 | 延續第12章的簡單DTO，加入Create／Update／Response拆分與欄位驗證 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
@@ -118,12 +120,21 @@
 
 位置：`圖文版素材_待製作/`
 
-此處保存使用者提供的49張課堂原始截圖，供圖文版引用及日後重製衍生圖：
+此處保存使用者提供的51張課堂原始截圖，供圖文版引用及日後重製衍生圖：
 
 - 圖片：`圖文版素材_待製作/images/`
 - 圖片索引：`圖文版素材_待製作/README.md`
 
 原圖保持不變；若後續需要裁切或標記，使用另存的衍生圖並保留來源對照。
+
+## 5. 老師教材
+
+位置：`老師教材/`
+
+- [依週次與主題查找老師講義](老師教材/README.md)
+- `老師教材/原檔/`保存教室暫存區 `week1`～`week5` 根目錄的35份Markdown／PDF講義。
+- 原檔副本維持原檔名與原內容；分類說明只寫在外層索引。
+- `老師教材/原檔_SHA256.txt`可驗證封存副本是否遭到修改。
 
 ## 課堂原始碼
 
