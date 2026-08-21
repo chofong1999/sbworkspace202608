@@ -17,8 +17,9 @@
 | 使用jQuery操作畫面 | Selector、事件、內容、樣式、節點、表格 | [第25章](25_jQuery_DOM操作_事件與樣式.md) |
 | 前後端分離 | jQuery GET／POST呼叫Spring Boot REST API | [第26章](26_jQuery_AJAX與SpringBoot前後端分離.md) |
 | AJAX資料與錯誤處理 | 本機JSON、外部API、JSON POST、HTTP狀態碼 | [第27章](27_jQuery_AJAX_JSON資料來源與HTTP狀態處理.md) |
+| 現代JavaScript與Fetch | Arrow Function、解構、Spread／Rest、async／await、Fetch API | [第28章](28_JavaScript現代語法與Fetch_API.md) |
 
-建議首次學習依第19章到第27章的順序閱讀；實作時則依功能直接跳至需要的章節。
+建議首次學習依第19章到第28章的順序閱讀；實作時則依功能直接跳至需要的章節。
 
 ## 2. HTML、CSS與執行環境
 
@@ -124,7 +125,6 @@
 | 使用JavaScript註冊事件 | `addEventListener(...)` |
 | 取得目前觸發事件的元素 | inline handler中的`this` |
 | 處理鍵盤事件 | Keyboard Event、`event.key` |
-| 建立Arrow Function | `const fn = () => { ... }` |
 
 ## 7. 表單事件與送出驗證
 
@@ -187,7 +187,25 @@
 | 依404或500分別處理 | `statusCode` |
 | 處理共通AJAX錯誤 | `error` |
 
-## 11. 容易找錯章節的情況
+## 11. 現代JavaScript語法與Fetch API
+
+對應：[第28章：JavaScript現代語法與Fetch API](28_JavaScript現代語法與Fetch_API.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 建立Arrow Function | `const fn = (參數) => { ... }` |
+| 在字串插入變數 | `` `${value}` `` |
+| 從Object取出指定屬性 | `const { name, age } = person` |
+| 在函式參數直接解構 | `({ name, age }) => { ... }` |
+| 複製Object並新增或覆寫欄位 | `{ ...person, age: 18 }` |
+| 收集解構後剩餘欄位 | `const { name, ...rest } = person` |
+| 使用瀏覽器內建Request API | `fetch(url)` |
+| 等待非同步結果 | `async`、`await` |
+| 解析JSON Response | `await response.json()` |
+| 判斷HTTP Request是否成功 | `response.ok`、`response.status` |
+| 捕捉非同步錯誤 | `try...catch` |
+
+## 12. 容易找錯章節的情況
 
 | 問題 | 應先閱讀 |
 |---|---|
@@ -202,3 +220,5 @@
 | 想用較短寫法操作DOM | 第25章 |
 | 想從前端呼叫Spring Boot API | 第26章 |
 | 想讀本機JSON、外部API或處理404 | 第27章 |
+| 想用JavaScript內建`fetch()`取代jQuery AJAX | 第28章 |
+| 看不懂`{ name, ...rest }`或`{ ...person }` | 第28章；兩者分別是Rest與Spread |

@@ -9,6 +9,7 @@
 
 <body>
     <button id="b1">Fetch User 1</button>
+    <button id="b2">Fetch Product 1</button>
 </body>
 <script>
     async function getUser(id) {
@@ -20,9 +21,21 @@
             console.error('錯誤：', error);
         }
     }
+    async function getProduct(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/products/${id}`);
+            const { name, price } = await response.json();   // 搭配解構賦值
+            console.log(`產品名稱：${name}，價格：${price}`);
+        } catch (error) {
+            console.error('錯誤：', error);
+        }
+    }
     const start = () => {
         $("#b1").click(function () {
             getUser(1);  // 取得使用者 ID 為 1 的資料
+        });
+        $("#b2").click(function () {
+            getProduct(1);  // 取得產品 ID 為 1 的資料
         });
     };
     $(document).ready(start);

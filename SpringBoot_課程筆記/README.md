@@ -37,7 +37,7 @@
 
 這是目前持續維護的正式筆記：
 
-- [JavaScript課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～27章。
+- [JavaScript課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～28章。
 
 1. [環境設定](純文字版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](純文字版/02_建立第一個SpringBoot專案.md)
@@ -66,6 +66,7 @@
 25. [jQuery：DOM操作、事件與樣式](純文字版/25_jQuery_DOM操作_事件與樣式.md)
 26. [jQuery AJAX與Spring Boot前後端分離](純文字版/26_jQuery_AJAX與SpringBoot前後端分離.md)
 27. [jQuery AJAX：JSON資料來源與HTTP狀態處理](純文字版/27_jQuery_AJAX_JSON資料來源與HTTP狀態處理.md)
+28. [JavaScript現代語法與Fetch API](純文字版/28_JavaScript現代語法與Fetch_API.md)
 
 ### 延伸閱讀
 
@@ -101,6 +102,7 @@
 | jQuery DOM與Event | 第25章 | 以jQuery簡化Selector、內容、樣式、節點與事件操作 |
 | 前後端分離與AJAX | 第26章 | Live Server前端透過GET／POST呼叫Spring Boot REST API |
 | AJAX資料來源與狀態處理 | 第27章 | 讀取本機JSON、外部API與自己的商品API，處理JSON格式及HTTP錯誤 |
+| JavaScript現代語法與Fetch API | 第28章 | Arrow Function、Object解構、Spread／Rest與`async`／`await`原生Request流程 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
@@ -138,7 +140,7 @@
 
 位置：`圖文版素材_待製作/`
 
-此處保存使用者提供的59張課堂原始截圖，供圖文版引用及日後重製衍生圖：
+此處保存使用者提供的61張課堂原始截圖，供圖文版引用及日後重製衍生圖：
 
 - 圖片：`圖文版素材_待製作/images/`
 - 圖片索引：`圖文版素材_待製作/README.md`
@@ -186,7 +188,7 @@
 
 `\\Fs2\306_教室暫存區\職訓202607\week6\day1`～`day4`
 
-整理第19～27章時以老師原檔為主，來源只讀、不修改。
+整理第19～28章時以老師原檔為主，來源只讀、不修改。
 
 可執行的本機工作副本位於`C:\jscode`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
 
@@ -195,6 +197,6 @@
 - `day1`：第19章HTML／CSS／初始JavaScript，以及第20章JavaScript語言基礎。
 - `day2`：第21章Array／Object／JSON、第22章BOM，以及第23章DOM。
 - `day3`：第23章DOM Attribute、動態Style、節點與事件；第24章表單送出驗證；第25章jQuery DOM操作；第26章jQuery AJAX與Spring Boot前後端分離。
-- `day4`：第27章jQuery AJAX讀取本機JSON、外部API及自己的Spring Boot商品API，並處理HTTP狀態。
+- `day4`：第27章jQuery AJAX讀取本機JSON、外部API及自己的Spring Boot商品API，並處理HTTP狀態；第28章整理Arrow Function、解構、Spread／Rest與Fetch API。
 
 整理筆記時，若截圖內容不完整或需要核對實際設定，可以直接查看這些專案的`src/`、`pom.xml`及其他相關原始檔；除非使用者另行要求，不修改專案程式碼。

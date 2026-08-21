@@ -13,12 +13,12 @@
     <button id="b3">500 Internal Server Error</button>
 </body>
 <script>
-    const dataUrl = "http://localhost:8080/api/products/notfound";
+    const dataUrl = "http://localhost:8080/api/products";
     const start = () => {
         $("#b1").click(function () {
             $.ajax({
                 method: 'GET',
-                url: dataUrl,
+                url: `${dataUrl}/notfound`,
                 dataType: "text",
                 statusCode: {                 
                     404: function () { alert("404 Not Found!"); },                    
@@ -34,7 +34,7 @@
          $("#b2").click(function () {
             $.ajax({
                 method: 'GET',
-                url: "http://localhost:8080/api/products/nocontent",
+                url: `${dataUrl}/nocontent`,
                 dataType: "text",
                 statusCode: {                 
                     204: function () { alert("204 No Content!"); },
@@ -50,7 +50,7 @@
         $("#b3").click(function () {
             $.ajax({
                 method: 'GET',
-                url: "http://localhost:8080/api/products/error",
+                url: `${dataUrl}/error`,
                 dataType: "text",
                 statusCode: {                 
                     500: function (xhr, statusText, err) {

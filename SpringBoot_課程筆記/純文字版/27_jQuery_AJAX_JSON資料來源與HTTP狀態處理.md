@@ -16,6 +16,7 @@
 | 成功後處理資料 | `success: onSuccess` |
 | 逐筆顯示Array資料 | `$.each(data, function () { ... })` |
 | 傳送JSON Request Body | `JSON.stringify(...)`、`contentType: "application/json"` |
+| 依URL中的ID查詢單筆商品 | `findById(...)`、`Optional<Product>`、`@PathVariable` |
 | 依狀態碼處理結果 | `statusCode: { 404: ..., 500: ... }` |
 | 處理一般AJAX錯誤 | `error: function (...) { ... }` |
 
@@ -203,6 +204,7 @@ package com.example.demo.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Repository;
@@ -233,6 +235,12 @@ public class ProductDAO implements CommandLineRunner {
         return product;
     }
 
+    public Optional<Product> findById(int id) {
+        return data.stream()
+                .filter(product -> product.getId() == id)
+                .findAny();
+    }
+
     @Override
     public void run(String... args) {
         if (data.isEmpty()) {
@@ -245,6 +253,8 @@ public class ProductDAO implements CommandLineRunner {
 ```
 
 `@Repository`把DAO登記成Spring管理的Bean。`CommandLineRunner.run()`會在Spring Boot啟動完成後執行，本例利用它加入三筆初始商品。
+
+`findById(int id)`依序檢查記憶體List中的商品ID，找到時回傳包含商品的`Optional<Product>`，找不到時回傳空的`Optional`。Controller可依`Optional`是否有值決定回200或404，避免以`null`表示查無資料。
 
 老師原檔使用：
 
@@ -266,6 +276,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -291,6 +302,13 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findProduct(@PathVariable("id") int id) {
+        return dao.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -328,12 +346,21 @@ Controller提供：
 | Method | URL | 功能 |
 |---|---|---|
 | GET | `http://localhost:8080/api/products` | 有資料回200與JSON；空List回204 No Content |
+| GET | `http://localhost:8080/api/products/{id}` | 依ID查單筆；找到回200與商品，找不到回404 |
 | POST | `http://localhost:8080/api/products` | 接收JSON並新增商品 |
 | GET | `http://localhost:8080/api/products/notfound` | 刻意回傳404供前端測試 |
 | GET | `http://localhost:8080/api/products/nocontent` | 刻意回傳204且不帶Response Body |
 | GET | `http://localhost:8080/api/products/error` | 刻意回傳500及文字內容供前端測試 |
 
 Controller上的`@CrossOrigin`允許Live Server頁面讀取API Response。`@RequestBody`表示POST的JSON Request Body要轉成`Product`。
+
+`@GetMapping("/{id}")`中的`{id}`是URL路徑變數位置，`@PathVariable("id") int id`負責取得該段文字並轉成`int`。例如開啟：
+
+```text
+http://localhost:8080/api/products/2
+```
+
+實際傳入的`id`是`2`。若第2號商品存在，Response為200與該商品JSON；若不存在，Response為404且沒有商品Body。
 
 ### 5.5 建立商品前端HTML
 
@@ -521,6 +548,7 @@ return ResponseEntity.internalServerError()
 3. 在VS Code開啟`C:\jscode`資料夾。
 4. 以Live Server開啟要測試的`day4` HTML。
 5. 按下頁面按鈕並觀察表格、alert、Console與Network。
+6. 另以瀏覽器或API工具開啟`http://localhost:8080/api/products/2`，確認能取得單筆商品；再使用不存在的ID確認回404。
 
 成功判定：
 
@@ -530,6 +558,7 @@ return ResponseEntity.internalServerError()
 | `jquery_fakestore.html` | 顯示外部商品與縮圖 |
 | `jquery_myproduct.html` GET | 顯示後端預設的三筆商品 |
 | `jquery_myproduct.html` POST | alert顯示新增商品，重新GET後可看見它 |
+| `GET /api/products/2` | 回200及第2號商品；不存在的ID回404 |
 | `jquery_status.html` | 三個按鈕分別顯示204、404與500測試結果；500可讀到後端文字 |
 
 ## 8. 常見錯誤
@@ -555,5 +584,6 @@ return ResponseEntity.internalServerError()
 - [ ] 能區分204無內容、404找不到資源及500伺服器錯誤。
 - [ ] 能用`xhr.status`與`xhr.responseText`讀取狀態碼及後端錯誤文字。
 - [ ] 能建立`Product`、`ProductDAO`與`ProductController`並取得三筆初始資料。
+- [ ] 能以`findById()`、`Optional<Product>`與`@PathVariable`查詢單筆商品並區分200／404。
 - [ ] 能說明空商品List為何回204，以及老師ID計算寫法在空List時的風險。
 - [ ] 測試自己的API前已先啟動Spring Boot後端。
