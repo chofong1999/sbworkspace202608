@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Basic</title>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        .big{
+            font-size: 30px;
+            color: red;
+        }
+        .small{
+            font-size: 10px;
+            color: blue;
+        }
+        .background{
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>  
+   <button id="b1">Class Attribute</button>
+   <button id="b2">Class Toggle</button>
+   <button id="b3">Class Background</button>
+   <p class="hello">Hello</p>
+   <p class="goodbye">Good Bye</p>
+</body>
+<script>
+    const btnClick = () => {
+        alert("Button clicked!");
+    }
+    const start = () => {      
+        $("#b1").click(function () {
+            $(".hello").addClass("big");
+            $(".hello").addClass("background");  
+            $(".goodbye").addClass("small");
+        });
+        $("#b2").click(function () {
+            $(".hello").toggleClass("big");            
+        });
+       $("#b3").click(function () {
+               $(".hello").removeClass("background");
+        });
+    }
+    $(document).ready(start);
+</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Text Value</title>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+   <button id="b1">GET</button> 
+   <button id="b2">SET</button> <button id="b3">Change CSS</button><br/> <br/> 
+   <span id="test">id Test</span>  <br/>   
+   <input type="text" id="input1" value="Input Test"/>
+   <p class="p1">p Test</p>
+</body>
+<script>
+    const btnClick = () => {
+        const text = $("#test").text();
+        const inputVal = $("#input1").val();
+        console.log(text);
+        console.log(inputVal);
+    }
+    const start = () => {
+        $("#b1").click(btnClick);
+        $("#b2").click(() => {
+            $("#test").text("New Text");
+            $("#input1").val("New Input Value");
+        });
+        $("#b3").click(() => {
+            $(".p1").css({
+                "color": "red",               
+                "font-size": "30px"
+            });
+        });
+    }
+    $(document).ready(start);
+</script>
+</html>

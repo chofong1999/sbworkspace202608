@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>DOM Nodes Example</title>
+
+</head>
+
+<body>
+    <button onclick="addElement()">Add &lt;li&gt; element</button>
+    <ul id="firstUL"></ul>
+    <script>
+        var num=1;
+        var color=["red","green","blue","orange","purple"];
+        const addElement = () => {
+            // 新增 <li>
+            var head = document.getElementById('firstUL');
+            for (var i = 1; i <= 3; i++) {
+                var li01 = document.createElement("li");
+                li01.innerHTML = "<p style='color:"+color[num%color.length]+"'>顯示的文字 " + num++ + "</p>";
+                head.appendChild(li01);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Basic</title>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        .new{
+            color: red;
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>  
+   <button id="b1">Class Attribute</button>
+   <p class="inner">Hello 1</p>
+   <p >Hello 3</p>
+   <p >Hello 4</p>
+   <p class="inner">Hello 2</p>
+</body>
+<script>
+    const btnClick = () => {
+        alert("Button clicked!");
+    }
+    const start = () => {      
+        $("#b1").click(function () {
+            $('.inner').wrapAll('<div class="new" />');
+        });
+       
+    }
+    $(document).ready(start);
+</script>
+</html>

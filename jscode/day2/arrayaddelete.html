@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Array Example</title>
+
+    <style>
+        .button-area {
+            width: 400px;
+            margin: 50px auto;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="button-area">
+        <button onclick="addArray()">Push：尾端新增</button>
+        <button onclick="deleteArray()">Pop：尾端刪除</button>
+
+        <button onclick="addSArray()">Unshift：前端新增</button>
+        <button onclick="deleteSArray()">Shift：前端刪除</button>
+    <p id="arrayDisplay">目前陣列：[]</p>
+    </div>
+    <script>
+        var fruits = [];
+        function showArray() {
+            document.getElementById("arrayDisplay").textContent =
+                "目前陣列：" + JSON.stringify(fruits);
+        }
+        function addArray() {
+            let f1 = prompt("請輸入水果名稱");
+            fruits.push(f1);
+            console.log(fruits);
+            showArray();
+        }
+        function deleteArray() {
+            let deletedfruits = fruits.pop();
+            console.log("deleted fruit is :" + deletedfruits);
+            console.log("fruits array is now :" + fruits);
+            showArray();
+        }
+        function addSArray() {
+            let f1 = prompt("請輸入水果名稱");
+            fruits.unshift(f1);
+            console.log(fruits);
+            showArray();
+        }
+        function deleteSArray() {
+            let deletedfruits = fruits.shift();
+            console.log("deleted fruit is :" + deletedfruits);
+            console.log("fruits array is now :" + fruits);
+            showArray();
+        }
+    </script>
+</body>
+
+</html>

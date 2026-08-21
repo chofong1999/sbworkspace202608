@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Basic</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="b1">Class Attribute</button>
+    <table border="0" width="40%" style="display:none;" id="product">
+    </table>
+</body>
+<script>
+    const btnClick = () => {
+        alert("Button clicked!");
+    }
+    const start = () => {
+        $("#b1").click(function () {
+            $("#product").show();
+            $("#product").attr("border", "1");
+            var arr = [
+                { "name": "Apple", "price": 60 },
+                { "name": "Lemon", "price": 90 },
+                { "name": "Cherry", "price": 300 }
+            ];
+            $.each(arr, function (i) {
+                var row = $("<tr></tr>");
+                $("<td></td>").text(i + 1).appendTo(row);
+                $("<td></td>").text(this.name).appendTo(row);
+                $("<td></td>").text(this.price).appendTo(row);
+                $("#product").append(row);
+            });
+        });
+
+    }
+    $(document).ready(start);
+</script>
+
+</html>

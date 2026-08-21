@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dialog Test</title>
+   
+</head>
+
+<body>
+   <button onclick="show()">Show Dialog</button>
+   <script>
+       function show() {
+              let result = confirm("Are you sure?");
+              if (result) {
+                alert("User clicked OK");
+              } else {
+                alert("User clicked Cancel");
+              }
+       }
+   </script>
+</body>
+
+</html>

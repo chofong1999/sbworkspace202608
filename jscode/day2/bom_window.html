@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>BOM Example</title>
+    
+</head>
+
+<body>
+   <button onclick="openwin()">Open Yahoo Window</button>
+   <button onclick="nav()">Navigate to Location</button>
+   <script>
+      function openwin(){
+         var windowObj = window.open(
+            'http://tw.yahoo.com/',
+            'yahoo',
+            'width=800,height=600'
+            );
+      }
+      function nav(){
+         let loc=['http://tw.yahoo.com/','http://www.google.com.tw/','http://24h.pchome.com.tw/'];
+         let index=Math.floor(Math.random()*loc.length);
+         location.href = loc[index];
+      }
+   </script>
+</body>
+
+</html>

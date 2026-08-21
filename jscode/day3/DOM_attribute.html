@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>DOM Attribute</title>
+    
+</head>
+
+<body>
+   <button onclick="attributeOP()">Attribute</button>
+   <a id="foo" href="http://www.gjun.com/" target="_blank"
+      data-foo>www.gjun.com</a>
+</body>
+<script>
+  const attributeOP = () => {
+      var foo = document.querySelector('#foo');
+      console.log(foo.getAttribute('href'));
+      console.log(foo.getAttribute('target'));
+      console.log(foo.getAttribute('data-foo'));
+      foo.setAttribute('href', 'http://www.google.com/');
+      foo.textContent = "www.google.com";
+  }
+    
+</script>
+</html>

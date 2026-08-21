@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>DOM Event</title>
+
+</head>
+
+<body>
+    <button onclick="eventOP(this)" data-name="Mike">Event(this)</button>
+    <div id="scene" style="width: 100px; height: 100px; background-color: grey;"
+        onmouseout="this.style.backgroundColor='grey';">
+
+    </div>
+</body>
+<script>
+    const eventOP = (btn) => {
+        console.log(btn.getAttribute('data-name'));
+    }
+    const eventOP2 = () => {
+        alert("document loaded");
+    }
+    window.addEventListener('load', eventOP2);
+    var scene = document.getElementById("scene");
+    scene.onmouseover = function () {
+        this.style.backgroundColor = 'blue';
+        console.log('Scene text');
+    };
+    document.onkeydown = function (event) {
+        if (event.keyCode === 89 && event.ctrlKey) {   // ctrl + y
+            alert('你同時按下 "control + y"');
+        } else if (event.which === 90 && event.ctrlKey) {  // ctrl + z
+            alert('你同時按下 "control + z"');
+        }
+    };
+</script>
+
+</html>

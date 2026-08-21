@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Basic</title>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>  
+   <button id="b1">jQuery Get</button>
+  
+</body>
+<script>
+    const btnClick = () => {
+         $.get("http://localhost:8080/api/first", function(data, status) {
+            alert("Data: " + data + "\nStatus: " + status);
+         });
+    };
+    const start = () => {      
+        $("#b1").click(btnClick);
+       
+    };
+    $(document).ready(start);
+</script>
+</html>

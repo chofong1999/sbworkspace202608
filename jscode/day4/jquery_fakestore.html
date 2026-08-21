@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="b1">Fakestore Products</button>
+    <table id="productTable" border="1" style="display: none;" width="90%">
+        <tr>
+            <th>Product ID</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Image</th>
+        </tr>
+    </table>
+</body>
+<script>
+    const dataUrl = "https://fakestoreapi.com/products";
+
+    function onSuccess(data) {
+        $("#productTable").empty();
+        $("#productTable").show();
+        // 第一列：標題
+        var firstRow = $("<tr><th>Product ID</th><th>Title</th><th>Price</th><th>Image</th></tr>");
+        $("#productTable").append(firstRow);
+        // 逐筆資料建立表格列
+        $.each(data, function (i) {
+            var row = $("<tr></tr>");
+            var td0 = $("<td></td>").text(this.id).appendTo(row);            
+            var td1 = $("<td></td>").text(this.title).appendTo(row);
+            var td2 = $("<td></td>").text(this.price).appendTo(row);
+            var td3 = $("<td></td>").append($("<img>").attr("src", this.image).css("width", "50px")).appendTo(row);
+            $("#productTable").append(row);
+        });
+    }
+
+    const start = () => {
+        $("#b1").click(function () {
+            $.ajax({
+                method: 'GET',
+                url: dataUrl,
+                dataType: "json",
+                success: onSuccess
+            });
+        });
+
+    };
+    $(document).ready(start);
+</script>
+
+</html>

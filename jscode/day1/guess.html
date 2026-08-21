@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Guess Game</title>
+
+</head>
+
+<body>
+    <button onclick="startGame()">Start Game</button>
+    <script>
+
+        function startGame() {
+            let guess;
+            let attempts = 0;
+            let randomNumber = Math.floor(Math.random() * 100) + 1;
+            while (guess != randomNumber) {
+                guess = parseInt(prompt("Guess a number between 1 and 100:"));
+                attempts++;
+
+                guess < randomNumber ?
+                    alert("Too low! Try again.") :
+                    (guess > randomNumber ?
+                        alert("Too high! Try again.") :
+                        alert(`Congratulations! You guessed the number ${randomNumber} in ${attempts} attempts.`));
+
+                // if (guess < randomNumber) {
+                //     alert("Too low! Try again.");
+                // } else if (guess > randomNumber) {
+                //     alert("Too high! Try again.");
+                // } else {
+                //     alert(`Congratulations! You guessed the number ${randomNumber} in ${attempts} attempts.`);
+
+                // }
+            }
+        }
+    </script>
+</body>
+
+</html>

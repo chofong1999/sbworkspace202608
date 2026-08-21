@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="b1">Spread Data</button>
+    <button id="b2">Spread Rest Data</button>
+</body>
+<script>      
+    const start = () => {
+        $("#b1").click(function () {
+            let person = { name: "Alice", city: "Taipei", age: 30 };
+            person={...person, country: "Taiwan" , age:18};
+            console.log(person);
+
+        });
+        $("#b2").click(function () {
+            let person = { name: "Alice", city: "Taipei", age: 30 };
+            const { name, ...rest } = person;
+            console.log("name: " , name);
+            console.log("rest: ", rest);
+        });
+    };
+    
+    $(document).ready(start);
+</script>
+
+</html>

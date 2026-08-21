@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Use JavaScript</title>
+    <script src="./scripts/first.js"></script>
+</head>
+<button onclick="add()">Click Me!</button>
+<script>
+    let n = 0;
+    let v1 = 0;
+    function add() {
+        n = prompt("請輸入一個數字", "0") * 1;
+        v1 = sum(n);
+        alert(v1);
+    }
+</script>
+<button onclick="add_1()">ADD!</button>
+<script>
+    function add_1() {
+        n += 1;
+        v1 = sum(n);
+        alert(v1);
+    }
+</script>
+
+<body>
+
+</body>
+
+</html>

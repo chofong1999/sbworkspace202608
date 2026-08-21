@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="b1">jQuery Ajax</button>
+    <table id="airQ" border="1" style="display: none;" width="90%">
+        <tr>
+            <th>地區</th>
+            <th>預報內容</th>
+        </tr>
+    </table>
+</body>
+<script>
+    const dataUrl = "air.json";
+
+    function onSuccess(data) {
+        $("#airQ").empty();
+        $("#airQ").show();
+        // 第一列：標題
+        var firstRow = $("<tr><th>地區</th><th>預報內容</th></tr>");
+        $("#airQ").append(firstRow);
+        // 逐筆資料建立表格列
+        $.each(data, function (i) {
+            var row = $("<tr></tr>");
+            var td1 = $("<td></td>").text(this.Area).appendTo(row);
+            var td2 = $("<td></td>").text(this.Content).appendTo(row);
+            $("#airQ").append(row);
+        });
+    }
+
+    const start = () => {
+        $("#b1").click(function () {
+            $.ajax({
+                method: 'GET',
+                url: dataUrl,
+                dataType: "json",
+                success: onSuccess
+            });
+        });
+
+    };
+    $(document).ready(start);
+</script>
+
+</html>

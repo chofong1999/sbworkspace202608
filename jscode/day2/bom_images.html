@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8" />
+   <title>BOM IMAGES</title>
+
+</head>
+
+<body>
+   <img id="img" src="images/banana.png" width="320px" height="200px" />
+   <p></p>
+   <button onclick="startimages()">Start Image</button>
+   <button onclick="stopimages()">Stop Image</button>
+   <script>
+      var index = 1;
+      var intervalId;
+      var pics = ['images/banana.png', 'images/grape.png', 'images/guava.png', 'images/mango.png', 'images/orange.png'];
+      function startimages() {
+         intervalId = window.setInterval(changeImage, 1000);
+      };
+      const stopimages = function () {
+         window.clearInterval(intervalId);
+      };
+      const changeImage = () => {
+         document.getElementById('img').src = pics[index];
+         index++;
+         index = index % pics.length;
+      };
+   </script>
+</body>
+
+</html>

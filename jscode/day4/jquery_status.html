@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="b1">404 Not Found</button>
+    <button id="b2">204 No Content</button>
+    <button id="b3">500 Internal Server Error</button>
+</body>
+<script>
+    const dataUrl = "http://localhost:8080/api/products/notfound";
+    const start = () => {
+        $("#b1").click(function () {
+            $.ajax({
+                method: 'GET',
+                url: dataUrl,
+                dataType: "text",
+                statusCode: {                 
+                    404: function () { alert("404 Not Found!"); },                    
+                    500: function (xhr, statusText, err) {
+                        alert(xhr.responseText);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error: " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+         $("#b2").click(function () {
+            $.ajax({
+                method: 'GET',
+                url: "http://localhost:8080/api/products/nocontent",
+                dataType: "text",
+                statusCode: {                 
+                    204: function () { alert("204 No Content!"); },
+                    500: function (xhr, statusText, err) {
+                        alert(xhr.responseText);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error: " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+        $("#b3").click(function () {
+            $.ajax({
+                method: 'GET',
+                url: "http://localhost:8080/api/products/error",
+                dataType: "text",
+                statusCode: {                 
+                    500: function (xhr, statusText, err) {
+                        alert(xhr.responseText+", status: "+xhr.status);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("jquery error output: "+ jqXHR.status + ", " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+
+    };
+    $(document).ready(start);
+</script>
+
+</html>

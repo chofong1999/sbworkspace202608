@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>JavaScript Types</title>
+    
+</head>
+
+<body>
+   <button onclick="test()">Click me</button>
+   <button onclick="test2()">test prompt type</button>
+   <script>
+        const test2= ()=>{
+            let input = prompt("Please enter a value:");
+            //input=parseInt(input);
+            const type = typeof input; 
+            alert(type);
+        };
+        function test() {
+            var a = 1;
+            var b = "1";
+            var c = true;
+            var d = null;
+            var e;
+            var f = { name: "John", age: 30 };
+            var g = [1, 2, 3];
+            console.log(typeof a); // number
+            console.log(typeof b); // string
+            console.log(typeof c); // boolean
+            console.log(typeof d); // object
+            console.log(typeof e); // undefined
+            console.log(typeof f); // object
+            console.log(typeof g); // object
+        }
+   </script>
+</body>
+
+</html>

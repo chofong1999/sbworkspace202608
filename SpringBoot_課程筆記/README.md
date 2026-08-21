@@ -37,6 +37,8 @@
 
 這是目前持續維護的正式筆記：
 
+- [JavaScript課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～27章。
+
 1. [環境設定](純文字版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](純文字版/02_建立第一個SpringBoot專案.md)
 3. [Maven打包與執行JAR](純文字版/03_Maven打包與執行JAR.md)
@@ -54,6 +56,16 @@
 15. [Spring Data JPA查詢方法、Query與分頁](純文字版/15_Spring_Data_JPA查詢方法_Query與分頁.md)
 16. [JPA OneToMany、ManyToOne與JSON關聯](純文字版/16_JPA_OneToMany_ManyToOne與JSON關聯.md)
 17. [Book API的DTO、Bean Validation與例外處理](純文字版/17_Book_API的DTO_Bean_Validation與例外處理.md)
+18. [VS Code首次設定、終端機與Live Server](純文字版/18_VSCode首次設定_終端機與LiveServer.md)
+19. [HTML、CSS與JavaScript基礎](純文字版/19_HTML_CSS與JavaScript基礎.md)
+20. [JavaScript變數、型別、條件與迴圈](純文字版/20_JavaScript變數型別條件與迴圈.md)
+21. [JavaScript陣列、物件與JSON](純文字版/21_JavaScript陣列_物件與JSON.md)
+22. [JavaScript BOM：視窗、頁面導向與定時器](純文字版/22_JavaScript_BOM視窗導向與定時器.md)
+23. [JavaScript DOM：元素選取、節點與動態修改](純文字版/23_JavaScript_DOM元素選取_節點與動態修改.md)
+24. [JavaScript表單事件與送出驗證](純文字版/24_JavaScript表單事件與送出驗證.md)
+25. [jQuery：DOM操作、事件與樣式](純文字版/25_jQuery_DOM操作_事件與樣式.md)
+26. [jQuery AJAX與Spring Boot前後端分離](純文字版/26_jQuery_AJAX與SpringBoot前後端分離.md)
+27. [jQuery AJAX：JSON資料來源與HTTP狀態處理](純文字版/27_jQuery_AJAX_JSON資料來源與HTTP狀態處理.md)
 
 ### 延伸閱讀
 
@@ -83,6 +95,12 @@
 | Derived Query、JPQL與分頁 | 第15章 | 第16章直接套用JPQL處理Fetch Join與Bulk Update |
 | OneToMany、N+1與關聯JSON | 第16章 | 目前最新關聯實作主章 |
 | Request／Response DTO、Bean Validation與統一例外 | 第17章 | 延續第12章的簡單DTO，加入Create／Update／Response拆分與欄位驗證 |
+| VS Code、Java擴充套件、PowerShell與Live Server | 第18章 | 獨立於Eclipse環境設定，整理VS Code首次使用與終端機／HTML預覽排錯 |
+| HTML結構、CSS Cascade與JavaScript迴圈 | 第19章 | 使用Live Server與DevTools重現外部CSS、inline style及1到10加總 |
+| JavaScript表單送出與前端驗證 | 第24章 | 接續第23章DOM與Event，加入`submit`、欄位值與`preventDefault()` |
+| jQuery DOM與Event | 第25章 | 以jQuery簡化Selector、內容、樣式、節點與事件操作 |
+| 前後端分離與AJAX | 第26章 | Live Server前端透過GET／POST呼叫Spring Boot REST API |
+| AJAX資料來源與狀態處理 | 第27章 | 讀取本機JSON、外部API與自己的商品API，處理JSON格式及HTTP錯誤 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
@@ -120,7 +138,7 @@
 
 位置：`圖文版素材_待製作/`
 
-此處保存使用者提供的51張課堂原始截圖，供圖文版引用及日後重製衍生圖：
+此處保存使用者提供的59張課堂原始截圖，供圖文版引用及日後重製衍生圖：
 
 - 圖片：`圖文版素材_待製作/images/`
 - 圖片索引：`圖文版素材_待製作/README.md`
@@ -163,5 +181,20 @@
 部署用Git專案另位於：
 
 `C:\git\sbjpa-SQLite-0812`（含Dockerfile與Render部署版本）
+
+老師的本次課堂原檔位於：
+
+`\\Fs2\306_教室暫存區\職訓202607\week6\day1`～`day4`
+
+整理第19～27章時以老師原檔為主，來源只讀、不修改。
+
+可執行的本機工作副本位於`C:\jscode`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
+
+主題對照：
+
+- `day1`：第19章HTML／CSS／初始JavaScript，以及第20章JavaScript語言基礎。
+- `day2`：第21章Array／Object／JSON、第22章BOM，以及第23章DOM。
+- `day3`：第23章DOM Attribute、動態Style、節點與事件；第24章表單送出驗證；第25章jQuery DOM操作；第26章jQuery AJAX與Spring Boot前後端分離。
+- `day4`：第27章jQuery AJAX讀取本機JSON、外部API及自己的Spring Boot商品API，並處理HTTP狀態。
 
 整理筆記時，若截圖內容不完整或需要核對實際設定，可以直接查看這些專案的`src/`、`pom.xml`及其他相關原始檔；除非使用者另行要求，不修改專案程式碼。
