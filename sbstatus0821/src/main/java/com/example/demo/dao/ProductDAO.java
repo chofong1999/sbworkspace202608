@@ -20,7 +20,10 @@ public class ProductDAO implements CommandLineRunner {
     	data.add(pt);
     	return pt;
     }
-    
+    public Optional<Product> findById(int id) {
+    	Optional<Product> found=  data.stream().filter(p->p.getId()==id).findAny();
+    	return found;
+    }
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub

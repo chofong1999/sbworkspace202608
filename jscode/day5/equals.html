@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>js equals</title>    
+    
+</head>
+
+<body>
+    <button onclick="equal()">Click Me</button>
+</body>
+<script>
+    const equal = () => {
+        let a = "10";
+        let b = 10;
+        if (a === b) {
+            alert("(type " + typeof a + ")a 等於 "+ typeof b + " b");
+        } else {
+            alert("(type " + typeof a + ")a 不等於 "+ typeof b + " b");
+        }
+        if (a == b) {
+            alert("(type " + typeof a + ")a 等於 "+ typeof b + " b");
+        } else {
+            alert("(type " + typeof a + ")a 不等於 "+ typeof b + " b");
+        }
+    }
+</script>
+</html>

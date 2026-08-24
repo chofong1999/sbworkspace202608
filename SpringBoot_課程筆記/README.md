@@ -37,7 +37,7 @@
 
 這是目前持續維護的正式筆記：
 
-- [JavaScript課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～28章。
+- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～31章。
 
 1. [環境設定](純文字版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](純文字版/02_建立第一個SpringBoot專案.md)
@@ -67,6 +67,9 @@
 26. [jQuery AJAX與Spring Boot前後端分離](純文字版/26_jQuery_AJAX與SpringBoot前後端分離.md)
 27. [jQuery AJAX：JSON資料來源與HTTP狀態處理](純文字版/27_jQuery_AJAX_JSON資料來源與HTTP狀態處理.md)
 28. [JavaScript現代語法與Fetch API](純文字版/28_JavaScript現代語法與Fetch_API.md)
+29. [jQuery員工CRUD與Spring Boot JPA串接](純文字版/29_jQuery員工CRUD與SpringBoot_JPA串接.md)
+30. [React、Vite、JSX、元件與Props](純文字版/30_React_Vite_JSX元件與Props.md)
+31. [React列表、useState與受控表單](純文字版/31_React列表_useState與受控表單.md)
 
 ### 延伸閱讀
 
@@ -103,6 +106,9 @@
 | 前後端分離與AJAX | 第26章 | Live Server前端透過GET／POST呼叫Spring Boot REST API |
 | AJAX資料來源與狀態處理 | 第27章 | 讀取本機JSON、外部API與自己的商品API，處理JSON格式及HTTP錯誤 |
 | JavaScript現代語法與Fetch API | 第28章 | Arrow Function、Object解構、Spread／Rest與`async`／`await`原生Request流程 |
+| jQuery員工CRUD與Spring Boot JPA | 第29章 | 整合前面jQuery AJAX、REST API、Entity與JpaRepository，完成可操作的員工CRUD |
+| React、Vite、JSX、元件與Props | 第30章 | React環境、入口渲染、JSX規則、元件拆分與父子資料傳遞 |
+| React列表、State與受控表單 | 第31章 | `map()`清單、`useState`更新、事件處理、Object State與表單同步 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
@@ -180,17 +186,23 @@
 
 `C:\sbworkspace202608\sbonemany0813`（Department／Employee一對多關聯）
 
+`C:\sbworkspace202608\sbemployeetest`（jQuery員工CRUD對接的Spring Boot JPA後端）
+
 部署用Git專案另位於：
 
 `C:\git\sbjpa-SQLite-0812`（含Dockerfile與Render部署版本）
 
-老師的本次課堂原檔位於：
+老師的JavaScript、jQuery與React課堂原檔位於：
 
 `\\Fs2\306_教室暫存區\職訓202607\week6\day1`～`day4`
 
-整理第19～28章時以老師原檔為主，來源只讀、不修改。
+`\\Fs2\306_教室暫存區\職訓202607\week7\day5`（jQuery員工CRUD）
 
-可執行的本機工作副本位於`C:\jscode`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
+`\\Fs2\306_教室暫存區\職訓202607\week7\my-react-app`（React實作）
+
+整理第19～31章時以老師原檔為主，來源只讀、不修改。
+
+可執行的本機工作副本位於`C:\jscode`，React專案為`C:\jscode\my-react-app`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
 
 主題對照：
 
@@ -198,5 +210,7 @@
 - `day2`：第21章Array／Object／JSON、第22章BOM，以及第23章DOM。
 - `day3`：第23章DOM Attribute、動態Style、節點與事件；第24章表單送出驗證；第25章jQuery DOM操作；第26章jQuery AJAX與Spring Boot前後端分離。
 - `day4`：第27章jQuery AJAX讀取本機JSON、外部API及自己的Spring Boot商品API，並處理HTTP狀態；第28章整理Arrow Function、解構、Spread／Rest與Fetch API。
+- `week7/day5`與`sbemployeetest`：第29章以jQuery呼叫Spring Boot JPA員工CRUD。
+- `week7/my-react-app`：第30章React／Vite／JSX／元件／Props；第31章清單、State、事件與受控表單。
 
 整理筆記時，若截圖內容不完整或需要核對實際設定，可以直接查看這些專案的`src/`、`pom.xml`及其他相關原始檔；除非使用者另行要求，不修改專案程式碼。

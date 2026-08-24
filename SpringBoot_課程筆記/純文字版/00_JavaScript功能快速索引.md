@@ -1,6 +1,6 @@
-# JavaScript課程功能快速索引
+# JavaScript、jQuery與React課程功能快速索引
 
-這份索引用來回答：「目前JavaScript課程教過哪些功能？想完成某件事時應該閱讀哪一章？」
+這份索引用來回答：「目前前端課程教過哪些功能？想完成某件事時應該閱讀哪一章？」
 
 索引只負責導向，不重複各章的完整解釋。需要知道成立條件、執行流程、完整範例與常見錯誤時，再進入對應章節。
 
@@ -18,8 +18,11 @@
 | 前後端分離 | jQuery GET／POST呼叫Spring Boot REST API | [第26章](26_jQuery_AJAX與SpringBoot前後端分離.md) |
 | AJAX資料與錯誤處理 | 本機JSON、外部API、JSON POST、HTTP狀態碼 | [第27章](27_jQuery_AJAX_JSON資料來源與HTTP狀態處理.md) |
 | 現代JavaScript與Fetch | Arrow Function、解構、Spread／Rest、async／await、Fetch API | [第28章](28_JavaScript現代語法與Fetch_API.md) |
+| 完整員工CRUD | jQuery畫面串接Spring Boot、JPA與MySQL | [第29章](29_jQuery員工CRUD與SpringBoot_JPA串接.md) |
+| React入門 | Vite、JSX、元件、import／export、Props | [第30章](30_React_Vite_JSX元件與Props.md) |
+| React互動資料 | map清單、useState、事件、Object State與受控表單 | [第31章](31_React列表_useState與受控表單.md) |
 
-建議首次學習依第19章到第28章的順序閱讀；實作時則依功能直接跳至需要的章節。
+建議首次學習依第19章到第31章的順序閱讀；實作時則依功能直接跳至需要的章節。
 
 ## 2. HTML、CSS與執行環境
 
@@ -205,7 +208,52 @@
 | 判斷HTTP Request是否成功 | `response.ok`、`response.status` |
 | 捕捉非同步錯誤 | `try...catch` |
 
-## 12. 容易找錯章節的情況
+## 12. jQuery員工CRUD與Spring Boot JPA
+
+對應：[第29章：jQuery員工CRUD與Spring Boot JPA串接](29_jQuery員工CRUD與SpringBoot_JPA串接.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 建立員工REST CRUD | `@RestController`、`JpaRepository`、`ResponseEntity` |
+| 頁面載入時取得員工 | `$(document).ready(...)`、`$.ajax({ method: 'GET' })` |
+| 將JSON員工清單轉成表格 | `$.each(...)`、動態`<tr>`／`<td>` |
+| 新增或更新員工 | 判斷ID後選擇`POST`或`PUT` |
+| 將Object送成JSON | `JSON.stringify(data)`、`contentType: 'application/json'` |
+| 刪除員工 | `DELETE /api/employees/{id}` |
+| 清除表單及重新載入列表 | `.val('')`、重新呼叫查詢函式 |
+| 分辨值與型別是否都相等 | `===`、`!==` |
+
+## 13. React、Vite、JSX、元件與Props
+
+對應：[第30章：React、Vite、JSX、元件與Props](30_React_Vite_JSX元件與Props.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 建立並啟動Vite React專案 | `npm create vite@latest`、`npm run dev` |
+| 將React掛到HTML root | `createRoot(...).render(...)` |
+| 在JSX插入JavaScript值 | `{expression}` |
+| 建立函式元件 | `function Component() { return (...) }` |
+| 匯出及匯入預設元件 | `export default`、`import Name from '...'` |
+| 匯出及匯入具名項目 | `export { Name }`、`import { Name } from '...'` |
+| 從父元件傳資料給子元件 | Props、`<ProductCard name="..." />` |
+| 依條件顯示不同內容 | 三元運算子、`&&` |
+
+## 14. React列表、State與受控表單
+
+對應：[第31章：React列表、useState與受控表單](31_React列表_useState與受控表單.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 將Array顯示成多個JSX元素 | `array.map(...)` |
+| 讓React辨認清單項目 | `key={item.id}` |
+| 建立會觸發重新渲染的資料 | `useState(initialValue)` |
+| 根據最新舊值更新State | `setState(previous => nextValue)` |
+| 更新Object而不遺失其他欄位 | `{ ...previous, field: value }` |
+| 綁定按鈕事件 | `onClick={handler}` |
+| 建立受控輸入欄位 | `value={state.field}`、`onChange={handler}` |
+| 取得欄位最新輸入 | `event.target.value` |
+
+## 15. 容易找錯章節的情況
 
 | 問題 | 應先閱讀 |
 |---|---|
@@ -222,3 +270,8 @@
 | 想讀本機JSON、外部API或處理404 | 第27章 |
 | 想用JavaScript內建`fetch()`取代jQuery AJAX | 第28章 |
 | 看不懂`{ name, ...rest }`或`{ ...person }` | 第28章；兩者分別是Rest與Spread |
+| 要做完整jQuery員工新增、查詢、修改與刪除 | 第29章 |
+| React畫面空白或不懂元件如何顯示 | 第30章 |
+| React清單出現key警告 | 第31章 |
+| React按鈕按了資料沒有更新 | 第31章，檢查是否直接修改State |
+| React輸入框無法輸入或Object其他欄位消失 | 第31章，檢查受控欄位與Spread更新 |

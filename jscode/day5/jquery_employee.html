@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="./js/api.js"></script>
+</head>
+
+<body>
+    <button id="b1">All Employees</button><button id="b2">Add Employee</button>
+    <form id="addEmployeeForm" style="display: none;">
+        <label for="employeeId">Employee ID:</label>
+        <input type="text" id="employeeId" name="employeeId" required><br><br>        
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required><br><br>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="button" id="submitButton" value="add">Submit</button>
+    </form>
+    <table id="employeeTable" border="1" style="display: none;" width="40%">
+        <tr>
+            <th>員工編號</th>
+            <th>員工姓氏</th>
+            <th>員工名字</th>
+            <th>電子郵件</th>
+            <th>Action</th>
+        </tr>
+    </table>
+</body>
+
+
+</html>
