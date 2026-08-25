@@ -21,8 +21,9 @@
 | 完整員工CRUD | jQuery畫面串接Spring Boot、JPA與MySQL | [第29章](29_jQuery員工CRUD與SpringBoot_JPA串接.md) |
 | React入門 | Vite、JSX、元件、import／export、Props | [第30章](30_React_Vite_JSX元件與Props.md) |
 | React互動資料 | map清單、useState、事件、Object State與受控表單 | [第31章](31_React列表_useState與受控表單.md) |
+| React副作用與API | TodoList CRUD、表單送出、useEffect、Fetch與載入／錯誤狀態 | [第32章](32_React_TodoList_LoginForm與useEffect_API資料擷取.md) |
 
-建議首次學習依第19章到第31章的順序閱讀；實作時則依功能直接跳至需要的章節。
+建議首次學習依第19章到第32章的順序閱讀；實作時則依功能直接跳至需要的章節。
 
 ## 2. HTML、CSS與執行環境
 
@@ -253,7 +254,22 @@
 | 建立受控輸入欄位 | `value={state.field}`、`onChange={handler}` |
 | 取得欄位最新輸入 | `event.target.value` |
 
-## 15. 容易找錯章節的情況
+## 15. React TodoList、表單送出與API資料擷取
+
+對應：[第32章：React TodoList、LoginForm與useEffect API資料擷取](32_React_TodoList_LoginForm與useEffect_API資料擷取.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 新增、刪除或更新Array State | Spread、`filter()`、`map()` |
+| 保留舊文字作為prompt預設值 | `prompt(message, oldText ?? '')` |
+| 統一處理表單送出 | `<form onSubmit={handler}>` |
+| 阻止表單重新整理 | `event.preventDefault()` |
+| 初次掛載後執行工作 | `useEffect(effect, [])` |
+| State改變後重新執行 | `useEffect(effect, [state])` |
+| 從API取得資料 | `fetch()`、`response.ok`、`response.json()` |
+| 呈現非同步流程狀態 | Loading、Data、Error State |
+
+## 16. 容易找錯章節的情況
 
 | 問題 | 應先閱讀 |
 |---|---|
@@ -275,3 +291,6 @@
 | React清單出現key警告 | 第31章 |
 | React按鈕按了資料沒有更新 | 第31章，檢查是否直接修改State |
 | React輸入框無法輸入或Object其他欄位消失 | 第31章，檢查受控欄位與Spread更新 |
+| TodoList要新增、刪除或只更新一項 | 第32章，查看Array State CRUD |
+| API不會在畫面出現後自動載入 | 第32章，檢查`useEffect`與依賴陣列 |
+| Request成功、載入中與失敗畫面混在一起 | 第32章，拆分Data、Loading與Error State |

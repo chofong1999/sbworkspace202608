@@ -300,7 +300,7 @@ createRoot(document.getElementById('root')).render(
 
 本機`C:\jscode\my-react-app`保留個人State練習，因此`App.jsx`與老師範例不完全相同；其他已核對的教學元件與老師版本一致。筆記採用可重現且不直接修改State的寫法。
 
-`react_unit2.md`還包含後續內容，但目前實際範例進度只確認到受控表單。本章不把尚未由課堂原始碼證實的`useEffect`列為已完成內容。
+後續課堂原始碼已加入`TodoList`、`LoginForm`與`UserList`。其中Array CRUD與提交表單延續本章概念；`useEffect`、`fetch()`及API載入狀態集中整理於[第32章](32_React_TodoList_LoginForm與useEffect_API資料擷取.md)。
 
 ## 10. 常見錯誤
 
@@ -322,4 +322,3 @@ createRoot(document.getElementById('root')).render(
 - [ ] 不直接修改State中的Object或Array。
 - [ ] 表單欄位同時設定`value`與`onChange`。
 - [ ] 能在`main.jsx`切換並驗證Counter與ProfileForm。
-

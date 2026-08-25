@@ -37,7 +37,7 @@
 
 這是目前持續維護的正式筆記：
 
-- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～31章。
+- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～32章。
 
 1. [環境設定](純文字版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](純文字版/02_建立第一個SpringBoot專案.md)
@@ -70,6 +70,7 @@
 29. [jQuery員工CRUD與Spring Boot JPA串接](純文字版/29_jQuery員工CRUD與SpringBoot_JPA串接.md)
 30. [React、Vite、JSX、元件與Props](純文字版/30_React_Vite_JSX元件與Props.md)
 31. [React列表、useState與受控表單](純文字版/31_React列表_useState與受控表單.md)
+32. [React TodoList、LoginForm與useEffect API資料擷取](純文字版/32_React_TodoList_LoginForm與useEffect_API資料擷取.md)
 
 ### 延伸閱讀
 
@@ -109,6 +110,7 @@
 | jQuery員工CRUD與Spring Boot JPA | 第29章 | 整合前面jQuery AJAX、REST API、Entity與JpaRepository，完成可操作的員工CRUD |
 | React、Vite、JSX、元件與Props | 第30章 | React環境、入口渲染、JSX規則、元件拆分與父子資料傳遞 |
 | React列表、State與受控表單 | 第31章 | `map()`清單、`useState`更新、事件處理、Object State與表單同步 |
+| React TodoList、useEffect與Fetch | 第32章 | Array State CRUD、表單送出、Effect依賴與API載入／錯誤狀態 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
@@ -198,11 +200,13 @@
 
 `\\Fs2\306_教室暫存區\職訓202607\week7\day5`（jQuery員工CRUD）
 
-`\\Fs2\306_教室暫存區\職訓202607\week7\my-react-app`（React實作）
+`\\Fs2\306_教室暫存區\職訓202607\week7\my-react-app`（React入門實作）
 
-整理第19～31章時以老師原檔為主，來源只讀、不修改。
+`\\Fs2\306_教室暫存區\職訓202607\week7\react-day1`（React TodoList、LoginForm與useEffect API實作）
 
-可執行的本機工作副本位於`C:\jscode`，React專案為`C:\jscode\my-react-app`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
+整理第19～32章時以老師原檔為主，來源只讀、不修改。
+
+可執行的本機工作副本位於`C:\jscode`，React專案包含`C:\jscode\my-react-app`與`C:\jscode\react-day1`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
 
 主題對照：
 
@@ -212,5 +216,6 @@
 - `day4`：第27章jQuery AJAX讀取本機JSON、外部API及自己的Spring Boot商品API，並處理HTTP狀態；第28章整理Arrow Function、解構、Spread／Rest與Fetch API。
 - `week7/day5`與`sbemployeetest`：第29章以jQuery呼叫Spring Boot JPA員工CRUD。
 - `week7/my-react-app`：第30章React／Vite／JSX／元件／Props；第31章清單、State、事件與受控表單。
+- `week7/react-day1`：第32章TodoList、LoginForm、`useEffect`與Fetch API資料擷取。
 
 整理筆記時，若截圖內容不完整或需要核對實際設定，可以直接查看這些專案的`src/`、`pom.xml`及其他相關原始檔；除非使用者另行要求，不修改專案程式碼。
