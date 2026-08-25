@@ -1,11 +1,24 @@
 # Spring Boot 圖文學習筆記 08：HTML 表單與 JSON 資料綁定
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/08_HTML表單與JSON資料綁定.md)｜[上一章：Component、Configuration與Bean](07_Component_Configuration與Bean.md)｜[下一章：分層式User CRUD API](09_分層式User_CRUD_API.md)
-
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
 - HTML：`src/main/resources/static/userform.html`
 - Controller：`SubmitController.java`
+
+> 語法速查：[MVC參數綁定](../語法字典/02_Spring_MVC與REST.md)｜[驗證與JSON](../語法字典/07_驗證_Jackson_Lombok.md)
+
+## 本章快速索引
+
+- [0. 前置條件與兩階段重現方式](#0-前置條件與兩階段重現方式)
+- [1. 本章目的](#1-本章目的)
+- [2. User 模型](#2-user-模型)
+- [3. HTML 表單](#3-html-表單)
+- [4. 使用 ModelAttribute 接收表單](#4-使用-modelattribute-接收表單)
+- [5. 使用 RequestBody 接收 JSON](#5-使用-requestbody-接收-json)
+- [6. ModelAttribute 與 RequestBody 比較](#6-modelattribute-與-requestbody-比較)
+- [7. 銜接第9章：把綁定結果保存至共用Repository](#7-銜接第9章把綁定結果保存至共用repository)
+- [8. 目前驗證的限制](#8-目前驗證的限制)
+- [9. 可直接重現的最小完整版本](#9-可直接重現的最小完整版本)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與兩階段重現方式
 
@@ -82,6 +95,8 @@ Spring／Jackson 建立並填入 User 時需要無參數建構子與 Getter／Se
 這樣即使 HTML 頁面日後移到其他網址層級，也不會改變送出位置。
 
 ## 4. 使用 ModelAttribute 接收表單
+
+下圖對照本節的操作位置或執行結果：
 
 ![HTML表單與Postman JSON提交結果](../圖文版素材_待製作/images/25_User表單_JSON與CRUD.png)
 
@@ -165,6 +180,8 @@ Postman 設定：
 | 綁定方式 | 依參數名稱填入屬性 | 反序列化 Body 成物件 |
 
 ## 7. 銜接第9章：把綁定結果保存至共用Repository
+
+下圖對照本節的操作位置或執行結果：
 
 ![SubmitController把綁定結果交給UserService](../圖文版素材_待製作/images/26_SubmitController_UserService_CRUD.png)
 
@@ -323,4 +340,3 @@ public class SubmitController {
 - [ ] `@RequestBody`接收 JSON
 - [ ] 成功時回傳`200 OK`與帶 UUID 的 User
 - [ ] 能分辨第8章的純綁定版本與完成第9章後的持久化至記憶體版本
-

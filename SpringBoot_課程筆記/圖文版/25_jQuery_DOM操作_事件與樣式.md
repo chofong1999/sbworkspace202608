@@ -304,6 +304,10 @@ $(".inner").wrap('<div class="new"></div>');
 
 ### 7.2 所有元素共同包裝
 
+![jQuery wrapAll處理不相鄰元素](../圖文版素材_待製作/images/60_jQuery_wrapAll移動不相鄰元素.png)
+
+*圖1：wrapAll會把所有匹配元素移入同一個新容器；原本夾在中間、未被選取的元素因此留在容器外。*
+
 ```javascript
 $(".inner").wrapAll('<div class="new"></div>');
 ```

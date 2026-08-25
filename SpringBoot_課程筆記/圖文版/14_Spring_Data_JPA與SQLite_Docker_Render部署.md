@@ -1,15 +1,34 @@
 # Spring Boot 圖文學習筆記 14：Spring Data JPA、SQLite與Docker／Render部署
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/14_Spring_Data_JPA與SQLite_Docker_Render部署.md)｜[圖文延伸閱讀：Git與Render故障排查](延伸閱讀/14_Git與Render部署故障排查.md)｜[上一章：Spring Data JPA與MySQL](13_Spring_Data_JPA與MySQL.md)｜[下一章：JPA查詢方法與分頁](15_Spring_Data_JPA查詢方法_Query與分頁.md)
-
-- 整理日期：2026-08-12
-- 課堂專案：`sbjpa0812`
-- 部署用Git專案：`C:\git\sbjpa-SQLite-0812`
-- 本機API：`http://localhost:8080/api/products`（Eclipse課堂專案）
+- 範例專案：`sbjpa0812`
+- 範例專案名稱：`sbjpa-SQLite-0812`
+- 本機API：`http://localhost:8080/api/products`（Eclipse範例專案）
 - 部署API：`https://sbjpa-sqlite-0812.onrender.com/api/products`
 - 完成判定：部署端與本機端都回傳相同的三筆商品JSON
 
-> 本章以實際成功版本為準。課堂專案與部署用Git專案不是同一個資料夾；部署版本另外包含`Dockerfile`，而且目前將Spring Boot與容器說明的port都設為`8002`。
+> 本章以實際成功版本為準。範例專案與部署用Git專案不是同一個資料夾；部署版本另外包含`Dockerfile`，而且目前將Spring Boot與容器說明的port都設為`8002`。
+
+> 語法速查：[JPA欄位](../語法字典/03_JPA實體與欄位映射.md)｜[Repository查詢](../語法字典/05_Spring_Data查詢交易與分頁.md)｜[設定檔](../語法字典/09_設定檔與建置.md)
+
+## 本章快速索引
+
+- [0. 前置條件與完整操作順序](#0-前置條件與完整操作順序)
+- [1. 本章完成了什麼？](#1-本章完成了什麼)
+- [2. SQLite和MySQL的主要差異](#2-sqlite和mysql的主要差異)
+- [3. Maven依賴](#3-maven依賴)
+- [4. `application.properties`實際設定](#4-applicationproperties實際設定)
+- [5. `schema.sql`與`data.sql`為何沒有執行？](#5-schemasql與datasql為何沒有執行)
+- [6. Entity：`Product`](#6-entityproduct)
+- [7. Repository與Service](#7-repository與service)
+- [8. `CommandLineRunner`才是目前的種子資料來源](#8-commandlinerunner才是目前的種子資料來源)
+- [9. Product REST API](#9-product-rest-api)
+- [10. Dockerfile的兩階段建置](#10-dockerfile的兩階段建置)
+- [11. SQLite在Docker與Render中的檔案位置](#11-sqlite在docker與render中的檔案位置)
+- [12. 部署故障排查（延伸閱讀）](#12-部署故障排查延伸閱讀)
+- [13. 最終驗證](#13-最終驗證)
+- [14. 部署檢查表](#14-部署檢查表)
+- [15. 官方資料入口](#15-官方資料入口)
+- [16. 本章複習重點](#16-本章複習重點)
 
 ## 0. 前置條件與完整操作順序
 
@@ -130,9 +149,11 @@ SQLite並不是「沒有資料庫」，而是資料庫引擎直接操作檔案�
 
 ## 4. `application.properties`實際設定
 
+下圖對照本節的操作位置或執行結果：
+
 ![Spring Boot切換SQLite時的application.properties](../圖文版素材_待製作/images/43_SQLite設定進行中_application_properties.png)
 
-*圖1：課堂把MySQL連線註解後改為SQLite Driver、URL及Dialect；這是設定進行中的歷史畫面，不能單獨當作部署成功證據。*
+*圖1：範例把MySQL連線註解後改為SQLite Driver、URL及Dialect；這是設定進行中的畫面，不能單獨當作部署成功證據。*
 
 部署成功版本的核心設定：
 
@@ -475,9 +496,9 @@ Render預設檔案系統是暫時性的。若沒有Persistent Disk，部署、�
 - Render只顯示`Not Found`，需要區分`no-server`與Spring Boot 404。
 - 本機已修正，但GitHub或Render仍執行舊版本。
 
-
-
 ## 13. 最終驗證
+
+下圖對照本節的操作位置或執行結果：
 
 ![Render與本機Products API結果一致](../圖文版素材_待製作/images/46_Render與本機_API成功一致.png)
 

@@ -32,6 +32,16 @@
 
 - [`application.properties`、`pom.xml`與Maven](09_設定檔與建置.md)：連線設定、JPA設定、SQL初始化、依賴與打包。
 
+### Web前端
+
+| 分類入口 | 負責什麼 | 常見檔案 | 何時進來查 |
+|---|---|---|---|
+| [HTML／CSS／瀏覽器載入](10_HTML_CSS與瀏覽器載入.md) | 頁面骨架、樣式、選取器與外部資源 | `*.html`、`*.css` | 頁面載入不到CSS／Script／圖片，或要確認選取器 |
+| [JavaScript核心](11_JavaScript核心_陣列與物件.md) | 變數、函式、運算式、Array、Object與JSON | `*.js`、HTML內`script` | 查`map`、`filter`、`??`、`?.`、Spread等語法 |
+| [DOM／BOM／表單／Fetch](12_DOM_BOM表單與Fetch.md) | 操作頁面、事件、表單、對話框及HTTP請求 | 瀏覽器端`*.js` | 需要改畫面、處理事件、阻止送出或呼叫API |
+| [jQuery／AJAX](13_jQuery與AJAX.md) | jQuery DOM操作與AJAX | 載入jQuery的HTML／JS | 查`$()`、`.wrapAll()`、`$.ajax()`及狀態處理 |
+| [React／Vite／JSX／Hooks](14_React_Vite_JSX與Hooks.md) | 建立React專案、元件、State、表單與Effect | `*.jsx`、`vite.config.js` | 寫React元件、不可變更新或從API取得資料 |
+
 ### 輔助入口
 
 - [依「想完成的事情」快速查找](00_快速索引.md)：不知道語法名稱或所在層級時使用。
@@ -67,9 +77,25 @@ Thymeleaf模板位於`templates/`，使用`${...}`、`@{...}`與`th:*`把Control
 
 `application.properties`控制port、DataSource、JPA與SQL初始化；`pom.xml`宣告依賴與建置資訊；Maven命令負責測試、打包與執行。相似的`${...}`在設定檔與Thymeleaf中代表不同機制。
 
+### HTML／CSS是「頁面結構與視覺」
+
+此分類負責瀏覽器如何解析HTML、套用CSS，以及如何找到外部Script、樣式與圖片。它不負責JavaScript執行流程，也不負責React元件狀態。
+
+### JavaScript與DOM／Fetch是「語言」與「瀏覽器能力」
+
+JavaScript核心頁負責語言本身、Array與Object；DOM／BOM／Fetch頁負責瀏覽器提供的頁面、事件、對話框與網路API。遇到`map()`先查核心，遇到`querySelector()`或`fetch()`則查瀏覽器API。
+
+### jQuery是「瀏覽器操作的函式庫包裝」
+
+jQuery以`$()`、`.on()`、`$.ajax()`包裝常見DOM與HTTP操作。相同工作也可使用原生DOM與Fetch；字典分頁是為了辨識兩套API，避免混用jQuery集合與DOM Element。
+
+### React是「用State描述介面」
+
+React頁負責元件、Props、State、受控表單與Effect；它會使用JavaScript核心語法，也會透過Fetch存取後端，但不重複定義那些底層語法。
+
 ## 字典的範圍
 
-- 內容以本課程使用的Java 21、Spring Boot、Spring MVC、Spring Data JPA、Thymeleaf與springdoc-openapi為主。
+- 內容以本課程使用的Java 21、Spring Boot、Spring MVC、Spring Data JPA、Thymeleaf、JavaScript、jQuery、React與Vite為主。
 - 同名註解可能來自不同套件；複製前要核對`import`。
 - 「預設值」會受框架版本影響的項目，條目會明確標示版本或要求以專案依賴為準。
 - 範例專案名稱只是對照來源。單獨複製整個`SpringBoot_課程筆記`資料夾，不影響本字典、課程文件或圖片連結。

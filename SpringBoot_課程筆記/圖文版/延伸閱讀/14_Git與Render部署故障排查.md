@@ -1,10 +1,13 @@
-# 第14章圖文延伸閱讀：Git與Render部署故障排查
+# 第14章延伸閱讀：Git與Render部署故障排查
 
-[返回總目錄](../../README.md)｜[圖文主章](../14_Spring_Data_JPA與SQLite_Docker_Render部署.md)｜[純文字延伸閱讀](../../純文字版/延伸閱讀/14_Git與Render部署故障排查.md)
+## 本頁快速索引
 
-[返回第14章主章](../14_Spring_Data_JPA與SQLite_Docker_Render部署.md)
-
-本文件只在部署流程出現異常時使用。正常建立SQLite專案、Docker Image與Render Web Service的步驟仍以第14章主章為準。
+- [0. 使用條件](#0-使用條件)
+- [1. Git Push為何被拒絕？](#1-git-push為何被拒絕)
+- [2. Render 404如何判斷是哪一層？](#2-render-404如何判斷是哪一層)
+- [3. 為何本機修正沒有進入部署版本？](#3-為何本機修正沒有進入部署版本)
+- [4. 最短排查順序](#4-最短排查順序)
+- [5. 延伸閱讀檢查表](#5-延伸閱讀檢查表)
 
 ## 0. 使用條件
 
@@ -13,6 +16,8 @@
 - 已保留Push輸出、Render Events／Logs、公開網址HTTP回應與部署commit。
 
 ## 1. Git Push為何被拒絕？
+
+下圖對照本節的操作位置或執行結果：
 
 ![Git Push因非fast-forward遭拒](../../圖文版素材_待製作/images/45_Git_push非fast-forward遭拒.png)
 
@@ -57,6 +62,8 @@ bb814c0 Merge remote-tracking branch 'origin/main'
 
 
 ## 2. Render 404如何判斷是哪一層？
+
+下圖對照本節的操作位置或執行結果：
 
 ![Render端Not Found而本機API正常](../../圖文版素材_待製作/images/44_Render部署初始_no-server與本機正常.png)
 
@@ -130,4 +137,3 @@ Render自然無法部署這筆本機修正
 - [ ] 能確認GitHub branch與Render Deploy使用的commit
 - [ ] 不把路由錯誤誤判成Controller或SQLite錯誤
 - [ ] 修正後已重新驗證公開API
-

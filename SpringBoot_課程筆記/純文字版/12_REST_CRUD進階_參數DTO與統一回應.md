@@ -1,14 +1,29 @@
 # Spring Boot 學習筆記 12：REST CRUD進階、參數、DTO與統一回應
 
-- 整理日期：2026-08-12
 - 範例專案：`sbrestcrud0807`
 - 早期對照專案：`sbrest0722`（User記憶體CRUD、Request參數與`ApiResponse<T>`）
 - 主要API前綴：`http://localhost:8080/api/products`
 
+> 語法速查：[MVC與REST](../語法字典/02_Spring_MVC與REST.md)｜[驗證與JSON](../語法字典/07_驗證_Jackson_Lombok.md)
+
+## 本章快速索引
+
+- [0. 前置條件、實作順序與完成判定](#0-前置條件實作順序與完成判定)
+- [1. 這個專案比前一個CRUD多了什麼？](#1-這個專案比前一個crud多了什麼)
+- [2. Product與ProductDTO不是同一種角色](#2-product與productdto不是同一種角色)
+- [3. Lombok註解的確切作用](#3-lombok註解的確切作用)
+- [4. 記憶體Store的資料結構](#4-記憶體store的資料結構)
+- [5. Product CRUD端點](#5-product-crud端點)
+- [6. 目前程式的重要ID不一致問題](#6-目前程式的重要id不一致問題)
+- [7. 四種Request資料來源](#7-四種request資料來源)
+- [8. 統一API回應`ApiResponse<T>`](#8-統一api回應apiresponse)
+- [9. Swagger註解與實際HTTP狀態要分開看](#9-swagger註解與實際http狀態要分開看)
+- [10. 本章檢查表](#10-本章檢查表)
+
 ## 0. 前置條件、實作順序與完成判定
 
 - 先完成第9章的REST CRUD觀念與第10章的Swagger設定。
-- 建立含Spring Web、Lombok與springdoc-openapi的專案，或使用`C:\sbworkspace202608\sbrestcrud0807`作為完整原始碼對照。
+- 建立含Spring Web、Lombok與springdoc-openapi的專案；範例專案名稱為`sbrestcrud0807`。
 - 依序建立`Product`、`ProductDTO`、`ProductController`，再建立`ParameterController`、`ApiResponse<T>`與`UnifiedResponseController`。
 - 啟動後先測Product CRUD，再分別測Path、Query、Header、Body四種參數來源，最後測統一回應端點。
 
@@ -176,7 +191,7 @@ public void initTestData() {
 }
 ```
 
-`@PostConstruct`方法會在Spring建立並完成該Bean的依賴注入後執行一次。適合這種課堂用初始化；正式系統若要持久化測試資料，通常會改由資料庫migration、SQL初始化或專門的seed流程處理。
+`@PostConstruct`方法會在Spring建立並完成該Bean的依賴注入後執行一次。適合這種練習用初始化；正式系統若要持久化測試資料，通常會改由資料庫migration、SQL初始化或專門的seed流程處理。
 
 ## 5. Product CRUD端點
 
@@ -339,7 +354,7 @@ String authorization
 - 自訂追蹤ID
 - Content negotiation相關header
 
-這個課堂範例只讀出header並回傳，不代表已完成真正的身分驗證。
+這個範例只讀出header並回傳，不代表已完成真正的身分驗證。
 
 ### 7.4 `@RequestBody`
 

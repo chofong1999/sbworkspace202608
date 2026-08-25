@@ -1,4 +1,4 @@
-# Spring Boot 學習筆記 17：Book API的DTO、Bean Validation與例外處理
+# Spring Boot 圖文學習筆記 17：Book API的DTO、Bean Validation與例外處理
 
 [返回總目錄](../README.md)｜[上一章：JPA關聯與JSON](16_JPA_OneToMany_ManyToOne與JSON關聯.md)｜[驗證語法字典](../語法字典/07_驗證_Jackson_Lombok.md#validation)
 
@@ -350,6 +350,10 @@ public class GlobalExceptionHandler {
 
 ### 7.1 查不到Book時的目前流程
 
+![BookNotFoundException回傳404 JSON](../圖文版素材_待製作/images/51_BookNotFoundException_404_JSON.png)
+
+*圖2：Service以orElseThrow拋出BookNotFoundException，例外處理器把不存在的ID轉成404 JSON。*
+
 Service目前寫成：
 
 ```java
@@ -400,6 +404,10 @@ public Book findById(Long id) {
 另一種做法是保留Repository的`Optional`，但不要在Service拋`BookNotFoundException`，改由Controller的`map(...).orElse(...)`建立404。兩種都能用，應選擇一種，不必重複包裝。
 
 ## 8. 驗證失敗測試
+
+![BookCreateRequest驗證失敗回傳400](../圖文版素材_待製作/images/50_BookCreateRequest驗證400錯誤.png)
+
+*圖1：空白書名與錯誤ISBN被Bean Validation攔下，API以統一JSON回傳兩項欄位錯誤。*
 
 Postman設定：
 

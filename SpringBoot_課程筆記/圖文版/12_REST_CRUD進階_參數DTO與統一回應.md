@@ -1,16 +1,29 @@
 # Spring Boot 圖文學習筆記 12：REST CRUD進階、參數、DTO與統一回應
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/12_REST_CRUD進階_參數DTO與統一回應.md)｜[上一章：REST JSON與Thymeleaf模板](11_REST_JSON與Thymeleaf模板.md)｜[下一章：Spring Data JPA與MySQL](13_Spring_Data_JPA與MySQL.md)
-
-- 整理日期：2026-08-12
 - 範例專案：`sbrestcrud0807`
 - 早期對照專案：`sbrest0722`（User記憶體CRUD、Request參數與`ApiResponse<T>`）
 - 主要API前綴：`http://localhost:8080/api/products`
 
+> 語法速查：[MVC與REST](../語法字典/02_Spring_MVC與REST.md)｜[驗證與JSON](../語法字典/07_驗證_Jackson_Lombok.md)
+
+## 本章快速索引
+
+- [0. 前置條件、實作順序與完成判定](#0-前置條件實作順序與完成判定)
+- [1. 這個專案比前一個CRUD多了什麼？](#1-這個專案比前一個crud多了什麼)
+- [2. Product與ProductDTO不是同一種角色](#2-product與productdto不是同一種角色)
+- [3. Lombok註解的確切作用](#3-lombok註解的確切作用)
+- [4. 記憶體Store的資料結構](#4-記憶體store的資料結構)
+- [5. Product CRUD端點](#5-product-crud端點)
+- [6. 目前程式的重要ID不一致問題](#6-目前程式的重要id不一致問題)
+- [7. 四種Request資料來源](#7-四種request資料來源)
+- [8. 統一API回應`ApiResponse<T>`](#8-統一api回應apiresponse)
+- [9. Swagger註解與實際HTTP狀態要分開看](#9-swagger註解與實際http狀態要分開看)
+- [10. 本章檢查表](#10-本章檢查表)
+
 ## 0. 前置條件、實作順序與完成判定
 
 - 先完成第9章的REST CRUD觀念與第10章的Swagger設定。
-- 建立含Spring Web、Lombok與springdoc-openapi的專案，或使用`C:\sbworkspace202608\sbrestcrud0807`作為完整原始碼對照。
+- 建立含Spring Web、Lombok與springdoc-openapi的專案；範例專案名稱為`sbrestcrud0807`。
 - 依序建立`Product`、`ProductDTO`、`ProductController`，再建立`ParameterController`、`ApiResponse<T>`與`UnifiedResponseController`。
 - 啟動後先測Product CRUD，再分別測Path、Query、Header、Body四種參數來源，最後測統一回應端點。
 
@@ -30,21 +43,6 @@ GET    /api/unified/success
 ```
 
 ## 1. 這個專案比前一個CRUD多了什麼？
-
-本章各種Request資料最後都會進入Controller，但來源、綁定註解與用途不同：
-
-```mermaid
-flowchart LR
-    P[Path Variable] --> C[Controller]
-    Q[Query Parameter] --> C
-    H[Request Header] --> C
-    J[JSON Request Body] --> C
-    C --> D[DTO或Domain Model]
-    D --> S[Service與記憶體Store]
-    S --> R[ResponseEntity與ApiResponse]
-```
-
-*圖1：Request來源先由Spring MVC依註解綁定，再交給Controller、資料模型與Service；ResponseEntity決定HTTP狀態，ApiResponse則統一Body格式。*
 
 這個專案仍以記憶體儲存資料，但把REST API常見的幾個主題放在同一個範例中：
 
@@ -150,7 +148,7 @@ public ResponseEntity<Product> createProduct(
 - Request格式不必和內部完整Model完全相同。
 - 日後Entity增加內部欄位時，不一定要暴露給API。
 
-目前DTO只有欄位裁減，還沒有Bean Validation註解；例如負數價格、負數庫存仍沒有在DTO層阻擋。
+目前DTO只有欄位裁減，還沒有Bean Validation註解；例如負數價格、負數庫存仍沒有在DTO層阻擋。要繼續學習Create／Update／Response DTO拆分、`@Valid`及統一驗證錯誤，接著閱讀[第17章](17_Book_API的DTO_Bean_Validation與例外處理.md)。
 
 ## 3. Lombok註解的確切作用
 
@@ -193,7 +191,7 @@ public void initTestData() {
 }
 ```
 
-`@PostConstruct`方法會在Spring建立並完成該Bean的依賴注入後執行一次。適合這種課堂用初始化；正式系統若要持久化測試資料，通常會改由資料庫migration、SQL初始化或專門的seed流程處理。
+`@PostConstruct`方法會在Spring建立並完成該Bean的依賴注入後執行一次。適合這種練習用初始化；正式系統若要持久化測試資料，通常會改由資料庫migration、SQL初始化或專門的seed流程處理。
 
 ## 5. Product CRUD端點
 
@@ -356,7 +354,7 @@ String authorization
 - 自訂追蹤ID
 - Content negotiation相關header
 
-這個課堂範例只讀出header並回傳，不代表已完成真正的身分驗證。
+這個範例只讀出header並回傳，不代表已完成真正的身分驗證。
 
 ### 7.4 `@RequestBody`
 

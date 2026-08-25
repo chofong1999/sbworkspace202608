@@ -1,10 +1,24 @@
 # Spring Boot 圖文學習筆記 07：Component、Configuration 與 Bean
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/07_Component_Configuration與Bean.md)｜[上一章：介面多實作與Qualifier](06_介面多實作與Qualifier依賴注入.md)｜[下一章：HTML表單與JSON資料綁定](08_HTML表單與JSON資料綁定.md)
-
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
 - 測試路徑前綴：`http://localhost:8080/api/util`
+
+> 語法速查：[Bean與設定類別](../語法字典/01_Spring核心與依賴注入.md)
+
+## 本章快速索引
+
+- [0. 前置條件與重現步驟](#0-前置條件與重現步驟)
+- [1. 本章範例的目的](#1-本章範例的目的)
+- [2. 相關專案結構](#2-相關專案結構)
+- [3. 使用 Component 建立 Bean](#3-使用-component-建立-bean)
+- [4. Component 與 Service 的差異](#4-component-與-service-的差異)
+- [5. 使用 Configuration 與 Bean](#5-使用-configuration-與-bean)
+- [6. 注入 UtilService 與 appInfo](#6-注入-utilservice-與-appinfo)
+- [7. 為什麼 String 要搭配 Qualifier？](#7-為什麼-string-要搭配-qualifier)
+- [8. 完整 UtilController](#8-完整-utilcontroller)
+- [9. API 與結果](#9-api-與結果)
+- [10. 被註解的 RestTemplate Bean](#10-被註解的-resttemplate-bean)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與重現步驟
 
@@ -185,6 +199,8 @@ public String createAppInfo() {
 
 ## 8. 完整 UtilController
 
+下圖對照本節的操作位置或執行結果：
+
 ![UtilController注入Service與自訂Bean](../圖文版素材_待製作/images/24_UtilController與AppInfoBean.png)
 
 *圖1：UtilController同時注入UtilService及名稱為appInfo的String Bean；瀏覽器結果證明/api/util/info取得設定值。*
@@ -296,4 +312,3 @@ Spring Boot 實作練習 v1.0
 - [ ] `/api/util/time`可以取得時間
 - [ ] `/api/util/uuid`可以產生 UUID
 - [ ] `/api/util/info`回傳「Spring Boot 實作練習 v1.0」
-

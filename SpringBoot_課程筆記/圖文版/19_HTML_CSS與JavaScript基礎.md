@@ -1,4 +1,4 @@
-# Spring Boot 學習筆記 19：HTML、CSS與JavaScript基礎
+# Spring Boot 圖文學習筆記 19：HTML、CSS與JavaScript基礎
 
 [返回JavaScript課程功能快速索引](00_JavaScript功能快速索引.md)
 
@@ -98,6 +98,10 @@ h1 {
 
 ## 2. 外部CSS與inline style的套用結果
 
+![HTML載入外部CSS與inline覆寫](../圖文版素材_待製作/images/53_HTML_CSS外部樣式與inline覆寫.png)
+
+*圖1：外部CSS提供共用樣式，第一個h1的inline style再覆寫文字顏色。*
+
 第一個標題同時符合外部CSS的`h1`規則，元素本身又有：
 
 ```html
@@ -195,6 +199,10 @@ CSS只有：
 
 ### 3.4 實際畫面對照
 
+![CSS Class、ID與背景圖片](../圖文版素材_待製作/images/57_CSS_Class_ID選擇器與背景圖片.png)
+
+*圖2：Class與ID Selector只影響匹配元素；背景圖片由相對路徑載入。*
+
 | HTML元素 | 命中的規則 | 最終文字顏色 |
 |---|---|---|
 | `<h1 class="blue">` | `.blue` | 藍色 |
@@ -237,6 +245,10 @@ day1/images/img28.jpg
 ## 4. 在HTML中執行JavaScript
 
 ### 4.1 `html_js.html`
+
+![JavaScript迴圈加總與alert](../圖文版素材_待製作/images/54_JavaScript_for迴圈加總與alert.png)
+
+*圖3：1到10累加得到55，alert在瀏覽器對話框顯示結果。*
 
 ```html
 <!DOCTYPE html>
@@ -336,6 +348,10 @@ alert(value);
 
 ## 7. 使用Node.js執行外部`first.js`
 
+![Node.js執行外部JavaScript](../圖文版素材_待製作/images/56_Node執行first_js輸出55.png)
+
+*圖5：在Terminal執行node first.js，結果直接輸出於終端機。*
+
 `first.js`的實際內容：
 
 ```javascript
@@ -387,6 +403,10 @@ node <JavaScript檔案路徑>
 這時瀏覽器會以`first.html`為基準尋找同層的`first.js`。但這是外部檔案的另一種組織方式；目前範例中的`html_js.html`仍使用內嵌`<script>`，不可把建議寫法誤當成目前檔案已完成的狀態。
 
 ## 8. 使用Chrome DevTools查看Console
+
+![Chrome DevTools Console輸出](../圖文版素材_待製作/images/55_ChromeDevTools_Console輸出55.png)
+
+*圖4：console.log的55出現在開發者工具Console，而不是網頁正文。*
 
 開啟方式：
 

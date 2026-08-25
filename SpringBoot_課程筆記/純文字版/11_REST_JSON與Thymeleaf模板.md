@@ -1,8 +1,29 @@
 # Spring Boot 學習筆記 11：REST JSON與Thymeleaf模板
 
-- 整理日期：2026-08-13
 - 範例專案：`sbrest0810`
 - Java目標版本：17
+
+> 語法速查：[MVC與REST](../語法字典/02_Spring_MVC與REST.md)｜[Thymeleaf](../語法字典/06_Thymeleaf模板語法.md)
+
+## 本章快速索引
+
+- [0. 前置條件、實作順序與完成判定](#0-前置條件實作順序與完成判定)
+- [1. REST JSON與MVC HTML的差別](#1-rest-json與mvc-html的差別)
+- [2. Maven依賴](#2-maven依賴)
+- [3. Book物件轉成JSON](#3-book物件轉成json)
+- [4. 第一個Thymeleaf頁面](#4-第一個thymeleaf頁面)
+- [5. `th:text`、`th:utext`與文字模板](#5-thtextthutext與文字模板)
+- [6. 圖片：`th:src`與靜態資源](#6-圖片thsrc與靜態資源)
+- [7. 條件顯示：`th:if`、`th:switch`與`th:case`](#7-條件顯示thifthswitch與thcase)
+- [8. Session與格式化工具](#8-session與格式化工具)
+- [9. Link URL Expression](#9-link-url-expression)
+- [10. User列表：`th:each`與動態操作網址](#10-user列表theach與動態操作網址)
+- [11. 共用新增／編輯表單](#11-共用新增編輯表單)
+- [12. View Name、Redirect與Flash Attribute](#12-view-nameredirect與flash-attribute)
+- [13. User網頁CRUD路徑](#13-user網頁crud路徑)
+- [14. 完整重現測試](#14-完整重現測試)
+- [15. 常見錯誤](#15-常見錯誤)
+- [16. 本章檢查表](#16-本章檢查表)
 
 ## 0. 前置條件、實作順序與完成判定
 
@@ -270,7 +291,7 @@ Controller最好傳入真正的boolean：
 model.addAttribute("isLogin", false);
 ```
 
-課堂原始碼傳入字串`"false"`；目前範例能顯示「請先登入」，但用boolean能避免字串轉換規則造成誤解。
+若傳入字串`"false"`，範例仍可能顯示「請先登入」，但使用boolean能避免字串轉換規則造成誤解。
 
 角色分支：
 
@@ -377,7 +398,7 @@ Controller通常改用`@RequestParam`接收。
 
 ### 9.3 相對網址
 
-課堂`hyperlink.html`使用：
+範例`hyperlink.html`使用：
 
 ```html
 <a th:href="@{home}">首頁</a>
@@ -430,7 +451,7 @@ public String listUsers(Model model) {
 </form>
 ```
 
-普通`<a>`只送GET，因此課堂刪除端點使用POST表單對應`@PostMapping`。正式應用仍需處理身分、權限與CSRF，不能只靠瀏覽器確認視窗。
+普通`<a>`只送GET，因此範例刪除端點使用POST表單對應`@PostMapping`。正式應用仍需處理身分、權限與CSRF，不能只靠瀏覽器確認視窗。
 
 測試：
 
@@ -530,7 +551,7 @@ redirectAttributes.addFlashAttribute(
 | 處理編輯 | `POST /web/users/{id}/edit` | 更新後Redirect詳情 |
 | 刪除 | `POST /web/users/{id}/delete` | 刪除後Redirect列表 |
 
-資料仍位於第9章的記憶體Repository。重新啟動應用程式後，課堂期間新增的User會消失，並重新載入種子資料。
+資料仍位於第9章的記憶體Repository。重新啟動應用程式後，執行期間新增的User會消失，並重新載入種子資料。
 
 ## 14. 完整重現測試
 

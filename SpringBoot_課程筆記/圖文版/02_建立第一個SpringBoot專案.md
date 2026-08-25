@@ -1,83 +1,105 @@
 # Spring Boot 圖文學習筆記 02：建立第一個專案
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/02_建立第一個SpringBoot專案.md)｜[上一章：環境設定](01_環境設定.md)
+- 範例專案名稱：`sbfirstapp`
 
-- 範例專案：`sbfirstapp`
-- 完成目標：建立使用Maven、Jar、Java 21、Spring Web與DevTools的Spring Boot專案，並能由主要類別啟動
+> 語法速查：[Spring核心](../語法字典/01_Spring核心與依賴注入.md)｜[設定檔與建置](../語法字典/09_設定檔與建置.md)
 
-> 課堂截圖保留了建立當時的Java 17與Spring Boot 4.1.0畫面。重現本章時，Java應改選21；Spring Boot則選建立畫面目前提供的穩定版本，不必強求與截圖的小版本完全相同。
+## 本章快速索引
 
-## 0. 開始前確認
+- [0. 前置條件與完成結果](#0-前置條件與完成結果)
+- [1. 開啟 Spring Starter Project](#1-開啟-spring-starter-project)
+- [2. 填寫專案基本資料](#2-填寫專案基本資料)
+- [3. 選擇 Spring Boot 版本與依賴](#3-選擇-spring-boot-版本與依賴)
+- [4. 確認專案建立完成](#4-確認專案建立完成)
+- [5. Java 版本差異與修正](#5-java-版本差異與修正)
+- [6. 執行方式：Java Application 或 Spring Boot App？](#6-執行方式java-application-或-spring-boot-app)
+- [建立專案檢查表](#建立專案檢查表)
 
-先完成第1章，並確認：
+## 0. 前置條件與完成結果
 
-- Eclipse的預設Java是完整JDK 21。
-- `File → New → Other...`中看得到`Spring Boot → Spring Starter Project`。
-- 電腦可連線至`https://start.spring.io`下載專案與相依套件。
+- 先完成第1章，確認 Eclipse 已使用JDK 21，而且`Spring Starter Project`精靈可用。
+- 本章完成結果是建立可執行的Maven／Jar Spring Boot專案`sbfirstapp`，包含DevTools與Spring Web，並能由主要類別啟動。
 
-## 1. 開啟Spring Starter Project
+## 1. 開啟 Spring Starter Project
 
 進入：
 
-```text
-File → New → Other...
-```
+`File → New → Other...`
 
-展開`Spring Boot`，選擇`Spring Starter Project`後按`Next`。
+在建立精靈中展開 `Spring Boot`，選擇：
 
-![在New精靈中選擇Spring Starter Project](../圖文版素材_待製作/images/11_選擇StarterProject.png)
+`Spring Starter Project`
 
-*圖1：Spring Tools安裝成功後，New精靈會出現Spring Boot分類與Spring Starter Project。*
+按下 `Next`。
+
+![選擇Spring Starter Project](../圖文版素材_待製作/images/11_選擇StarterProject.png)
+
+*圖1：New精靈中的Spring Boot分類與Spring Starter Project。*
 
 ## 2. 填寫專案基本資料
 
-在`New Spring Starter Project`設定：
+在 `New Spring Starter Project` 畫面設定：
 
-| 欄位 | 本章設定 | 用途 |
+| 欄位 | 設定值 | 說明 |
 |---|---|---|
-| Service URL | `https://start.spring.io` | 取得Spring Boot專案骨架 |
-| Name | `sbfirstapp` | Eclipse專案名稱 |
-| Location | 使用預設位置 | 建立於目前Workspace |
-| Type | `Maven` | 使用Maven管理建置與相依套件 |
-| Packaging | `Jar` | 產生可執行JAR |
-| Java Version | `21` | 配合第1章設定的JDK 21 |
+| Service URL | `https://start.spring.io` | Spring Initializr 服務 |
+| Name | `sbfirstapp` | Eclipse 中的專案名稱 |
+| Location | 使用預設位置 | 勾選 `Use default location` |
+| Type | `Maven` | 使用 Maven 管理專案與相依套件 |
+| Packaging | `Jar` | 專案封裝格式 |
+| Java Version | `21` | 配合先前設定的 JDK 21 |
 | Language | `Java` | 開發語言 |
-| Group | `com.example` | Maven群組識別 |
-| Artifact | `sbfirstapp` | Maven成品與專案識別 |
+| Group | `com.example` | 組織或專案群組識別 |
+| Artifact | `sbfirstapp` | Maven 專案識別名稱 |
 | Version | `0.0.1-SNAPSHOT` | 開發中的初始版本 |
-| Package | `com.example.demo` | Java基礎套件 |
+| Package | `com.example.demo` | Java 基礎套件名稱 |
 
-![Spring Starter Project基本資料畫面](../圖文版素材_待製作/images/12_專案基本資料.png)
+填寫完成後按 `Next`。
 
-*圖2：課堂截圖中的Java Version仍是17；依本課程環境重做時，這裡應改選21，其餘欄位可依表格設定。*
+![Spring Starter Project基本資料](../圖文版素材_待製作/images/12_專案基本資料.png)
 
-填寫完成後按`Next`。
+*圖2：截圖中的Java Version是17；依本章重做時應改選21。*
 
-## 3. 選擇依賴
+> 畫面中的 Java Version 實際顯示為 17，但本課程前面指定使用 JDK 21。因此建立新專案時應改選 `21`；如果已經用 17 建立完成，請依本章後面的「Java 版本差異與修正」處理。
 
-在Dependencies畫面加入兩項依賴。
+## 3. 選擇 Spring Boot 版本與依賴
 
-### 3.1 Spring Boot DevTools
+在`New Spring Starter Project Dependencies`畫面選擇範例使用的Spring Boot版本：
 
-展開`Developer Tools`並勾選`Spring Boot DevTools`。
+`Spring Boot 4.1.0`
+
+接著加入以下依賴：
+
+### Developer Tools
+
+- `Spring Boot DevTools`
 
 ![選擇Spring Boot DevTools](../圖文版素材_待製作/images/13_選擇DevTools.png)
 
-*圖3：DevTools提供開發階段自動重新啟動等便利功能；右側Selected會顯示已選項目。*
+*圖3：右側Selected清單會顯示已選取的DevTools。*
 
-### 3.2 Spring Web
+用途：提供開發階段的便利功能，例如程式變更後自動重新啟動應用程式。
 
-展開`Web`並勾選`Spring Web`。
+### Web
+
+- `Spring Web`
 
 ![選擇Spring Web](../圖文版素材_待製作/images/14_選擇SpringWeb.png)
 
-*圖4：Spring Web提供Spring MVC、REST API及內嵌Web Server；完成時右側應同時有DevTools與Spring Web。*
+*圖4：完成時Selected應同時包含DevTools與Spring Web。*
 
-確認後按`Finish`，等待Eclipse下載依賴。下載尚未完成時，不要急著把暫時的紅色錯誤標記當成程式錯誤。
+用途：建立 Web 應用程式、REST API，並提供 Spring MVC 與內嵌 Web Server 等功能。
+
+右側 `Selected` 清單應包含：
+
+- `Spring Boot DevTools`
+- `Spring Web`
+
+確認後按下 `Finish`，等待 Eclipse 下載依賴並建立專案。
 
 ## 4. 確認專案建立完成
 
-Project Explorer應出現`sbfirstapp`，並至少包含：
+建立完成後，`Project Explorer` 會出現 `sbfirstapp`，並可看到常用結構：
 
 ```text
 sbfirstapp
@@ -95,9 +117,9 @@ sbfirstapp
 
 ![Spring Boot專案建立完成](../圖文版素材_待製作/images/15_專案建立完成.png)
 
-*圖5：專案已建立並產生主要啟動類別。截圖保留課堂當時的JavaSE-17；依本章重做後，目標應是JavaSE-21。*
+*圖5：專案已產生主要啟動類別；截圖保留當時的JavaSE-17，完成目標應為JavaSE-21。*
 
-主要類別的基本結構如下：
+主要啟動類別為：
 
 ```java
 package com.example.demo;
@@ -114,16 +136,39 @@ public class SbfirstappApplication {
 }
 ```
 
-- `@SpringBootApplication`標示主要設定與啟動類別。
-- `main()`是Java程式進入點。
-- `SpringApplication.run(...)`建立並啟動Spring應用程式。
-- `pom.xml`記錄Java版本、Spring Boot版本與Maven依賴。
+重點：
 
-## 5. 核對Java 21是否完整套用
+- `@SpringBootApplication` 表示這是 Spring Boot 應用程式的主要設定與啟動類別。
+- `main()` 是 Java 程式進入點。
+- `SpringApplication.run(...)` 會啟動 Spring Boot 應用程式。
+- `pom.xml` 保存 Maven 專案設定及依賴。
 
-建立畫面、Maven設定與Eclipse建置路徑是三個不同位置，必須一起確認：
+## 5. Java 版本差異與修正
 
-1. `pom.xml`包含：
+既有範例的兩個地方仍顯示Java 17：
+
+- 建立專案時的 `Java Version` 是 `17`。
+- 專案建立後的 `JRE System Library` 是 `JavaSE-17`。
+
+但本課程環境要求使用 Java 21，所以正確目標應為：
+
+- Spring Starter Project 的 `Java Version`：`21`
+- Eclipse 的 `JRE System Library`：`JavaSE-21`
+- `pom.xml` 的 Java 版本：`21`
+
+### 範例專案的版本差異
+
+範例專案`sbfirstapp`保留了建立當時的設定：
+
+- `pom.xml`：`<java.version>17</java.version>`
+- Eclipse 畫面：`JRE System Library [JavaSE-17]`
+
+因此可選擇兩條重現路線：新建專案時直接選Java 21，或先重現Java 17範例再依下列步驟升級。只有完成最後三項檢查後，才能判定Java 21調整成功。
+
+若專案已經以 Java 17 建立，可依序修正：
+
+1. 開啟 `pom.xml`。
+2. 找到 Java 版本設定，確認內容為：
 
    ```xml
    <properties>
@@ -131,38 +176,48 @@ public class SbfirstappApplication {
    </properties>
    ```
 
-2. Project Explorer顯示`JRE System Library [JavaSE-21]`。
-3. `Project → Properties → Java Build Path → Libraries`中的JRE指向JDK 21。
+3. 在專案上按右鍵，選擇 `Maven → Update Project...`。
+4. 再到 `Project → Properties → Java Build Path → Libraries`，確認 `JRE System Library` 使用 JDK 21。
+5. 若仍是 Java 17，選取 `JRE System Library → Edit`，改選已安裝的 JDK 21。
+6. 最後確認 Project Explorer 顯示 `JRE System Library [JavaSE-21]`。
 
-如果曾用Java 17建立專案，先修改`pom.xml`，再執行`Maven → Update Project...`；若JRE仍是17，再到Java Build Path編輯JRE System Library。只改其中一處，不代表專案已完整切換至Java 21。
+> Java Version、`pom.xml`與JRE System Library是三個需要一起核對的位置；只改其中一處不足以證明專案已完整切換至Java 21。
 
-## 6. 啟動Spring Boot專案
+## 6. 執行方式：Java Application 或 Spring Boot App？
 
-在`SbfirstappApplication.java`內按右鍵，選擇：
+在主要啟動類別上按右鍵，進入`Run As`時會看到：
 
-```text
-Run As → Spring Boot App
-```
+1. `Java Application`
+2. `Spring Boot App`
 
-![Run As中的Java Application與Spring Boot App](../圖文版素材_待製作/images/17_RunAs執行選項.png)
+兩者都會執行`main()`，並由`SpringApplication.run(...)`啟動同一個 Spring Boot 應用程式；不是兩套不同的程式。
 
-*圖6：兩個選項都會執行main方法；Spring Boot App由Spring Tools管理啟動設定，適合平常開發Spring Boot專案。*
+| 選項 | 特性 | 適合情況 |
+|---|---|---|
+| `Java Application` | Eclipse 標準 Java 啟動方式，把類別視為一般 Java 主程式 | 沒安裝 Spring Tools、測試一般 Java `main()`，或需要排除 STS 啟動設定影響時 |
+| `Spring Boot App` | Spring Tools 提供的 Spring Boot 專用啟動方式，較方便管理 Boot 啟動設定、Profiles、參數及執行狀態 | 平常開發與執行 Spring Boot 專案 |
 
-兩種執行方式的差別：
+本課程的`SbfirstappApplication`建議選：
 
-| 選項 | 使用時機 |
-|---|---|
-| `Spring Boot App` | 平常開發Spring Boot專案，方便管理Profiles、參數與Boot啟動設定 |
-| `Java Application` | 沒有Spring Tools、要測試一般Java main，或排除STS啟動設定影響 |
+`Run As → Spring Boot App`
 
-啟動成功時，Console會出現`Started SbfirstappApplication`，而且不應出現`APPLICATION FAILED TO START`。
+![Run As執行選項](../圖文版素材_待製作/images/17_RunAs執行選項.png)
 
-## 完成檢查
+*圖6：Java Application與Spring Boot App都執行main；平常開發可使用Spring Boot App。*
 
-- [ ] New精靈中能選`Spring Starter Project`
-- [ ] Type為Maven、Packaging為Jar、Java Version為21
-- [ ] 已加入Spring Boot DevTools與Spring Web
-- [ ] Project Explorer已出現完整專案結構
-- [ ] `pom.xml`與JRE System Library都使用Java 21
-- [ ] 使用`Spring Boot App`啟動後，Console顯示`Started SbfirstappApplication`
+對目前這個簡單專案而言，兩者通常都能啟動並在`localhost:8080`提供服務；主要差異是 Eclipse／Spring Tools 如何建立及管理啟動設定，而不是 Controller 的執行結果。
 
+## 建立專案檢查表
+
+- [ ] 選擇 `Spring Starter Project`
+- [ ] 專案名稱及 Artifact 設為 `sbfirstapp`
+- [ ] Type 選擇 `Maven`
+- [ ] Packaging 選擇 `Jar`
+- [ ] Java Version 改為 `21`
+- [ ] 加入 `Spring Boot DevTools`
+- [ ] 加入 `Spring Web`
+- [ ] 按 `Finish` 並等待依賴下載完成
+- [ ] Project Explorer 出現 `sbfirstapp`
+- [ ] 找到 `SbfirstappApplication.java`
+- [ ] JRE System Library 顯示 Java 21
+- [ ] `pom.xml` 中的 `<java.version>` 為 `21`

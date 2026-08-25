@@ -1,11 +1,28 @@
 # Spring Boot 圖文學習筆記 10：Swagger／OpenAPI API 文件
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/10_Swagger_OpenAPI_API文件.md)｜[上一章：分層式User CRUD API](09_分層式User_CRUD_API.md)｜[下一章：REST JSON與Thymeleaf模板](11_REST_JSON與Thymeleaf模板.md)
-
-- 整理日期：2026-08-10
 - 範例專案：`sbfirstapp`
 - Swagger UI：`http://localhost:8080/swagger-ui/index.html`
 - OpenAPI JSON：`http://localhost:8080/v3/api-docs`
+
+> 語法速查：[Swagger／OpenAPI](../語法字典/08_Swagger_OpenAPI.md)
+
+## 本章快速索引
+
+- [0. 前置條件與完成結果](#0-前置條件與完成結果)
+- [1. Swagger UI 顏色與 HTTP Method](#1-swagger-ui-顏色與-http-method)
+- [2. Swagger 與 OpenAPI 的差別](#2-swagger-與-openapi-的差別)
+- [3. Maven 依賴](#3-maven-依賴)
+- [4. SwaggerConfig 的工作](#4-swaggerconfig-的工作)
+- [5. Controller 為什麼會自動出現在 Swagger UI？](#5-controller-為什麼會自動出現在-swagger-ui)
+- [6. `@Tag`：替 Controller 分組](#6-tag替-controller-分組)
+- [7. `@Operation`：說明單一 API](#7-operation說明單一-api)
+- [8. `@Parameter`：說明參數](#8-parameter說明參數)
+- [9. 完成後Swagger UI應列出什麼？](#9-完成後swagger-ui應列出什麼)
+- [10. 使用 Swagger UI 測試 API](#10-使用-swagger-ui-測試-api)
+- [11. Swagger 文件不等於測試通過](#11-swagger-文件不等於測試通過)
+- [12. 開發與正式環境注意事項](#12-開發與正式環境注意事項)
+- [常見問題](#常見問題)
+- [本章檢查表](#本章檢查表)
 
 ## 0. 前置條件與完成結果
 
@@ -15,6 +32,8 @@
 - 至少使用`Try it out`成功執行一個GET與一個POST，才能確認文件介面與API都可用。
 
 ## 1. Swagger UI 顏色與 HTTP Method
+
+下圖對照本節的操作位置或執行結果：
 
 ![Swagger UI自動整理多個Controller的API](../圖文版素材_待製作/images/27_Swagger_UI_API總覽.png)
 
@@ -192,6 +211,8 @@ public class UserController {
 `@Tag`只改變文件分組與顯示文字，不會改變 URL。
 
 ## 7. `@Operation`：說明單一 API
+
+下圖對照本節的操作位置或執行結果：
 
 ![UserController使用Tag與Operation註解](../圖文版素材_待製作/images/28_OpenAPI註解_UserController.png)
 
@@ -374,4 +395,3 @@ io.swagger.v3.oas.annotations...
 - [ ] 能使用`Try it out`執行 API
 - [ ] 知道文件成功產生不等於功能已完整測試
 - [ ] 知道目前 User Repository 仍是記憶體 List，不是 JPA
-

@@ -1,9 +1,24 @@
 # Spring Boot 學習筆記 08：HTML 表單與 JSON 資料綁定
 
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
 - HTML：`src/main/resources/static/userform.html`
 - Controller：`SubmitController.java`
+
+> 語法速查：[MVC參數綁定](../語法字典/02_Spring_MVC與REST.md)｜[驗證與JSON](../語法字典/07_驗證_Jackson_Lombok.md)
+
+## 本章快速索引
+
+- [0. 前置條件與兩階段重現方式](#0-前置條件與兩階段重現方式)
+- [1. 本章目的](#1-本章目的)
+- [2. User 模型](#2-user-模型)
+- [3. HTML 表單](#3-html-表單)
+- [4. 使用 ModelAttribute 接收表單](#4-使用-modelattribute-接收表單)
+- [5. 使用 RequestBody 接收 JSON](#5-使用-requestbody-接收-json)
+- [6. ModelAttribute 與 RequestBody 比較](#6-modelattribute-與-requestbody-比較)
+- [7. 銜接第9章：把綁定結果保存至共用Repository](#7-銜接第9章把綁定結果保存至共用repository)
+- [8. 目前驗證的限制](#8-目前驗證的限制)
+- [9. 可直接重現的最小完整版本](#9-可直接重現的最小完整版本)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與兩階段重現方式
 

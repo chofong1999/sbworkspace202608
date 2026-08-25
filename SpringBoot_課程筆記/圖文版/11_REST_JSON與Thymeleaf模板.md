@@ -1,10 +1,29 @@
 # Spring Boot 圖文學習筆記 11：REST JSON與Thymeleaf模板
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/11_REST_JSON與Thymeleaf模板.md)｜[圖文延伸閱讀](延伸閱讀/11_Thymeleaf表達式與常見疑難.md)｜[上一章：Swagger／OpenAPI API文件](10_Swagger_OpenAPI_API文件.md)｜[下一章：REST CRUD進階](12_REST_CRUD進階_參數DTO與統一回應.md)
-
-- 整理日期：2026-08-13
 - 範例專案：`sbrest0810`
 - Java目標版本：17
+
+> 語法速查：[MVC與REST](../語法字典/02_Spring_MVC與REST.md)｜[Thymeleaf](../語法字典/06_Thymeleaf模板語法.md)
+
+## 本章快速索引
+
+- [0. 前置條件、實作順序與完成判定](#0-前置條件實作順序與完成判定)
+- [1. REST JSON與MVC HTML的差別](#1-rest-json與mvc-html的差別)
+- [2. Maven依賴](#2-maven依賴)
+- [3. Book物件轉成JSON](#3-book物件轉成json)
+- [4. 第一個Thymeleaf頁面](#4-第一個thymeleaf頁面)
+- [5. `th:text`、`th:utext`與文字模板](#5-thtextthutext與文字模板)
+- [6. 圖片：`th:src`與靜態資源](#6-圖片thsrc與靜態資源)
+- [7. 條件顯示：`th:if`、`th:switch`與`th:case`](#7-條件顯示thifthswitch與thcase)
+- [8. Session與格式化工具](#8-session與格式化工具)
+- [9. Link URL Expression](#9-link-url-expression)
+- [10. User列表：`th:each`與動態操作網址](#10-user列表theach與動態操作網址)
+- [11. 共用新增／編輯表單](#11-共用新增編輯表單)
+- [12. View Name、Redirect與Flash Attribute](#12-view-nameredirect與flash-attribute)
+- [13. User網頁CRUD路徑](#13-user網頁crud路徑)
+- [14. 完整重現測試](#14-完整重現測試)
+- [15. 常見錯誤](#15-常見錯誤)
+- [16. 本章檢查表](#16-本章檢查表)
 
 ## 0. 前置條件、實作順序與完成判定
 
@@ -111,6 +130,8 @@ GET /thymeleaf
 
 ## 3. Book物件轉成JSON
 
+下圖對照本節的操作位置或執行結果：
+
 ![Book REST API回傳JSON](../圖文版素材_待製作/images/29_Book_REST_API_JSON.png)
 
 *圖1：瀏覽器呼叫GET /api/books後，Jackson把Book物件序列化為包含id、bookName與price的JSON。*
@@ -186,6 +207,8 @@ GET http://localhost:8080/thymeleaf
 
 ## 5. `th:text`、`th:utext`與文字模板
 
+下圖對照本節的操作位置或執行結果：
+
 ![Thymeleaf text與utext輸出比較](../圖文版素材_待製作/images/30_Thymeleaf_text與utext.png)
 
 *圖2：同一段含HTML標籤的字串經th:text會被跳脫並顯示標籤文字，經th:utext才會被瀏覽器當成真正HTML渲染。*
@@ -233,6 +256,8 @@ GET http://localhost:8080/thymeleaf
 
 ## 6. 圖片：`th:src`與靜態資源
 
+下圖對照本節的操作位置或執行結果：
+
 ![th:src載入固定及動態圖片](../圖文版素材_待製作/images/32_Thymeleaf_thsrc靜態與動態圖片.png)
 
 *圖4：第一張圖片使用固定靜態路徑，第二張由Model中的fruitImage組合網址；開發者工具可核對瀏覽器最後收到的src。*
@@ -275,6 +300,8 @@ GET http://localhost:8080/attribute/img
 
 ## 7. 條件顯示：`th:if`、`th:switch`與`th:case`
 
+下圖對照本節的操作位置或執行結果：
+
 ![Thymeleaf條件判斷執行結果](../圖文版素材_待製作/images/33_Thymeleaf_if_switch_case條件判斷.png)
 
 *圖5：isLogin為false時顯示請先登入；role為orange不符合admin或user，因此落入預設case並顯示未知角色。*
@@ -292,7 +319,7 @@ Controller最好傳入真正的boolean：
 model.addAttribute("isLogin", false);
 ```
 
-課堂原始碼傳入字串`"false"`；目前範例能顯示「請先登入」，但用boolean能避免字串轉換規則造成誤解。
+若傳入字串`"false"`，範例仍可能顯示「請先登入」，但使用boolean能避免字串轉換規則造成誤解。
 
 角色分支：
 
@@ -314,6 +341,8 @@ GET http://localhost:8080/attribute/role
 ```
 
 ## 8. Session與格式化工具
+
+下圖對照本節的操作位置或執行結果：
 
 ![Session資料不加入Model仍可讀取](../圖文版素材_待製作/images/36_Session不加入Model仍可讀取.png)
 
@@ -355,6 +384,8 @@ GET http://localhost:8080/attribute/session
 應顯示John Lee、格式化價格與目前日期時間。
 
 ## 9. Link URL Expression
+
+下圖對照本節的操作位置或執行結果：
 
 ![Thymeleaf產生相對網址與查詢參數](../圖文版素材_待製作/images/37_th_href相對網址與查詢參數.png)
 
@@ -407,7 +438,7 @@ Controller通常改用`@RequestParam`接收。
 
 ### 9.3 相對網址
 
-課堂`hyperlink.html`使用：
+範例`hyperlink.html`使用：
 
 ```html
 <a th:href="@{home}">首頁</a>
@@ -419,6 +450,8 @@ Controller通常改用`@RequestParam`接收。
 完整的Request參數類型比較見第12章第7節。
 
 ## 10. User列表：`th:each`與動態操作網址
+
+下圖對照本節的操作位置或執行結果：
 
 ![Thymeleaf使用者列表和動態操作連結](../圖文版素材_待製作/images/38_Thymeleaf使用者列表與動態操作連結.png)
 
@@ -464,7 +497,7 @@ public String listUsers(Model model) {
 </form>
 ```
 
-普通`<a>`只送GET，因此課堂刪除端點使用POST表單對應`@PostMapping`。正式應用仍需處理身分、權限與CSRF，不能只靠瀏覽器確認視窗。
+普通`<a>`只送GET，因此範例刪除端點使用POST表單對應`@PostMapping`。正式應用仍需處理身分、權限與CSRF，不能只靠瀏覽器確認視窗。
 
 測試：
 
@@ -475,6 +508,8 @@ GET http://localhost:8080/web/users
 啟動後應先看到三筆記憶體種子資料；ID是UUID，重新啟動後可能改變。
 
 ## 11. 共用新增／編輯表單
+
+下圖對照本節的操作位置或執行結果：
 
 ![共用表單依isEdit切換action](../圖文版素材_待製作/images/42_Thymeleaf三元運算動態form_action.png)
 
@@ -519,6 +554,8 @@ return "user/form";
 `*{name}`在這個form範圍內以`${user}`為基準；`th:field`會協助產生`name`、`value`等資料綁定所需屬性。複雜業務邏輯仍應放在Controller或Service，不放進模板Expression。
 
 ## 12. View Name、Redirect與Flash Attribute
+
+下圖對照本節的操作位置或執行結果：
 
 ![Spring MVC View Name與redirect流程](../圖文版素材_待製作/images/39_SpringMVC_ViewName與Redirect回傳差異.png)
 
@@ -572,9 +609,11 @@ redirectAttributes.addFlashAttribute(
 | 處理編輯 | `POST /web/users/{id}/edit` | 更新後Redirect詳情 |
 | 刪除 | `POST /web/users/{id}/delete` | 刪除後Redirect列表 |
 
-資料仍位於第9章的記憶體Repository。重新啟動應用程式後，課堂期間新增的User會消失，並重新載入種子資料。
+資料仍位於第9章的記憶體Repository。重新啟動應用程式後，執行期間新增的User會消失，並重新載入種子資料。
 
 ## 14. 完整重現測試
+
+下圖對照本節的操作位置或執行結果：
 
 ![新增使用者後回到列表](../圖文版素材_待製作/images/41_Thymeleaf新增使用者後列表結果.png)
 

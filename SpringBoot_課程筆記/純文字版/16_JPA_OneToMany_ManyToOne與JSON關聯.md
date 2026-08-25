@@ -1,8 +1,25 @@
 # Spring Boot 學習筆記 16：JPA `OneToMany`、`ManyToOne`與JSON關聯
 
-- 整理日期：2026-08-13
 - 範例專案：`sbonemany0813`
 - API前綴：`http://localhost:8080/api/departments`
+
+> 語法速查：[JPA關聯](../語法字典/04_JPA關聯映射.md)｜[Jackson](../語法字典/07_驗證_Jackson_Lombok.md)
+
+## 本章快速索引
+
+- [0. 前置條件、實作順序與完成判定](#0-前置條件實作順序與完成判定)
+- [1. 關聯的資料庫結構](#1-關聯的資料庫結構)
+- [2. Employee：`@ManyToOne`擁有外鍵](#2-employeemanytoone擁有外鍵)
+- [3. Department：`@OneToMany`反向集合](#3-departmentonetomany反向集合)
+- [4. 建立雙向關聯時必須同步兩端](#4-建立雙向關聯時必須同步兩端)
+- [5. 雙向關聯為何會造成JSON遞迴](#5-雙向關聯為何會造成json遞迴)
+- [6. 另一組映射：`@JsonManagedReference`與`@JsonBackReference`](#6-另一組映射jsonmanagedreference與jsonbackreference)
+- [7. Repository查詢與JPA進階閱讀](#7-repository查詢與jpa進階閱讀)
+- [8. Controller與目前公開的API](#8-controller與目前公開的api)
+- [9. MySQL設定與種子資料](#9-mysql設定與種子資料)
+- [10. 重現測試](#10-重現測試)
+- [11. 常見錯誤](#11-常見錯誤)
+- [12. 本章檢查表](#12-本章檢查表)
 
 ## 0. 前置條件、實作順序與完成判定
 
@@ -188,7 +205,7 @@ public void addEmployee(Employee employee) {
 
 之後只呼叫`department.addEmployee(employee)`，避免漏設其中一端。
 
-課堂初始化使用`List.of(...)`，它建立不可修改List，第一次持久化已成功；若後續還要對集合執行`add()`或`remove()`，應改用`new ArrayList<>(...)`或直接使用Entity中已建立的`ArrayList`。
+範例初始化使用`List.of(...)`，它建立不可修改List，第一次持久化已成功；若後續還要對集合執行`add()`或`remove()`，應改用`new ArrayList<>(...)`或直接使用Entity中已建立的`ArrayList`。
 
 <a id="jackson-ignore-example"></a>
 ## 5. 雙向關聯為何會造成JSON遞迴
@@ -389,7 +406,7 @@ Content-Type: application/json
 
 再執行`GET /api/departments`。若該ID原本是MIS，名稱會變成MeMe，原本兩名員工仍保留。
 
-課堂結果畫面中的`MeMe`不是初始化器預設值，而是部門名稱經PUT更新後的狀態。這可同時驗證更新成功及關聯員工沒有被清除。
+範例結果畫面中的`MeMe`不是初始化器預設值，而是部門名稱經PUT更新後的狀態。這可同時驗證更新成功及關聯員工沒有被清除。
 
 ### 10.4 SQL成功判定
 
@@ -403,8 +420,6 @@ left join employees e
 ```
 
 實際別名與選取欄位由Hibernate決定，不必逐字相同；重點是只有部門主查詢並含對employees的Left Join。
-
-
 
 ## 11. 常見錯誤
 

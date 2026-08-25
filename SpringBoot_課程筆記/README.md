@@ -4,9 +4,9 @@
 
 本筆記以學習者為讀者，章節依編號延續。實作章會列出前置條件、檔案位置、操作順序、測試方式與成功判定；若章節沿用前一章的專案，必須先完成所列前置章節。
 
-筆記中的「範例實際狀態」用來區分已存在的課堂程式與建議改良，不是整理工作的回報。要判定操作成功，必須以該章列出的HTTP結果、Console訊息、檔案產物或畫面條件驗證，不能只以「程式碼已貼上」判定。
+筆記中的「範例實際狀態」用來區分可直接重現的程式與可選改善，不是整理工作的回報。要判定操作成功，必須以該章列出的HTTP結果、Console訊息、檔案產物或畫面條件驗證，不能只以「程式碼已貼上」判定。
 
-本機保存的課堂專案可作為完整原始碼對照；讀者若沒有這些專案，應依各章的前置條件從Spring Initializr建立專案，再依章節順序實作。
+若同時保留範例專案，可用來核對完整原始碼；讀者即使沒有這些專案，也能依各章前置條件建立專案並依序實作。
 
 ## 資料夾可獨立使用
 
@@ -14,10 +14,10 @@
 
 - 課程文件、語法字典、延伸閱讀與圖片都在本資料夾內。
 - 文件間連結與圖片引用使用資料夾內的相對路徑，不依賴交接資料或外部圖片位置。
-- `sbfirstapp`、`sbemployee0812`等課堂專案名稱與本機位置是原始碼對照資訊；沒有這些專案仍可依筆記步驟自行建立。
+- `sbfirstapp`、`sbemployee0812`等名稱只是範例原始碼的辨識資訊；沒有這些專案仍可依筆記步驟自行建立。
 - 複製時要複製整個資料夾，不要只複製單一Markdown檔，否則該頁引用的圖片與相關章節可能缺失。
 
-目前筆記包含語法字典、純文字版、完整圖文版、原始截圖素材與老師教材封存：
+目前筆記包含語法字典、純文字版、正式圖文版、原始截圖素材與教材封存附錄：
 
 ## 1. 語法字典
 
@@ -80,6 +80,7 @@
 - [第13章：JPA對應既有資料表的Coffee案例](純文字版/延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)
 - [第14章：Git與Render部署故障排查](純文字版/延伸閱讀/14_Git與Render部署故障排查.md)
 - [第16章：JPA查詢效能、批次更新與關聯風險](純文字版/延伸閱讀/16_JPA查詢效能_批次更新與關聯風險.md)
+- [第32章：React useEffect與Fetch穩定性](純文字版/延伸閱讀/32_React_useEffect與Fetch穩定性.md)
 
 新內容會依學習順序新增章節；與既有主題重疊時則修訂原章，避免同一知識分散在多份文件。
 
@@ -118,104 +119,83 @@
 
 位置：`圖文版/`
 
-圖文版保留純文字主章的完整操作內容，再依教學價值加入課堂截圖、圖說與流程圖：
+圖文版以已驗證的純文字主章為基礎，只在圖片能增加操作辨識、結果證據或觀念理解時加入；沒有必要圖片的章節仍保留完整文字與程式碼，不以圖片數量判定完成度。
+
+- [JavaScript、jQuery與React課程功能快速索引](圖文版/00_JavaScript功能快速索引.md)
 
 1. [環境設定](圖文版/01_環境設定.md)
-2. [建立第一個Spring Boot專案](圖文版/02_建立第一個SpringBoot專案.md)
-3. [Maven打包與執行JAR](圖文版/03_Maven打包與執行JAR.md)
-4. [使用Spring Initializr建立專案](圖文版/04_使用SpringInitializr建立專案.md)
-5. [Whitelabel 404與套件掃描](圖文版/05_Whitelabel404與套件掃描.md)
-6. [介面多實作與Qualifier依賴注入](圖文版/06_介面多實作與Qualifier依賴注入.md)
-7. [Component、Configuration與Bean](圖文版/07_Component_Configuration與Bean.md)
-8. [HTML表單與JSON資料綁定](圖文版/08_HTML表單與JSON資料綁定.md)
-9. [分層式User CRUD API](圖文版/09_分層式User_CRUD_API.md)
-10. [Swagger／OpenAPI API文件](圖文版/10_Swagger_OpenAPI_API文件.md)
+2. [建立第一個專案](圖文版/02_建立第一個SpringBoot專案.md)
+3. [Maven 打包與執行 JAR](圖文版/03_Maven打包與執行JAR.md)
+4. [使用 Spring Initializr 建立專案](圖文版/04_使用SpringInitializr建立專案.md)
+5. [Whitelabel 404 與套件掃描](圖文版/05_Whitelabel404與套件掃描.md)
+6. [介面、多實作與 Qualifier 依賴注入](圖文版/06_介面多實作與Qualifier依賴注入.md)
+7. [Component、Configuration 與 Bean](圖文版/07_Component_Configuration與Bean.md)
+8. [HTML 表單與 JSON 資料綁定](圖文版/08_HTML表單與JSON資料綁定.md)
+9. [分層式 User CRUD API](圖文版/09_分層式User_CRUD_API.md)
+10. [Swagger／OpenAPI API 文件](圖文版/10_Swagger_OpenAPI_API文件.md)
 11. [REST JSON與Thymeleaf模板](圖文版/11_REST_JSON與Thymeleaf模板.md)
-12. [REST CRUD進階、參數DTO與統一回應](圖文版/12_REST_CRUD進階_參數DTO與統一回應.md)
+12. [REST CRUD進階、參數、DTO與統一回應](圖文版/12_REST_CRUD進階_參數DTO與統一回應.md)
 13. [Spring Data JPA與MySQL](圖文版/13_Spring_Data_JPA與MySQL.md)
-14. [Spring Data JPA、SQLite、Docker與Render部署](圖文版/14_Spring_Data_JPA與SQLite_Docker_Render部署.md)
-15. [Spring Data JPA查詢方法、Query與分頁](圖文版/15_Spring_Data_JPA查詢方法_Query與分頁.md)
-16. [JPA OneToMany、ManyToOne與JSON關聯](圖文版/16_JPA_OneToMany_ManyToOne與JSON關聯.md)
+14. [Spring Data JPA、SQLite與Docker／Render部署](圖文版/14_Spring_Data_JPA與SQLite_Docker_Render部署.md)
+15. [Spring Data JPA查詢方法、`@Query`與分頁](圖文版/15_Spring_Data_JPA查詢方法_Query與分頁.md)
+16. [JPA `OneToMany`、`ManyToOne`與JSON關聯](圖文版/16_JPA_OneToMany_ManyToOne與JSON關聯.md)
+17. [Book API的DTO、Bean Validation與例外處理](圖文版/17_Book_API的DTO_Bean_Validation與例外處理.md)
+18. [VS Code首次設定、終端機與Live Server](圖文版/18_VSCode首次設定_終端機與LiveServer.md)
+19. [HTML、CSS與JavaScript基礎](圖文版/19_HTML_CSS與JavaScript基礎.md)
+20. [JavaScript變數、型別、條件與迴圈](圖文版/20_JavaScript變數型別條件與迴圈.md)
+21. [JavaScript陣列、物件與JSON](圖文版/21_JavaScript陣列_物件與JSON.md)
+22. [JavaScript BOM：視窗、頁面導向與定時器](圖文版/22_JavaScript_BOM視窗導向與定時器.md)
+23. [JavaScript DOM：元素選取、節點與動態修改](圖文版/23_JavaScript_DOM元素選取_節點與動態修改.md)
+24. [JavaScript表單事件與送出驗證](圖文版/24_JavaScript表單事件與送出驗證.md)
+25. [jQuery：DOM操作、事件與樣式](圖文版/25_jQuery_DOM操作_事件與樣式.md)
+26. [jQuery AJAX與Spring Boot前後端分離](圖文版/26_jQuery_AJAX與SpringBoot前後端分離.md)
+27. [jQuery AJAX：JSON資料來源與HTTP狀態處理](圖文版/27_jQuery_AJAX_JSON資料來源與HTTP狀態處理.md)
+28. [JavaScript現代語法與Fetch API](圖文版/28_JavaScript現代語法與Fetch_API.md)
+29. [jQuery員工CRUD與Spring Boot JPA串接](圖文版/29_jQuery員工CRUD與SpringBoot_JPA串接.md)
+30. [React與Vite：JSX、元件與Props](圖文版/30_React_Vite_JSX元件與Props.md)
+31. [React列表、useState與受控表單](圖文版/31_React列表_useState與受控表單.md)
+32. [React TodoList、LoginForm與useEffect API資料擷取](圖文版/32_React_TodoList_LoginForm與useEffect_API資料擷取.md)
 
 ### 圖文延伸閱讀
 
-- [第11章：Thymeleaf表達式與常見疑難](圖文版/延伸閱讀/11_Thymeleaf表達式與常見疑難.md)
-- [第13章：JPA對應既有資料表的Coffee案例](圖文版/延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)
-- [第14章：Git與Render部署故障排查](圖文版/延伸閱讀/14_Git與Render部署故障排查.md)
-- [第16章：JPA查詢效能、批次更新與關聯風險](圖文版/延伸閱讀/16_JPA查詢效能_批次更新與關聯風險.md)
+- [第11章延伸閱讀：Thymeleaf表達式與常見疑難](圖文版/延伸閱讀/11_Thymeleaf表達式與常見疑難.md)
+- [第13章延伸閱讀：JPA對應既有資料表的Coffee案例](圖文版/延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)
+- [第14章延伸閱讀：Git與Render部署故障排查](圖文版/延伸閱讀/14_Git與Render部署故障排查.md)
+- [第16章延伸閱讀：JPA查詢效能、批次更新與關聯風險](圖文版/延伸閱讀/16_JPA查詢效能_批次更新與關聯風險.md)
+- [第32章延伸閱讀：React useEffect與Fetch穩定性](圖文版/延伸閱讀/32_React_useEffect與Fetch穩定性.md)
 
 ## 4. 圖文版素材
 
 位置：`圖文版素材_待製作/`
 
-此處保存使用者提供的61張課堂原始截圖，供圖文版引用及日後重製衍生圖：
+此處保存61張原始截圖，供圖文版引用及日後重製衍生圖：
 
 - 圖片：`圖文版素材_待製作/images/`
 - 圖片索引：`圖文版素材_待製作/README.md`
 
 原圖保持不變；若後續需要裁切或標記，使用另存的衍生圖並保留來源對照。
 
-## 5. 老師教材
+## 5. 附錄：教材封存
 
 位置：`老師教材/`
 
-- [依週次與主題查找老師講義](老師教材/README.md)
-- `老師教材/原檔/`保存教室暫存區 `week1`～`week5` 根目錄的35份Markdown／PDF講義。
+- [依週次與主題查找教材](老師教材/README.md)
+- `老師教材/原檔/`保存35份Markdown／PDF參考講義。
 - 原檔副本維持原檔名與原內容；分類說明只寫在外層索引。
 - `老師教材/原檔_SHA256.txt`可驗證封存副本是否遭到修改。
+- 此附錄不是完成課程實作的必要條件，主章不得依賴教室網路、暫存區或特定電腦路徑。
 
-## 課堂原始碼
+## 範例專案名稱
 
-以下課堂專案是本機原始碼對照來源，不是閱讀筆記的必要依賴：
+部分章節會提到下列範例專案名稱，方便辨認案例來源；讀者不需要特定電腦、網路磁碟或固定的絕對路徑，也能依各章步驟自行建立相同成果：
 
-`C:\sbworkspace202608\sbfirstapp`
+- `sbfirstapp`：第一個Spring Boot與依賴注入範例。
+- `mysecondapp`：Spring Initializr與Thymeleaf範例。
+- `sbrest0810`、`sbrestcrud0807`、`sbrest0722`：REST、記憶體CRUD與參數處理範例。
+- `sbrestjpa0811`、`sbjpacoffee0811`、`sbjpa0812`：Spring Data JPA、MySQL與SQLite範例。
+- `sbemployee0812`、`sbonemany0813`：查詢方法與Entity關聯範例。
+- `sbemployeetest`：jQuery員工CRUD對接Spring Boot JPA後端。
+- `sbjpa-SQLite-0812`：Docker與Render部署範例。
+- `my-react-app`、`react-day1`：React入門、State、表單與API資料擷取範例。
 
-`C:\sbworkspace202608\mysecondapp`
-
-`C:\sbworkspace202608\sbrest0810`
-
-`C:\sbworkspace202608\sbrestcrud0807`
-
-`C:\sbworkspace202608\sbrest0722`（早期記憶體User CRUD、Request參數與統一回應對照）
-
-`C:\sbworkspace202608\sbrestjpa0811`
-
-`C:\sbworkspace202608\sbjpacoffee0811`
-
-`C:\sbworkspace202608\sbjpa0812`（SQLite版Spring Data JPA課堂專案）
-
-`C:\sbworkspace202608\sbemployee0812`（JPA衍生查詢、`@Query`與分頁）
-
-`C:\sbworkspace202608\sbonemany0813`（Department／Employee一對多關聯）
-
-`C:\sbworkspace202608\sbemployeetest`（jQuery員工CRUD對接的Spring Boot JPA後端）
-
-部署用Git專案另位於：
-
-`C:\git\sbjpa-SQLite-0812`（含Dockerfile與Render部署版本）
-
-老師的JavaScript、jQuery與React課堂原檔位於：
-
-`\\Fs2\306_教室暫存區\職訓202607\week6\day1`～`day4`
-
-`\\Fs2\306_教室暫存區\職訓202607\week7\day5`（jQuery員工CRUD）
-
-`\\Fs2\306_教室暫存區\職訓202607\week7\my-react-app`（React入門實作）
-
-`\\Fs2\306_教室暫存區\職訓202607\week7\react-day1`（React TodoList、LoginForm與useEffect API實作）
-
-整理第19～32章時以老師原檔為主，來源只讀、不修改。
-
-可執行的本機工作副本位於`C:\jscode`，React專案包含`C:\jscode\my-react-app`與`C:\jscode\react-day1`。工作副本含部分個人修改與練習，內容不一定與老師原檔完全相同；筆記若採用個人延伸，必須明確標示。
-
-主題對照：
-
-- `day1`：第19章HTML／CSS／初始JavaScript，以及第20章JavaScript語言基礎。
-- `day2`：第21章Array／Object／JSON、第22章BOM，以及第23章DOM。
-- `day3`：第23章DOM Attribute、動態Style、節點與事件；第24章表單送出驗證；第25章jQuery DOM操作；第26章jQuery AJAX與Spring Boot前後端分離。
-- `day4`：第27章jQuery AJAX讀取本機JSON、外部API及自己的Spring Boot商品API，並處理HTTP狀態；第28章整理Arrow Function、解構、Spread／Rest與Fetch API。
-- `week7/day5`與`sbemployeetest`：第29章以jQuery呼叫Spring Boot JPA員工CRUD。
-- `week7/my-react-app`：第30章React／Vite／JSX／元件／Props；第31章清單、State、事件與受控表單。
-- `week7/react-day1`：第32章TodoList、LoginForm、`useEffect`與Fetch API資料擷取。
-
-整理筆記時，若截圖內容不完整或需要核對實際設定，可以直接查看這些專案的`src/`、`pom.xml`及其他相關原始檔；除非使用者另行要求，不修改專案程式碼。
+這些名稱只是參考，不是筆記的外部依賴。所有必要操作、程式碼與驗證條件應直接寫在相應章節內。

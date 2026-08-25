@@ -86,6 +86,10 @@ DOM是瀏覽器把HTML文件解析後建立的物件結構。JavaScript可以透
 
 ## 4. `onclick`：按鈕的點擊事件
 
+![DOM修改CSS前](../圖文版素材_待製作/images/58_DOM按鈕事件_修改CSS前.png)
+
+*圖1：按鈕尚未點擊時，目標段落仍使用預設樣式。*
+
 ```html
 <button onclick="changeCSS()">Change CSS</button>
 ```
@@ -151,6 +155,10 @@ document.querySelector('p');      // 第一個p元素
 若要取得所有符合元素，應使用`document.querySelectorAll(...)`；`querySelector(...)`只回傳第一個。
 
 ## 7. `.style`：修改元素的inline style
+
+![DOM修改CSS後](../圖文版素材_待製作/images/59_DOM按鈕事件_修改CSS後.png)
+
+*圖2：事件函式取得元素後，透過style更新文字色、背景色與字體大小。*
 
 ```javascript
 head2.style.color = "red";

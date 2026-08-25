@@ -1,8 +1,24 @@
 # Spring Boot 學習筆記 07：Component、Configuration 與 Bean
 
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
 - 測試路徑前綴：`http://localhost:8080/api/util`
+
+> 語法速查：[Bean與設定類別](../語法字典/01_Spring核心與依賴注入.md)
+
+## 本章快速索引
+
+- [0. 前置條件與重現步驟](#0-前置條件與重現步驟)
+- [1. 本章範例的目的](#1-本章範例的目的)
+- [2. 相關專案結構](#2-相關專案結構)
+- [3. 使用 Component 建立 Bean](#3-使用-component-建立-bean)
+- [4. Component 與 Service 的差異](#4-component-與-service-的差異)
+- [5. 使用 Configuration 與 Bean](#5-使用-configuration-與-bean)
+- [6. 注入 UtilService 與 appInfo](#6-注入-utilservice-與-appinfo)
+- [7. 為什麼 String 要搭配 Qualifier？](#7-為什麼-string-要搭配-qualifier)
+- [8. 完整 UtilController](#8-完整-utilcontroller)
+- [9. API 與結果](#9-api-與結果)
+- [10. 被註解的 RestTemplate Bean](#10-被註解的-resttemplate-bean)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與重現步驟
 

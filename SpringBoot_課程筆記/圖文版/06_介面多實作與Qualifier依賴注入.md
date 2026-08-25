@@ -1,10 +1,24 @@
 # Spring Boot 圖文學習筆記 06：介面、多實作與 Qualifier 依賴注入
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/06_介面多實作與Qualifier依賴注入.md)｜[上一章：Whitelabel 404與套件掃描](05_Whitelabel404與套件掃描.md)｜[下一章：Component、Configuration與Bean](07_Component_Configuration與Bean.md)
-
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
-- 原始碼位置：`C:\sbworkspace202608\sbfirstapp\src\main\java\com\example\demo`
+- Java程式位置：`sbfirstapp/src/main/java/com/example/demo/`
+
+> 語法速查：[依賴注入](../語法字典/01_Spring核心與依賴注入.md)
+
+## 本章快速索引
+
+- [0. 前置條件與重現步驟](#0-前置條件與重現步驟)
+- [1. 本章範例的目的](#1-本章範例的目的)
+- [2. 專案結構](#2-專案結構)
+- [3. 定義共用介面](#3-定義共用介面)
+- [4. Email 實作](#4-email-實作)
+- [5. SMS 實作](#5-sms-實作)
+- [6. 為什麼需要 Qualifier？](#6-為什麼需要-qualifier)
+- [7. 建構子注入](#7-建構子注入)
+- [8. 完整 Controller](#8-完整-controller)
+- [9. API 路徑與預期結果](#9-api-路徑與預期結果)
+- [10. Qualifier 與 Primary 的差異](#10-qualifier-與-primary-的差異)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與重現步驟
 
@@ -156,6 +170,8 @@ public NotificationController(
 
 ## 7. 建構子注入
 
+下圖對照本節的操作位置或執行結果：
+
 ![NotificationController使用Qualifier注入兩個實作](../圖文版素材_待製作/images/23_NotificationQualifier依賴注入.png)
 
 *圖1：Controller的兩個建構子參數型別同為NotificationService，利用不同Qualifier精確選取Email與SMS實作。*
@@ -280,4 +296,3 @@ NotificationController.sendSms()
 - [ ] 依賴欄位使用`private final`
 - [ ] 測試`/api/notification/email`
 - [ ] 測試`/api/notification/sms`
-

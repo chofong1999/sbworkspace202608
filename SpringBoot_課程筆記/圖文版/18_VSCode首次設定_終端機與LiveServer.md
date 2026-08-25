@@ -1,4 +1,4 @@
-# Spring Boot 學習筆記 18：VS Code首次設定、終端機與Live Server
+# Spring Boot 圖文學習筆記 18：VS Code首次設定、終端機與Live Server
 
 - 使用環境：Windows、Visual Studio Code、JDK 21、Node.js／npm
 - 適用情境：第一次使用VS Code進行Java、Spring Boot或基礎HTML練習
@@ -88,6 +88,10 @@ Copilot不是Java、Spring Boot或Live Server正常執行的必要條件。只�
 3. 選擇`Select Default Profile`。
 
 ### 3.2 如何選擇可用的終端機？
+
+![VS Code預設終端與npm設定過程](../圖文版素材_待製作/images/52_VSCode_WindowsPowerShell預設終端與npm設定.png)
+
+*圖1：畫面示範在兩個PowerShell Profile中選擇可正常啟動者，並處理npm拼字與執行原則問題；實際路徑及版本依電腦而異。*
 
 Windows電腦可能同時列出名稱相近、但來源路徑不同的PowerShell：
 

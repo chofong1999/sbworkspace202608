@@ -1,6 +1,6 @@
 # Spring Boot 圖文版素材索引
 
-這個資料夾保存課堂原始截圖。純文字版與圖文版入口位於[`../README.md`](../README.md)。目前已完成16個圖文主章與4份圖文延伸閱讀；61張原圖全部保留，正式文章目前共產生51次圖片引用，因第8、9章共用兩張跨章流程圖而多出兩次引用。第17～26章正式圖文版尚未製作，新原圖先保存在本素材庫。
+這個資料夾保存61張原始截圖。純文字版與正式圖文版入口位於[`../README.md`](../README.md)。目前32個圖文主章與5份圖文延伸閱讀均已建立；正式文章共有63次圖片引用，其中第8、9章共用兩張圖片，因此61張原圖仍全部保留且可追溯。
 
 ## 第一章：環境設定
 
@@ -74,7 +74,7 @@
 4. `32_Thymeleaf_thsrc靜態與動態圖片.png`：`th:src`載入固定芒果及由 Model 隨機選擇的動態水果圖片，並顯示瀏覽器收到的最終`src`。
 5. `33_Thymeleaf_if_switch_case條件判斷.png`：`isLogin="false"`顯示「請先登入」；`role=orange`未符合 admin／user，因此進入`th:case="*"`顯示「未知角色」。
 6. `34_Thymeleaf內建物件舊語法參考.png`（圖文延伸閱讀）：舊式`#request`／`#session`與集合、日期、字串、數字工具物件的教材參考。
-7. `35_HttpSession加入Model寫法.png`（圖文延伸閱讀）：老師以 HttpSession 保存 user，再把 Session 物件加入 Model 的示範寫法。
+7. `35_HttpSession加入Model寫法.png`（圖文延伸閱讀）：範例以 HttpSession 保存 user，再把 Session 物件加入 Model 的示範寫法。
 8. `36_Session不加入Model仍可讀取.png`：兩個`model.addAttribute(...)`均註解後，`${session['user']}`仍成功顯示 John Lee，證明 Thymeleaf 自動提供 Session namespace。
 9. `37_th_href相對網址與查詢參數.png`：`th:href`產生首頁連結及帶`userId`查詢參數的使用者詳情連結；目前兩者都是沒有開頭斜線的相對網址。
 10. `38_Thymeleaf使用者列表與動態操作連結.png`：`/web/users`以`th:each`顯示三筆記憶體使用者，並為每列產生詳情、編輯及 POST 刪除操作。
@@ -95,40 +95,40 @@
 2. `48_Category_Product_JSON與N加1查詢.png`（圖文延伸閱讀）：`GET /api/categories`回傳3C、Fruit及各自的Product；Controller目前呼叫`findAll()`，Console可見針對兩個Category分別執行`where category_id=?`的Product查詢，用來辨認N+1。
 3. `49_Modifying依類別批次清空庫存.png`（圖文延伸閱讀）：`GET /api/products/fruit`回傳affected rows為2；Console顯示Hibernate依Category名稱產生Join Update，Workbench顯示當下四筆商品庫存皆為0。此圖只能證明fruit呼叫更新兩筆，不能證明另外兩筆也是同一次Request所改。
 
-## 第十七章待製作：Book API的DTO、Bean Validation與例外處理
+## 第十七章：Book API的DTO、Bean Validation與例外處理
 
-1. `50_BookCreateRequest驗證400錯誤.png`：原始截圖。左側顯示Create Request DTO的Constraint，右側Postman以空白書名及錯誤ISBN呼叫POST後取得400與兩項欄位錯誤；保留供日後製作第17章圖文版。
-2. `51_BookNotFoundException_404_JSON.png`：原始截圖。Service以`orElseThrow`拋出`BookNotFoundException`，瀏覽器查詢不存在的id 180後取得統一格式的404 JSON；保留供日後製作第17章圖文版。
+1. `50_BookCreateRequest驗證400錯誤.png`：原始截圖。左側顯示Create Request DTO的Constraint，右側Postman以空白書名及錯誤ISBN呼叫POST後取得400與兩項欄位錯誤；已用於第17章正式圖文版。
+2. `51_BookNotFoundException_404_JSON.png`：原始截圖。Service以`orElseThrow`拋出`BookNotFoundException`，瀏覽器查詢不存在的id 180後取得統一格式的404 JSON；已用於第17章正式圖文版。
 
-## 第十八章待製作：VS Code首次設定、終端機與Live Server
+## 第十八章：VS Code首次設定、終端機與Live Server
 
 1. `52_VSCode_WindowsPowerShell預設終端與npm設定.png`：原始截圖。畫面上方顯示`Select Default Profile`中的Windows PowerShell與WindowsApps PowerShell路徑；下方依序保留`-npm`拼字錯誤、`npm.ps1`執行原則錯誤、設定CurrentUser RemoteSigned及`npm -v`成功輸出11.16.0的完整脈絡。此圖只證明本次教室電腦的選擇與結果，不代表所有Windows電腦都必須使用相同Shell。
 
-## 第十九章待製作：HTML、CSS與JavaScript基礎
+## 第十九章：HTML、CSS與JavaScript基礎
 
 1. `53_HTML_CSS外部樣式與inline覆寫.png`：原始截圖。右側`first.html`以`<link href="basis.css">`載入外部樣式，第一個`h1`另設inline藍字；左側執行結果顯示第一個標題藍字綠底、第二個標題紅字綠底，以及使用瀏覽器預設樣式的`h2`、`h3`與`p`。
 2. `54_JavaScript_for迴圈加總與alert.png`：原始截圖。`html_js.html`把1到10累加至`value`，再執行`console.log(value)`與`alert(value)`；瀏覽器alert顯示55。
 3. `55_ChromeDevTools_Console輸出55.png`：原始截圖。頁面正文只顯示`Execute JavaScript`，DevTools Console顯示`55`及來源`html_js.html:16`，用來區分網頁內容與Console輸出。
-4. `56_Node執行first_js輸出55.png`：原始截圖。`first.js`包含1到10加總及`console.log(value)`；Terminal由`C:\jscode`進入`day1`後執行`node first.js`，成功輸出55，用來區分Node.js執行外部`.js`檔與瀏覽器執行HTML內嵌Script。
+4. `56_Node執行first_js輸出55.png`：原始截圖。`first.js`包含1到10加總及`console.log(value)`；Terminal進入`day1`後執行`node first.js`，成功輸出55，用來區分Node.js執行外部`.js`檔與瀏覽器執行HTML內嵌Script。
 5. `57_CSS_Class_ID選擇器與背景圖片.png`：原始截圖。`selectors.html`以內部CSS示範`.red`、`.blue`與`#num`，並在`body`的inline style載入`./images/img28.jpg`、設定`cover`及`no-repeat`；執行結果顯示Class與ID配色，`id="num2"`因未匹配`#num`而保持預設黑色。
 
-## 第二十三章待製作：JavaScript DOM元素選取、節點與動態修改
+## 第二十三章：JavaScript DOM元素選取、節點與動態修改
 
 1. `58_DOM按鈕事件_修改CSS前.png`：原始截圖。`DOM_ChangeCSS.html`以`onclick="changeCSS()"`綁定按鈕事件，函式透過`document.querySelector('#head2')`取得段落；畫面保留按鈕尚未按下時的預設樣式。
 2. `59_DOM按鈕事件_修改CSS後.png`：原始截圖。按下按鈕後，JavaScript透過元素的`.style`設定紅色文字、黃色背景及`30px`字體；畫面顯示DOM變更後的結果。
 
-## 第二十五章待製作：jQuery DOM操作、事件與樣式
+## 第二十五章：jQuery DOM操作、事件與樣式
 
 1. `60_jQuery_wrapAll移動不相鄰元素.png`：原始截圖。本機練習把兩個不相鄰的`.inner`元素交給`.wrapAll()`；共同包裝後，中間未被選取的`Hello X`移到容器下方，用來對照`.wrap()`、`.wrapAll()`與`.addClass()`的結構差異。
 
-## 第二十六章待製作：jQuery AJAX與Spring Boot前後端分離
+## 第二十六章：jQuery AJAX與Spring Boot前後端分離
 
 1. `61_SpringBoot_BasicApi_CORS與GET端點.png`：原始截圖。畫面拍攝時`sbbasicapi0820`後端只有`GET /api/first`與`@CrossOrigin`，屬於前後端分離實作的中途狀態；後續原始碼已再加入`Info`及POST端點，因此此圖不能單獨代表最終完整版本。
 
 ## 後續整理規則
 
 - 新的純文字內容持續更新至`../純文字版/`。
-- 使用者提供的新截圖依章節順序重新命名，原圖完整保存至`images/`；不得直接覆寫、裁切或標記這些原圖。
+- 新增的原始截圖依章節順序重新命名，原圖完整保存至`images/`；不得直接覆寫、裁切或標記這些原圖。
 - 圖片是否納入圖文版以教學價值為準，不要求每張原圖都使用；重複、無關或無法補充說明的截圖可以不放入文章。
 - 需要裁切、加框、箭頭、編號或文字標示時，另存為衍生圖，並記錄來源原圖與處理目的，確保日後可追溯及重做。
 - 裁切或標記不得遮蔽操作路徑、關鍵程式碼、網址、錯誤訊息或執行結果；每張採用圖片都要有能說明其用途的圖說與替代文字。

@@ -1,6 +1,16 @@
 # 第11章延伸閱讀：Thymeleaf表達式與常見疑難
 
-本文件補充第11章中容易混淆、但不影響首次完成實作的觀念。建議先完成[第11章主章](../11_REST_JSON與Thymeleaf模板.md)，遇到相應問題時再查閱本文件。
+## 本頁快速索引
+
+- [1. `th:text`為何會讓原本的`Greeting：`消失？](#1-thtext為何會讓原本的greeting消失)
+- [2. Thymeleaf Standard Expression不是單一種語法](#2-thymeleaf-standard-expression不是單一種語法)
+- [3. `@{...}`可以放在哪裡？](#3-可以放在哪裡)
+- [4. `*{...}`何時才成立？](#4-何時才成立)
+- [5. Model與Session不只是兩種傳值寫法](#5-model與session不只是兩種傳值寫法)
+- [6. View Name與Redirect為何都寫在`return`後面？](#6-view-name與redirect為何都寫在return後面)
+- [7. 編輯器中的色塊不是程式碼](#7-編輯器中的色塊不是程式碼)
+- [8. 快速選擇表](#8-快速選擇表)
+- [9. 延伸閱讀完成判定](#9-延伸閱讀完成判定)
 
 ## 1. `th:text`為何會讓原本的`Greeting：`消失？
 
@@ -53,7 +63,7 @@
 | `${...}` | Variable Expression | Model、Session等Context資料 | 物件、數字、字串、布林值等 | 需要讀取資料或進行條件判斷 |
 | `*{...}` | Selection Variable Expression | 最近一層`th:object`選定的物件 | 該物件的屬性值 | 表單欄位綁定或集中存取同一物件 |
 | `@{...}` | Link URL Expression | 路徑及參數 | 經Context Path處理的URL字串 | 產生連結、圖片網址或表單提交網址 |
-| `#{...}` | Message Expression | 訊息資源檔中的key | 國際化後的文字 | 多語系訊息；本課堂專案尚未使用 |
+| `#{...}` | Message Expression | 訊息資源檔中的key | 國際化後的文字 | 多語系訊息；本範例專案尚未使用 |
 | `|...|` | Literal Substitution | 固定文字與其他表達式 | 合成後的字串 | 一段文字中同時包含固定與動態內容 |
 
 `${...}`的結果不一定是字串。例如`${user.age}`可能得到整數，`${isEdit}`可能得到布林值，`${users}`可能得到List。是否轉成文字，取決於外層處理器；`th:text`會把結果轉成文字，`th:if`則把結果當條件判斷。

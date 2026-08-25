@@ -1,9 +1,28 @@
 # Spring Boot 學習筆記 10：Swagger／OpenAPI API 文件
 
-- 整理日期：2026-08-10
 - 範例專案：`sbfirstapp`
 - Swagger UI：`http://localhost:8080/swagger-ui/index.html`
 - OpenAPI JSON：`http://localhost:8080/v3/api-docs`
+
+> 語法速查：[Swagger／OpenAPI](../語法字典/08_Swagger_OpenAPI.md)
+
+## 本章快速索引
+
+- [0. 前置條件與完成結果](#0-前置條件與完成結果)
+- [1. Swagger UI 顏色與 HTTP Method](#1-swagger-ui-顏色與-http-method)
+- [2. Swagger 與 OpenAPI 的差別](#2-swagger-與-openapi-的差別)
+- [3. Maven 依賴](#3-maven-依賴)
+- [4. SwaggerConfig 的工作](#4-swaggerconfig-的工作)
+- [5. Controller 為什麼會自動出現在 Swagger UI？](#5-controller-為什麼會自動出現在-swagger-ui)
+- [6. `@Tag`：替 Controller 分組](#6-tag替-controller-分組)
+- [7. `@Operation`：說明單一 API](#7-operation說明單一-api)
+- [8. `@Parameter`：說明參數](#8-parameter說明參數)
+- [9. 完成後Swagger UI應列出什麼？](#9-完成後swagger-ui應列出什麼)
+- [10. 使用 Swagger UI 測試 API](#10-使用-swagger-ui-測試-api)
+- [11. Swagger 文件不等於測試通過](#11-swagger-文件不等於測試通過)
+- [12. 開發與正式環境注意事項](#12-開發與正式環境注意事項)
+- [常見問題](#常見問題)
+- [本章檢查表](#本章檢查表)
 
 ## 0. 前置條件與完成結果
 

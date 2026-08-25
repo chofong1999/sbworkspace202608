@@ -1,8 +1,24 @@
 # Spring Boot 學習筆記 15：Spring Data JPA查詢方法、`@Query`與分頁
 
-- 整理日期：2026-08-13
 - 範例專案：`sbemployee0812`
 - API前綴：`http://localhost:8080/api/employees`
+
+> 語法速查：[Repository查詢與分頁](../語法字典/05_Spring_Data查詢交易與分頁.md)
+
+## 本章快速索引
+
+- [0. 前置條件、實作順序與完成判定](#0-前置條件實作順序與完成判定)
+- [1. 本章相對基本CRUD新增的能力](#1-本章相對基本crud新增的能力)
+- [2. Employee欄位與種子資料](#2-employee欄位與種子資料)
+- [3. Derived Query Method：由方法名稱產生查詢](#3-derived-query-method由方法名稱產生查詢)
+- [4. `@Query`：查詢內容由程式明確提供](#4-query查詢內容由程式明確提供)
+- [5. 聚合查詢與回傳型別](#5-聚合查詢與回傳型別)
+- [6. 分頁與排序](#6-分頁與排序)
+- [7. Controller端點與實際行為](#7-controller端點與實際行為)
+- [8. MySQL設定](#8-mysql設定)
+- [9. 重現測試](#9-重現測試)
+- [10. 常見錯誤](#10-常見錯誤)
+- [11. 本章檢查表](#11-本章檢查表)
 
 ## 0. 前置條件、實作順序與完成判定
 
@@ -35,7 +51,7 @@
 
 ```text
 EmployeeController
-    ├─ 直接使用 EmployeeRepository：課堂查詢端點
+    ├─ 直接使用 EmployeeRepository：範例查詢端點
     └─ 使用 EmployeeService：分頁端點
             ↓
 EmployeeRepository
@@ -46,7 +62,7 @@ EmployeeRepository
 MySQL employee_db.employees
 ```
 
-課堂程式混用Controller直連Repository與Controller經Service兩條路徑。兩者都能執行，但正式分層若已採Service，通常應把查詢規則集中在Service，避免Controller同時承擔資料存取責任。
+範例程式混用Controller直連Repository與Controller經Service兩條路徑。兩者都能執行，但正式分層若已採Service，通常應把查詢規則集中在Service，避免Controller同時承擔資料存取責任。
 
 ## 2. Employee欄位與種子資料
 
@@ -70,7 +86,7 @@ if (employeeRepository.count() == 0) {
 }
 ```
 
-要重現相同的五筆初始資料，必須使用空的`employees`表。已有資料時`count()`不為0，初始化程式不會補入課堂資料。不要為了練習清空含正式資料的資料庫；應建立專用的練習資料庫。
+要重現相同的五筆初始資料，必須使用空的`employees`表。已有資料時`count()`不為0，初始化程式不會補入種子資料。不要為了練習清空含正式資料的資料庫；應建立專用的練習資料庫。
 
 ## 3. Derived Query Method：由方法名稱產生查詢
 
@@ -172,7 +188,7 @@ List<Employee> findByDepartmentIgnoreCase(
 Double averageSalaryByDepartment(String department);
 ```
 
-若部門沒有任何員工，SQL的`AVG`可能得到`null`。課堂Controller仍會把這個值放入Map：
+若部門沒有任何員工，SQL的`AVG`可能得到`null`。範例Controller仍會把這個值放入Map：
 
 ```java
 Double avg = repo.averageSalaryByDepartment(department);
@@ -224,7 +240,7 @@ return data;
 | 依部門 | `GET /department/{department}` | Employee陣列 | `404` |
 | 姓名包含 | `GET /name/{name}` | Employee陣列 | `404` |
 | 部門人數 | `GET /count/{department}` | `{"部門":數量}` | 目前仍回200與0 |
-| 課堂的大小寫查詢 | `GET /ignore/{department}` | Employee陣列 | `404` |
+| 範例中的大小寫查詢 | `GET /ignore/{department}` | Employee陣列 | `404` |
 | 平均薪資 | `GET /average/{department}` | `{"部門":平均值}` | 目前可能回200與null |
 | 分頁 | `GET /page?page=0&size=5&sortBy=id` | 當頁Employee陣列 | 空陣列 |
 

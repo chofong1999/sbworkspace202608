@@ -1,8 +1,21 @@
 # Spring Boot 學習筆記 03：Maven 打包與執行 JAR
 
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
-- 專案位置：`C:\sbworkspace202608\sbfirstapp`
+- 範例專案名稱：`sbfirstapp`
+
+> 語法速查：[Maven與建置](../語法字典/09_設定檔與建置.md#maven-goals)
+
+## 本章快速索引
+
+- [0. 前置條件與完成結果](#0-前置條件與完成結果)
+- [1. 使用 Eclipse 執行 Maven install](#1-使用-eclipse-執行-maven-install)
+- [2. package 與 install 的差異](#2-package-與-install-的差異)
+- [3. target 資料夾的打包產物](#3-target-資料夾的打包產物)
+- [4. 從命令列執行 JAR](#4-從命令列執行-jar)
+- [5. 案例：第二份程式啟動失敗](#5-案例第二份程式啟動失敗)
+- [6. 解決 8080 連接埠衝突](#6-解決-8080-連接埠衝突)
+- [7. Java 版本補充](#7-java-版本補充)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與完成結果
 
@@ -36,7 +49,7 @@
 本專案已附 Maven Wrapper，在 Windows 命令提示字元中可使用：
 
 ```bat
-cd /d C:\sbworkspace202608\sbfirstapp
+cd /d <專案資料夾>
 mvnw.cmd clean package
 ```
 
@@ -69,14 +82,14 @@ target
 ### 從專案根目錄執行
 
 ```bat
-cd /d C:\sbworkspace202608\sbfirstapp
+cd /d <專案資料夾>
 java -jar target\sbfirstapp-0.0.1-SNAPSHOT.jar
 ```
 
 ### 已經位於 target 資料夾
 
 ```bat
-cd /d C:\sbworkspace202608\sbfirstapp\target
+cd /d <專案資料夾>\target
 java -jar sbfirstapp-0.0.1-SNAPSHOT.jar
 ```
 

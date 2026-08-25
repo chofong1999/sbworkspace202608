@@ -1,15 +1,29 @@
 # Spring Boot 學習筆記 04：使用 Spring Initializr 建立專案
 
-- 整理日期：2026-08-06
 - 網站：`https://start.spring.io`
 - 範例專案：`mysecondapp`
-- 原始碼位置：`C:\sbworkspace202608\mysecondapp`
+- 範例專案名稱：`mysecondapp`
+
+> 語法速查：[設定檔與建置](../語法字典/09_設定檔與建置.md)
+
+## 本章快速索引
+
+- [0. 前置條件與完成結果](#0-前置條件與完成結果)
+- [1. Spring Initializr 是什麼？](#1-spring-initializr-是什麼)
+- [2. 開啟網站](#2-開啟網站)
+- [3. 選擇專案與語言](#3-選擇專案與語言)
+- [4. 填寫 Project Metadata](#4-填寫-project-metadata)
+- [5. 選擇 Java 版本](#5-選擇-java-版本)
+- [6. 加入依賴](#6-加入依賴)
+- [7. 產生並匯入專案](#7-產生並匯入專案)
+- [8. 產生後應有的結構](#8-產生後應有的結構)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與完成結果
 
 - 需要瀏覽器、網路連線與可匯入Maven專案的Eclipse。
 - 完成本章後，應得到一個可在Eclipse中匯入並啟動的`mysecondapp`專案。
-- 若要與第1章環境一致，產生專案時選Java 21；若要精確重現既有課堂範例，則選Java 17。兩條路線不可混寫成同一個實際狀態。
+- 若要與第1章環境一致，產生專案時選Java 21；若要精確重現既有範例，則選Java 17。兩條路線不可混寫成同一個實際狀態。
 
 ## 1. Spring Initializr 是什麼？
 
@@ -50,7 +64,7 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 
 ## 5. 選擇 Java 版本
 
-既有課堂範例選用：
+既有範例選用：
 
 `Java 17`
 
@@ -62,7 +76,7 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 </properties>
 ```
 
-因此既有課堂範例的產生設定與`pom.xml`一致，都是Java 17。
+因此既有範例的產生設定與`pom.xml`一致，都是Java 17。
 
 > 若採用Java 21路線，應在按`GENERATE`以前改選`21`，並在匯入後確認`pom.xml`與JRE System Library都顯示21。既有`mysecondapp`則是Java 17對照範例。
 
@@ -101,9 +115,9 @@ Eclipse 的`Spring Starter Project`底層也是使用 Spring Initializr 服務�
 
 ## 8. 產生後應有的結構
 
-以既有`C:\sbworkspace202608\mysecondapp`為例：
+以範例專案`mysecondapp`為例：
 
-`C:\sbworkspace202608\mysecondapp`
+`mysecondapp/`
 
 主要內容包括：
 

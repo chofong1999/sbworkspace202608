@@ -1,7 +1,19 @@
 # Spring Boot 學習筆記 02：建立第一個專案
 
-- 整理日期：2026-08-06
 - 範例專案名稱：`sbfirstapp`
+
+> 語法速查：[Spring核心](../語法字典/01_Spring核心與依賴注入.md)｜[設定檔與建置](../語法字典/09_設定檔與建置.md)
+
+## 本章快速索引
+
+- [0. 前置條件與完成結果](#0-前置條件與完成結果)
+- [1. 開啟 Spring Starter Project](#1-開啟-spring-starter-project)
+- [2. 填寫專案基本資料](#2-填寫專案基本資料)
+- [3. 選擇 Spring Boot 版本與依賴](#3-選擇-spring-boot-版本與依賴)
+- [4. 確認專案建立完成](#4-確認專案建立完成)
+- [5. Java 版本差異與修正](#5-java-版本差異與修正)
+- [6. 執行方式：Java Application 或 Spring Boot App？](#6-執行方式java-application-或-spring-boot-app)
+- [建立專案檢查表](#建立專案檢查表)
 
 ## 0. 前置條件與完成結果
 
@@ -124,9 +136,9 @@ public class SbfirstappApplication {
 - Eclipse 的 `JRE System Library`：`JavaSE-21`
 - `pom.xml` 的 Java 版本：`21`
 
-### 課堂範例專案的版本差異
+### 範例專案的版本差異
 
-課堂範例專案`C:\sbworkspace202608\sbfirstapp`保留了建立當時的設定：
+範例專案`sbfirstapp`保留了建立當時的設定：
 
 - `pom.xml`：`<java.version>17</java.version>`
 - Eclipse 畫面：`JRE System Library [JavaSE-17]`

@@ -1,6 +1,11 @@
 # JPA關聯擁有端、級聯與JSON
 
-[返回JPA關聯字典](../04_JPA關聯映射.md)
+## 本頁快速索引
+
+- [關聯擁有端決定外鍵更新](#關聯擁有端決定外鍵更新)
+- [Cascade與orphanRemoval解決不同問題](#cascade與orphanremoval解決不同問題)
+- [LAZY、交易與N+1](#lazy交易與n1)
+- [JSON不是Entity關聯的同義詞](#json不是entity關聯的同義詞)
 
 ## 關聯擁有端決定外鍵更新
 

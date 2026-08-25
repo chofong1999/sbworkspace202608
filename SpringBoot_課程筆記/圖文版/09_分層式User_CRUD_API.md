@@ -1,10 +1,29 @@
 # Spring Boot 圖文學習筆記 09：分層式 User CRUD API
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/09_分層式User_CRUD_API.md)｜[上一章：HTML表單與JSON資料綁定](08_HTML表單與JSON資料綁定.md)｜[下一章：Swagger／OpenAPI API文件](10_Swagger_OpenAPI_API文件.md)
-
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
 - API 前綴：`http://localhost:8080/api/users`
+
+> 語法速查：[MVC與REST](../語法字典/02_Spring_MVC與REST.md)
+
+## 本章快速索引
+
+- [0. 前置條件與重現順序](#0-前置條件與重現順序)
+- [1. 分層架構](#1-分層架構)
+- [2. Model：User](#2-modeluser)
+- [3. Repository：記憶體資料存取](#3-repository記憶體資料存取)
+- [4. Service：業務流程](#4-service業務流程)
+- [5. Controller 與 ResponseEntity](#5-controller-與-responseentity)
+- [6. CRUD API 一覽](#6-crud-api-一覽)
+- [7. 建立使用者](#7-建立使用者)
+- [8. 查詢使用者](#8-查詢使用者)
+- [9. 更新使用者](#9-更新使用者)
+- [10. 刪除使用者](#10-刪除使用者)
+- [11. 取得使用者數量](#11-取得使用者數量)
+- [12. SubmitController 也改用同一個 UserService](#12-submitcontroller-也改用同一個-userservice)
+- [13. 目前實作的注意事項](#13-目前實作的注意事項)
+- [14. 可直接重現的最小完整分層程式](#14-可直接重現的最小完整分層程式)
+- [Postman 測試順序](#postman-測試順序)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與重現順序
 
@@ -17,6 +36,8 @@
 完成判定不是「程式能編譯」，而是同一筆ID能依序完成建立、查詢、更新、刪除，刪除後再次查詢得到404。
 
 ## 1. 分層架構
+
+下圖對照本節的操作位置或執行結果：
 
 ![User CRUD分層與Postman建立結果](../圖文版素材_待製作/images/25_User表單_JSON與CRUD.png)
 
@@ -88,7 +109,7 @@ public class UserRepository {
 
 - 程式停止或重新啟動後，資料會全部消失。
 - 多台伺服器不會共享資料。
-- 適合課堂練習，不是正式持久化方案。
+- 適合練習環境，不是正式持久化方案。
 
 ## 4. Service：業務流程
 
@@ -257,6 +278,8 @@ Map.of("count", count)
 Spring 會把 Map 轉成 JSON Object。
 
 ## 12. SubmitController 也改用同一個 UserService
+
+下圖對照本節的操作位置或執行結果：
 
 ![Submit與User API共用Service和Repository](../圖文版素材_待製作/images/26_SubmitController_UserService_CRUD.png)
 
@@ -504,4 +527,3 @@ return ResponseEntity.ok(saved);
 - [ ] DELETE 成功回傳 204
 - [ ] `/count`回傳 JSON Object
 - [ ] 知道目前資料重啟後會消失
-

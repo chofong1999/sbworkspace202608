@@ -1,8 +1,16 @@
-# 第11章圖文延伸閱讀：Thymeleaf表達式與常見疑難
+# 第11章延伸閱讀：Thymeleaf表達式與常見疑難
 
-[返回總目錄](../../README.md)｜[圖文主章](../11_REST_JSON與Thymeleaf模板.md)｜[純文字延伸閱讀](../../純文字版/延伸閱讀/11_Thymeleaf表達式與常見疑難.md)
+## 本頁快速索引
 
-本文件補充第11章中容易混淆、但不影響首次完成實作的觀念。建議先完成[第11章主章](../11_REST_JSON與Thymeleaf模板.md)，遇到相應問題時再查閱本文件。
+- [1. `th:text`為何會讓原本的`Greeting：`消失？](#1-thtext為何會讓原本的greeting消失)
+- [2. Thymeleaf Standard Expression不是單一種語法](#2-thymeleaf-standard-expression不是單一種語法)
+- [3. `@{...}`可以放在哪裡？](#3-可以放在哪裡)
+- [4. `*{...}`何時才成立？](#4-何時才成立)
+- [5. Model與Session不只是兩種傳值寫法](#5-model與session不只是兩種傳值寫法)
+- [6. View Name與Redirect為何都寫在`return`後面？](#6-view-name與redirect為何都寫在return後面)
+- [7. 編輯器中的色塊不是程式碼](#7-編輯器中的色塊不是程式碼)
+- [8. 快速選擇表](#8-快速選擇表)
+- [9. 延伸閱讀完成判定](#9-延伸閱讀完成判定)
 
 ## 1. `th:text`為何會讓原本的`Greeting：`消失？
 
@@ -48,6 +56,8 @@
 
 ## 2. Thymeleaf Standard Expression不是單一種語法
 
+下圖對照本節的操作位置或執行結果：
+
 ![Thymeleaf內建物件與工具語法參考](../../圖文版素材_待製作/images/34_Thymeleaf內建物件舊語法參考.png)
 
 *圖1：教材把Request、Session與集合、日期、字串、數字工具放在同一頁；實際使用前必須分辨namespace、utility object及目前Thymeleaf版本是否仍支援。*
@@ -59,7 +69,7 @@
 | `${...}` | Variable Expression | Model、Session等Context資料 | 物件、數字、字串、布林值等 | 需要讀取資料或進行條件判斷 |
 | `*{...}` | Selection Variable Expression | 最近一層`th:object`選定的物件 | 該物件的屬性值 | 表單欄位綁定或集中存取同一物件 |
 | `@{...}` | Link URL Expression | 路徑及參數 | 經Context Path處理的URL字串 | 產生連結、圖片網址或表單提交網址 |
-| `#{...}` | Message Expression | 訊息資源檔中的key | 國際化後的文字 | 多語系訊息；本課堂專案尚未使用 |
+| `#{...}` | Message Expression | 訊息資源檔中的key | 國際化後的文字 | 多語系訊息；本範例專案尚未使用 |
 | `|...|` | Literal Substitution | 固定文字與其他表達式 | 合成後的字串 | 一段文字中同時包含固定與動態內容 |
 
 `${...}`的結果不一定是字串。例如`${user.age}`可能得到整數，`${isEdit}`可能得到布林值，`${users}`可能得到List。是否轉成文字，取決於外層處理器；`th:text`會把結果轉成文字，`th:if`則把結果當條件判斷。
@@ -135,7 +145,9 @@ Thymeleaf的`${...}`外觀與JSP EL相似，但本章是在Thymeleaf模板引擎
 
 ## 5. Model與Session不只是兩種傳值寫法
 
-![老師把HttpSession加入Model的示範](../../圖文版素材_待製作/images/35_HttpSession加入Model寫法.png)
+下圖對照本節的操作位置或執行結果：
+
+![HttpSession加入Model的比較案例](../../圖文版素材_待製作/images/35_HttpSession加入Model寫法.png)
 
 *圖2：Controller先把user寫入HttpSession，再把整個session物件放入Model；後者在Spring整合的Thymeleaf中通常不是讀取Session attribute的必要步驟。*
 
@@ -186,6 +198,8 @@ return "redirect:/web/users/" + id;
 
 ## 7. 編輯器中的色塊不是程式碼
 
+下圖對照本節的操作位置或執行結果：
+
 ![Eclipse顯示CSS色碼預覽色塊](../../圖文版素材_待製作/images/40_Eclipse_CSS色碼預覽色塊.png)
 
 *圖3：色碼前的小方塊是Eclipse編輯器的顏色預覽，由IDE繪製，不是HTML或CSS原始碼的一部分。*
@@ -220,4 +234,3 @@ Eclipse可能在`#4CAF50`、`#dc3545`等CSS色碼旁顯示小色塊。這是編�
 - [ ] 知道`{id}`只在Link URL Expression的網址模板中充當placeholder
 - [ ] 能依資料生命週期選擇Model或Session
 - [ ] 能區分View Name與`redirect:`
-

@@ -1,8 +1,14 @@
 # 第16章延伸閱讀：JPA查詢效能、批次更新與關聯風險
 
-[返回第16章主章](../16_JPA_OneToMany_ManyToOne與JSON關聯.md)
+## 本頁快速索引
 
-本文件建立在第16章兩組雙向關聯已能正常查詢與序列化的前提上。內容用來分析查詢效能與資料修改邊界，不是完成基本`@OneToMany`／`@ManyToOne`映射的必要步驟。
+- [0. 前置條件](#0-前置條件)
+- [1. `JOIN FETCH`與N+1查詢](#1-join-fetch與n1查詢)
+- [2. `@Modifying`、`@Transactional`與批次更新](#2-modifyingtransactional與批次更新)
+- [3. Lombok與雙向關聯的額外風險](#3-lombok與雙向關聯的額外風險)
+- [4. 重現測試](#4-重現測試)
+- [5. 常見錯誤](#5-常見錯誤)
+- [6. 延伸閱讀檢查表](#6-延伸閱讀檢查表)
 
 ## 0. 前置條件
 
@@ -174,7 +180,7 @@ public class ProductController {
 }
 ```
 
-課堂呼叫：
+範例呼叫：
 
 ```http
 GET http://localhost:8080/api/products/fruit
@@ -252,7 +258,7 @@ public ResponseEntity<Map<String, Integer>> clearStock(...)
 PATCH /api/products/category/Fruit/stock/clear
 ```
 
-課堂目前的GET端點可用來觀察`@Modifying`，但實務API應改用PATCH、PUT或依資源設計選擇其他非GET方法。
+目前範例的GET端點可用來觀察`@Modifying`，但實務API應改用PATCH、PUT或依資源設計選擇其他非GET方法。
 
 
 ## 3. Lombok與雙向關聯的額外風險

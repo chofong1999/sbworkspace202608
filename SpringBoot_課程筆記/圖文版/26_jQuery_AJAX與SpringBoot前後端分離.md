@@ -292,6 +292,10 @@ POST /api      → 200、Name:Lee City:Taipei
 
 ## 10. 目前範例檔案狀態
 
+![Spring Boot前後端分離中途狀態](../圖文版素材_待製作/images/61_SpringBoot_BasicApi_CORS與GET端點.png)
+
+*圖1：此畫面只記錄GET端點與CrossOrigin的中途狀態；最終功能仍須依本章完整程式與測試結果驗證。*
+
 完成版`jquery_get.html`應同時包含GET與POST兩個按鈕；若檔案仍只有GET，請依本章POST段落補上第二個按鈕與Request。
 
 後端範例專案`sbbasicapi0820`須同時具備GET與POST端點，才能完成本章兩種Request測試。

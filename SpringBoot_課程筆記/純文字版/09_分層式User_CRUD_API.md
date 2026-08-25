@@ -1,8 +1,29 @@
 # Spring Boot 學習筆記 09：分層式 User CRUD API
 
-- 整理日期：2026-08-06
 - 範例專案：`sbfirstapp`
 - API 前綴：`http://localhost:8080/api/users`
+
+> 語法速查：[MVC與REST](../語法字典/02_Spring_MVC與REST.md)
+
+## 本章快速索引
+
+- [0. 前置條件與重現順序](#0-前置條件與重現順序)
+- [1. 分層架構](#1-分層架構)
+- [2. Model：User](#2-modeluser)
+- [3. Repository：記憶體資料存取](#3-repository記憶體資料存取)
+- [4. Service：業務流程](#4-service業務流程)
+- [5. Controller 與 ResponseEntity](#5-controller-與-responseentity)
+- [6. CRUD API 一覽](#6-crud-api-一覽)
+- [7. 建立使用者](#7-建立使用者)
+- [8. 查詢使用者](#8-查詢使用者)
+- [9. 更新使用者](#9-更新使用者)
+- [10. 刪除使用者](#10-刪除使用者)
+- [11. 取得使用者數量](#11-取得使用者數量)
+- [12. SubmitController 也改用同一個 UserService](#12-submitcontroller-也改用同一個-userservice)
+- [13. 目前實作的注意事項](#13-目前實作的注意事項)
+- [14. 可直接重現的最小完整分層程式](#14-可直接重現的最小完整分層程式)
+- [Postman 測試順序](#postman-測試順序)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與重現順序
 
@@ -82,7 +103,7 @@ public class UserRepository {
 
 - 程式停止或重新啟動後，資料會全部消失。
 - 多台伺服器不會共享資料。
-- 適合課堂練習，不是正式持久化方案。
+- 適合練習環境，不是正式持久化方案。
 
 ## 4. Service：業務流程
 

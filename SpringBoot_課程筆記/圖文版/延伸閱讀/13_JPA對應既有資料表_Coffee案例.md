@@ -1,10 +1,12 @@
-# 第13章圖文延伸閱讀：JPA對應既有資料表的Coffee案例
+# 第13章延伸閱讀：JPA對應既有資料表的Coffee案例
 
-[返回總目錄](../../README.md)｜[圖文主章](../13_Spring_Data_JPA與MySQL.md)｜[純文字延伸閱讀](../../純文字版/延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)
+## 本頁快速索引
 
-[返回第13章主章](../13_Spring_Data_JPA與MySQL.md)
-
-本文件示範將JPA Entity對應到MySQL中已存在的`classicmodels.coffees`表。請先完成第13章Employee CRUD；這份案例用來補充String主鍵、`@Table`／`@Column`映射及`ddl-auto=validate`，不是首次建立JPA CRUD的必要步驟。
+- [0. 前置條件與完成判定](#0-前置條件與完成判定)
+- [1. Coffee範例：對應既有表格](#1-coffee範例對應既有表格)
+- [2. 啟動前檢查](#2-啟動前檢查)
+- [3. 常見錯誤](#3-常見錯誤)
+- [4. 延伸閱讀檢查表](#4-延伸閱讀檢查表)
 
 ## 0. 前置條件與完成判定
 
@@ -14,20 +16,6 @@
 - 完成時ApplicationContext應正常啟動，`GET /api/coffees`回傳既有資料。
 
 ## 1. Coffee範例：對應既有表格
-
-既有資料表的映射關係可整理為：
-
-```mermaid
-flowchart LR
-    A[(既有coffee資料表)] --> B[Coffee Entity]
-    B --> C[CoffeeRepository]
-    C --> D[JpaRepository Coffee String]
-    E[ddl-auto validate] --> A
-    E --> B
-    D --> F[GET /api/coffees]
-```
-
-*圖1：Entity與Repository必須配合既有資料表名稱、欄位及String主鍵；validate只核對Schema，不替應用程式建立或修改表格。*
 
 Coffee專案比較精簡：
 
@@ -137,4 +125,3 @@ GET /api/coffees
 - [ ] 能區分`create-drop`與`validate`
 - [ ] 知道`validate`不會建立缺少的表格或欄位
 - [ ] 已以`GET /api/coffees`驗證映射結果
-

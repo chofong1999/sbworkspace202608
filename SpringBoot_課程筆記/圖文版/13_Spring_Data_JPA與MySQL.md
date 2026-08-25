@@ -1,10 +1,29 @@
 # Spring Boot 圖文學習筆記 13：Spring Data JPA與MySQL
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/13_Spring_Data_JPA與MySQL.md)｜[圖文延伸閱讀：Coffee既有資料表](延伸閱讀/13_JPA對應既有資料表_Coffee案例.md)｜[上一章：REST CRUD進階](12_REST_CRUD進階_參數DTO與統一回應.md)｜[下一章：SQLite、Docker與Render](14_Spring_Data_JPA與SQLite_Docker_Render部署.md)
-
-- 整理日期：2026-08-12
 - 主要範例：`sbrestjpa0811`（Employee完整CRUD分層）
 - 對照範例：`sbjpacoffee0811`（既有Coffee表格的唯讀查詢）
+
+> 語法速查：[JPA欄位](../語法字典/03_JPA實體與欄位映射.md)｜[Repository查詢](../語法字典/05_Spring_Data查詢交易與分頁.md)｜[設定檔](../語法字典/09_設定檔與建置.md)
+
+## 本章快速索引
+
+- [0. 前置條件、主線與完成判定](#0-前置條件主線與完成判定)
+- [1. 從記憶體Repository進入資料庫Repository](#1-從記憶體repository進入資料庫repository)
+- [2. Maven依賴的角色](#2-maven依賴的角色)
+- [3. Employee Entity實作](#3-employee-entity實作)
+- [4. JpaRepository的定義與成立條件](#4-jparepository的定義與成立條件)
+- [5. `save()`不是固定等於INSERT](#5-save不是固定等於insert)
+- [6. Employee Service的完整CRUD流程](#6-employee-service的完整crud流程)
+- [7. Employee Controller與HTTP語意](#7-employee-controller與http語意)
+- [8. CommandLineRunner初始化資料](#8-commandlinerunner初始化資料)
+- [9. MySQL連線設定](#9-mysql連線設定)
+- [10. 欄位注入與建構子注入](#10-欄位注入與建構子注入)
+- [11. 延伸案例：對應既有Coffee表格](#11-延伸案例對應既有coffee表格)
+- [12. Employee專案啟動前檢查](#12-employee專案啟動前檢查)
+- [13. 常見錯誤定位順序](#13-常見錯誤定位順序)
+- [14. 下一章銜接：由MySQL改成SQLite](#14-下一章銜接由mysql改成sqlite)
+- [15. 官方資料入口](#15-官方資料入口)
+- [16. 本章檢查表](#16-本章檢查表)
 
 ## 0. 前置條件、主線與完成判定
 
@@ -21,20 +40,6 @@
 既有編譯產物不等於資料庫連線成功。必須看到ApplicationContext正常啟動、Hibernate沒有連線／Schema錯誤，且HTTP端點取得預期資料，才能判定主線完成。
 
 ## 1. 從記憶體Repository進入資料庫Repository
-
-從HTTP到MySQL的責任鏈如下：
-
-```mermaid
-flowchart LR
-    A[HTTP Request] --> B[Controller]
-    B --> C[Service]
-    C --> D[JpaRepository]
-    D --> E[Hibernate與JPA]
-    E --> F[(MySQL)]
-    G[Entity Mapping] --> E
-```
-
-*圖1：Controller處理HTTP、Service安排流程、JpaRepository提供資料操作，Hibernate依Entity Mapping產生SQL並存取MySQL。*
 
 前面的User與Product範例把資料放在`List`或`Map`：
 
@@ -189,7 +194,7 @@ Spring Data JPA的`save()`會先判斷Entity是否為新資料：
 - 新增時`id == null`，通常走新增。
 - 從Repository查出的Employee已經有ID，修改後再`save()`，通常走更新／合併。
 
-但「只要ID有值就一定UPDATE」只是課堂簡化，不是完整JPA規格；Spring Data還會使用version property、ID與`Persistable`等策略判斷Entity狀態。
+但「只要ID有值就一定UPDATE」只是範例簡化，不是完整JPA規格；Spring Data還會使用version property、ID與`Persistable`等策略判斷Entity狀態。
 
 ## 6. Employee Service的完整CRUD流程
 

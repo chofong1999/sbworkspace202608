@@ -1,10 +1,21 @@
 # Spring Boot 圖文學習筆記 05：Whitelabel 404 與套件掃描
 
-[返回總目錄](../README.md)｜[純文字版](../純文字版/05_Whitelabel404與套件掃描.md)｜[上一章：使用Spring Initializr建立專案](04_使用SpringInitializr建立專案.md)｜[下一章：介面多實作與Qualifier](06_介面多實作與Qualifier依賴注入.md)
-
-- 整理日期：2026-08-06
 - 範例專案：`mysecondapp`
 - 測試網址：`http://localhost:8080/api/hello`
+
+> 語法速查：[Spring核心](../語法字典/01_Spring核心與依賴注入.md)｜[MVC與REST](../語法字典/02_Spring_MVC與REST.md)
+
+## 本章快速索引
+
+- [0. 前置條件與重現目標](#0-前置條件與重現目標)
+- [1. 畫面中的錯誤](#1-畫面中的錯誤)
+- [2. 會產生404的原始碼結構](#2-會產生404的原始碼結構)
+- [3. 根本原因：Component Scan 範圍](#3-根本原因component-scan-範圍)
+- [4. 建議修正方式](#4-建議修正方式)
+- [5. 黃色警告：未使用的 import](#5-黃色警告未使用的-import)
+- [6. 其他做法與取捨](#6-其他做法與取捨)
+- [404 排查順序](#404-排查順序)
+- [檢查表](#檢查表)
 
 ## 0. 前置條件與重現目標
 
@@ -13,6 +24,8 @@
 - 再把Controller移入主要套件的子套件，重新啟動後應取得`Hello Demo Spring Boot`。
 
 ## 1. 畫面中的錯誤
+
+下圖對照本節的操作位置或執行結果：
 
 ![Controller不在掃描範圍而產生Whitelabel 404](../圖文版素材_待製作/images/22_Whitelabel404套件掃描問題.png)
 
@@ -85,6 +98,12 @@ GET /api/hello
 
 ## 4. 建議修正方式
 
+下圖對照本節的操作位置或執行結果：
+
+![修正套件位置後HelloWorld API成功](../圖文版素材_待製作/images/16_HelloWorld_API執行結果.png)
+
+*圖2：Controller移入主要套件的子套件並重新啟動後，瀏覽器開啟`/api/hello`可取得`Hello Demo Spring Boot`。*
+
 將`HelloWorld.java`移到主要套件底下：
 
 ```text
@@ -131,10 +150,6 @@ public class HelloWorld {
 ```text
 Hello Demo Spring Boot
 ```
-
-![修正套件位置後HelloWorld API成功](../圖文版素材_待製作/images/16_HelloWorld_API執行結果.png)
-
-*圖2：Controller移入主要套件的子套件並重新啟動後，瀏覽器開啟`/api/hello`可取得`Hello Demo Spring Boot`。*
 
 ## 5. 黃色警告：未使用的 import
 

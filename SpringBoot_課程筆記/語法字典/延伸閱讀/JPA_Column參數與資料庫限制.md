@@ -1,6 +1,14 @@
 # `@Column`參數與資料庫限制
 
-[返回JPA欄位字典](../03_JPA實體與欄位映射.md#column)
+## 本頁快速索引
+
+- [三個不同層次](#三個不同層次)
+- [`nullable`和`@NotNull`的差異](#nullable和notnull的差異)
+- [`unique = true`不是重複資料檢查流程](#unique-true不是重複資料檢查流程)
+- [`insertable`與`updatable`](#insertable與updatable)
+- [`precision`與`scale`](#precision與scale)
+- [原生DDL參數](#原生ddl參數)
+- [變更欄位後的驗證](#變更欄位後的驗證)
 
 ## 三個不同層次
 
