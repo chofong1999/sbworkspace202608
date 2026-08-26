@@ -1,0 +1,14 @@
+{
+  "knowledge_schema": 1,
+  "pack_id": "KB-COMMON-ZH",
+  "release": "2026.07.1",
+  "language": "zh-TW",
+  "index": "index.tsv",
+  "entries": [
+    {
+      "id": "KB-WIN-CET-001",
+      "revision": 1,
+      "path": "entries/KB-WIN-CET-001.md"
+    }
+  ]
+}

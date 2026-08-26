@@ -46,7 +46,7 @@ window.onload = function () {
     //設置WebSocket
     function setWebSocket() {
         //開始WebSocket連線
-        webSocket = new WebSocket('ws://localhost:8011/ws/chat');
+        webSocket = new WebSocket('ws://10.10.1.213:8011/ws/chat');
         //以下開始偵測WebSocket的各種事件
          
         //onerror , 連線錯誤時觸發  

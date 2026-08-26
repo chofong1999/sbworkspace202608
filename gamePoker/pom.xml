@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>websocketChat</artifactId>
+	<artifactId>gamePoker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>websocketChat</name>
+	<name>gamePoker</name>
 	<description/>
 	<url/>
 	<licenses>

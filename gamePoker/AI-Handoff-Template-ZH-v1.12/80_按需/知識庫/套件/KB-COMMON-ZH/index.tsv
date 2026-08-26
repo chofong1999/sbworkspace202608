@@ -1,0 +1,2 @@
+id	revision	status	component	match_terms	path
+KB-WIN-CET-001	1	替代方式已驗證一次；永久修復未驗證	Windows;PowerShell;Codex	CET|-2146233082|Your Windows doesn't fully support CET|Fatal error	entries/KB-WIN-CET-001.md

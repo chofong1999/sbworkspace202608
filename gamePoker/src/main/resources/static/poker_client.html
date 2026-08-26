@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>田忌撲克</title>
+  <link rel="stylesheet" href="poker.css">
+  <script src="poker.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="game-header">
+      <div>
+        <p class="eyebrow">簡易遊戲平台</p>
+        <h1>田忌撲克</h1>
+      </div>
+      <div id="connectionBadge" class="badge">尚未加入</div>
+    </header>
+
+    <section id="lobby" class="panel lobby">
+      <h2>選擇遊戲方式</h2>
+      <p>每人 15 張牌，分配為 3／5／5 三輪，留下 2 張棄牌。</p>
+      <div class="mode-grid">
+        <button id="computerButton" class="mode-card"><span>♠</span><strong>對戰電腦</strong><small>立即開始</small></button>
+        <div class="mode-card room-card">
+          <span>♥</span><strong>玩家對戰</strong>
+          <label>房間編號<input id="roomInput" value="room-1" maxlength="30"></label>
+          <button id="playerButton">加入房間</button>
+        </div>
+      </div>
+      <p id="lobbyMessage" class="message"></p>
+    </section>
+
+    <section id="game" class="hidden">
+      <div class="status-grid">
+        <article class="seat-card"><span>玩家一</span><strong id="player1Status">等待加入</strong></article>
+        <article class="round-status">
+          <strong id="roomLabel">房間</strong><span id="gameMessage">等待玩家</span>
+        </article>
+        <article class="seat-card"><span>玩家二</span><strong id="player2Status">等待加入</strong></article>
+      </div>
+
+      <section id="resultPanel" class="panel result-panel hidden">
+        <h2 id="winnerTitle">遊戲結果</h2>
+        <div id="roundResults"></div>
+      </section>
+
+      <section class="board">
+        <div class="slot discard" data-slot="0"><h3>棄牌</h3><p>需要 2 張</p><div id="slot0" class="slot-cards"></div></div>
+        <div class="slot" data-slot="1"><h3>第一輪</h3><p>3 張 · 三條／一對／高牌</p><div id="preview1" class="preview"></div><div id="slot1" class="slot-cards"></div></div>
+        <div class="slot" data-slot="2"><h3>第二輪</h3><p>5 張 · 完整牌型</p><div id="preview2" class="preview"></div><div id="slot2" class="slot-cards"></div></div>
+        <div class="slot" data-slot="3"><h3>第三輪</h3><p>5 張 · 完整牌型</p><div id="preview3" class="preview"></div><div id="slot3" class="slot-cards"></div></div>
+      </section>
+
+      <section class="panel hand-panel">
+        <div class="hand-heading"><div><p class="eyebrow">可用手牌</p><h2 id="seatLabel">玩家</h2></div><p>點擊手牌加入本輪；點擊上方選牌可取消</p></div>
+        <div id="hand" class="hand"></div>
+        <div class="actions">
+          <button id="sortButton" class="secondary">切換排序</button>
+          <button id="clearButton" class="secondary">清除本輪</button>
+          <button id="autoButton" class="secondary">自動選牌</button>
+          <button id="confirmButton" class="primary">確認本輪</button>
+          <button id="nextButton" class="primary hidden">下一輪</button>
+          <button id="restartButton" class="secondary hidden">重新開始</button>
+          <button id="leaveButton" class="danger">離開</button>
+        </div>
+        <p id="actionMessage" class="message"></p>
+      </section>
+    </section>
+  </main>
+
+</body>
+</html>
