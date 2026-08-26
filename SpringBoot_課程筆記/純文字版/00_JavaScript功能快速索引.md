@@ -21,7 +21,8 @@
 - [13. React、Vite、JSX、元件與Props](#13-reactvitejsx元件與props)
 - [14. React列表、State與受控表單](#14-react列表state與受控表單)
 - [15. React TodoList、表單送出與API資料擷取](#15-react-todolist表單送出與api資料擷取)
-- [16. 容易找錯章節的情況](#16-容易找錯章節的情況)
+- [16. React Timer、Cleanup與URL參數查詢](#16-react-timercleanup與url參數查詢)
+- [17. 容易找錯章節的情況](#17-容易找錯章節的情況)
 
 ## 1. 十秒找到對應章節
 
@@ -41,8 +42,9 @@
 | React入門 | Vite、JSX、元件、import／export、Props | [第30章](30_React_Vite_JSX元件與Props.md) |
 | React互動資料 | map清單、useState、事件、Object State與受控表單 | [第31章](31_React列表_useState與受控表單.md) |
 | React副作用與API | TodoList CRUD、表單送出、useEffect、Fetch與載入／錯誤狀態 | [第32章](32_React_TodoList_LoginForm與useEffect_API資料擷取.md) |
+| React Timer與單筆文章 | Effect Cleanup、網址路徑、動態ID與單筆Fetch | [第33章](33_React_Timer_cleanup與URL參數查詢.md) |
 
-建議首次學習依第19章到第32章的順序閱讀；實作時則依功能直接跳至需要的章節。
+建議首次學習依第19章到第33章的順序閱讀；實作時則依功能直接跳至需要的章節。
 
 ## 2. HTML、CSS與執行環境
 
@@ -288,7 +290,20 @@
 | 從API取得資料 | `fetch()`、`response.ok`、`response.json()` |
 | 呈現非同步流程狀態 | Loading、Data、Error State |
 
-## 16. 容易找錯章節的情況
+## 16. React Timer、Cleanup與URL參數查詢
+
+對應：[第33章：React Timer、Effect Cleanup與URL參數查詢](33_React_Timer_cleanup與URL參數查詢.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 每秒更新畫面 | `setInterval()`搭配State |
+| 元件卸載時停止Timer | Effect Cleanup、`clearInterval()` |
+| 從目前網址取得路徑 | `window.location.pathname` |
+| 依斜線切割路徑 | `pathname.split('/')` |
+| 依Prop重新取得單筆資料 | `useEffect(..., [postId])` |
+| 安全讀取可能尚未存在的Object | Optional Chaining `post?.title` |
+
+## 17. 容易找錯章節的情況
 
 | 問題 | 應先閱讀 |
 |---|---|
@@ -313,3 +328,5 @@
 | TodoList要新增、刪除或只更新一項 | 第32章，查看Array State CRUD |
 | API不會在畫面出現後自動載入 | 第32章，檢查`useEffect`與依賴陣列 |
 | Request成功、載入中與失敗畫面混在一起 | 第32章，拆分Data、Loading與Error State |
+| Timer切換元件後仍繼續執行 | 第33章，Effect必須回傳Cleanup |
+| `/12`可以取ID但`/posts/12`取得錯誤 | 第33章，`split()`索引取決於路徑格式 |

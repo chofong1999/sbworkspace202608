@@ -1,0 +1,11 @@
+# 建立專案
+npm create vite@latest my-react-app -- --template react
+
+# 進入專案目錄
+cd my-react-app
+
+# 安裝依賴套件
+npm install
+
+# 啟動開發伺服器
+npm run dev

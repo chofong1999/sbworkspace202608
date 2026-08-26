@@ -182,7 +182,18 @@ Spring Data會在執行時替這個介面建立代理實作，因此不用自己
 
 ## 5. `save()`不是固定等於INSERT
 
-Spring Data JPA的`save()`會先判斷Entity是否為新資料：
+Repository介面只宣告可使用的方法；Spring Data JPA預設以`SimpleJpaRepository`提供實作。其`save()`核心判斷可簡化成：
+
+```java
+if (entityInformation.isNew(entity)) {
+    entityManager.persist(entity);
+    return entity;
+} else {
+    return entityManager.merge(entity);
+}
+```
+
+因此`save()`會先判斷Entity是否為新資料：
 
 ```text
 新Entity → EntityManager.persist(...)
@@ -195,6 +206,39 @@ Spring Data JPA的`save()`會先判斷Entity是否為新資料：
 - 從Repository查出的Employee已經有ID，修改後再`save()`，通常走更新／合併。
 
 但「只要ID有值就一定UPDATE」只是範例簡化，不是完整JPA規格；Spring Data還會使用version property、ID與`Persistable`等策略判斷Entity狀態。
+
+### 5.1 在Eclipse查看內建方法與實作
+
+1. 在Repository介面名稱或方法上按`F3`／`Open Declaration`，先進入`JpaRepository`等介面。
+2. `JpaRepository`畫面主要列出它直接宣告的方法；`save()`來自繼承鏈，可能要使用`Ctrl+O`並切換顯示Inherited Members，或往上查看`CrudRepository`。
+3. 要看預設實作時，前往`SimpleJpaRepository`的`save()`；這裡才會看到`persist()`／`merge()`判斷。
+4. 專案自訂的`findByName(...)`與`@Query`方法沒有手寫實作類別；Spring Data會解析方法名稱或查詢註解，在執行時建立Repository代理。
+
+介面中的方法宣告、Spring Data的Java實作與最後送出的SQL是三個不同層次：
+
+```text
+JpaRepository／CrudRepository：公開方法契約
+→ SimpleJpaRepository／Repository代理：決定呼叫哪個JPA操作
+→ Hibernate：依Entity映射與資料庫Dialect產生SQL
+→ JDBC Driver：把SQL送到資料庫
+```
+
+所以在`SimpleJpaRepository.save()`中看不到固定的`INSERT`或`UPDATE`字串是正常的；SQL由Hibernate在Flush時產生，而不是寫死在`save()`方法裡。
+
+### 5.2 `save()`、Flush與SQL輸出
+
+`@Transactional`方法中的變更不一定在呼叫`save()`當下立刻送出SQL。Hibernate通常會在交易提交、手動Flush，或某些需要先同步資料庫的查詢前執行SQL。
+
+若練習時需要觀察SQL與參數，可加入：
+
+```properties
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.orm.jdbc.bind=TRACE
+```
+
+`saveAndFlush(entity)`會在儲存後要求立即Flush，但它仍是讓Hibernate產生SQL，不是直接在Repository中撰寫SQL。應使用`save()`回傳的實體；走`merge()`時，回傳值可能是新的Managed Instance，未必和傳入物件是同一個參照。
 
 ## 6. Employee Service的完整CRUD流程
 
@@ -368,6 +412,8 @@ spring.jpa.properties.hibernate.format_sql=true
 
 - `show-sql`：把Hibernate執行的SQL輸出到Console。
 - `format_sql`：改善SQL排版，方便閱讀。
+- `logging.level.org.hibernate.SQL=DEBUG`：以Logging系統顯示SQL。
+- `logging.level.org.hibernate.orm.jdbc.bind=TRACE`：顯示綁定到`?`位置的參數值；只適合開發除錯，避免在正式環境洩漏敏感資料。
 
 它們是觀察與除錯設定，不會改變CRUD本身的業務邏輯。
 

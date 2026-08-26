@@ -23,6 +23,8 @@
 | 接收Props | `function ProductCard({ name, price })` |
 | 預設匯出／匯入 | `export default`、`import Name from` |
 | 具名匯出／匯入 | `export function`、`import { Name } from` |
+| 同時匯入Default與Named項目 | `import App, { helper } from` |
+| 只執行模組、不接收匯出值 | `import './index.css'` |
 
 ## 2. 前置條件
 
@@ -253,6 +255,46 @@ import VarTest from './VarTest.jsx';
 ```jsx
 import { VarTest } from './VarTest.jsx';
 ```
+
+Default Import沒有大括號，名稱可由匯入端自行決定；Named Import使用大括號，名稱必須和匯出端一致，或使用`as`明確取別名：
+
+```jsx
+import MainCard from './ProductCard.jsx';
+import { ProductList as Products } from './ArrayList.jsx';
+```
+
+同一個模組同時提供Default與Named Export時，可以在同一行一起匯入：
+
+```jsx
+// tools.js
+export default function start() { /* ... */ }
+export function stop() { /* ... */ }
+
+// main.js
+import start, { stop } from './tools.js';
+```
+
+需要把全部Named Export收進同一個物件時，可使用Namespace Import：
+
+```jsx
+import * as math from './math.js';
+math.add(10, 20);
+```
+
+只要求模組執行、不接收任何值時使用Side-effect Import。Vite處理CSS時常見這種寫法：
+
+```jsx
+import './index.css';
+```
+
+判斷方式不是看有沒有大括號哪個「比較好」，而是必須配合匯出端：
+
+| 匯出端 | 匯入端 |
+|---|---|
+| `export default App` | `import App from './App.jsx'` |
+| `export const helper = ...` | `import { helper } from './file.js'` |
+| 同時有Default與Named Export | `import App, { helper } from './file.js'` |
+| 只需執行檔案 | `import './index.css'` |
 
 ## 11. Props傳遞資料
 

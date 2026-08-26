@@ -15,6 +15,8 @@
 | `event.preventDefault()` | 取消瀏覽器預設行為 | `event.preventDefault()` | [表單](#form) |
 | `prompt`／`alert`／`confirm` | 顯示瀏覽器對話框 | `prompt("Name", "")` | [BOM](#bom) |
 | `setTimeout`／`setInterval` | 延後／重複執行函式 | `setTimeout(fn, 1000)` | [BOM](#bom) |
+| `window.location.pathname` | 取得目前網址的路徑部分 | `const path = location.pathname` | [網址路徑](#location-path) |
+| `split('/')` | 依斜線切割路徑字串 | `path.split('/')[1]` | [網址路徑](#location-path) |
 | `fetch` | 發送HTTP請求 | `fetch(url)` | [Fetch](#fetch) |
 | `async`／`await` | 以循序外觀等待Promise | `const r = await fetch(url)` | [Fetch](#fetch) |
 
@@ -101,6 +103,20 @@ clearInterval(timerId);
 ```
 
 `prompt()`按取消回傳`null`，直接按確定但沒輸入則回傳空字串。若要數字，應明確使用`Number(input)`並檢查`Number.isNaN()`。
+
+<a id="location-path"></a>
+## 網址路徑與字串切割
+
+```javascript
+const postId = window.location.pathname.split('/')[1] || 1;
+```
+
+- `pathname`只包含網址的Path，不含Origin、Query String與Fragment。
+- `split('/')`是String方法，會依斜線建立Array。
+- `[1]`只有在路徑格式為`/{id}`時代表ID；`/posts/12`的ID位於`[2]`。
+- `|| 1`會在前面的結果是空字串等Falsy值時改用`1`。
+
+路徑層級固定且簡單時可以直接切割；正式多頁React應用通常交給Router解析參數，避免元件自行依賴字串索引。
 
 <a id="fetch"></a>
 ## Fetch API

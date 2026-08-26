@@ -8,6 +8,8 @@
 | 語法 | 一句用途 | 最短寫法 | 詳細 |
 |---|---|---|---|
 | `JpaRepository<T, ID>` | 取得Entity內建CRUD | `extends JpaRepository<User, Long>` | [說明](#jparepository) |
+| `save(entity)` | 新增或合併Entity | `repository.save(entity)` | [實作流程](#save-implementation) |
+| `saveAndFlush(entity)` | 儲存後立即要求Flush | `repository.saveAndFlush(entity)` | [實作流程](#save-implementation) |
 | `findBy...` | 以方法名稱產生查詢 | `findByEmail(String email)` | [規則](#derived-query) |
 | `countBy...` | 以方法名稱計算筆數 | `countByCategory(String category)` | [規則](#derived-query) |
 | `existsBy...` | 以方法名稱判斷存在 | `existsByEmail(String email)` | [規則](#derived-query) |
@@ -42,6 +44,37 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 | `existsById(id)` | `boolean` | 是否存在 |
 | `count()` | `long` | 筆數 |
 | `deleteById(id)` | `void` | 依主鍵刪除 |
+
+這些方法可能宣告在`JpaRepository`的父介面，例如`CrudRepository`；IDE只顯示目前介面直接宣告的成員時，要切換Inherited Members才能看到完整清單。
+
+<a id="save-implementation"></a>
+## `save()`的預設實作與SQL產生時機
+
+Spring Data JPA通常以`SimpleJpaRepository`提供`save()`的預設實作：
+
+```java
+if (entityInformation.isNew(entity)) {
+    entityManager.persist(entity);
+    return entity;
+}
+return entityManager.merge(entity);
+```
+
+| 條件 | JPA操作 | 注意事項 |
+|---|---|---|
+| 判斷為新Entity | `persist(entity)` | 傳入實體成為Managed，通常對應INSERT |
+| 判斷為既有Entity | `merge(entity)` | 應使用回傳值；回傳的Managed Instance可能不是原物件 |
+
+`isNew()`不是永遠只看ID；Spring Data也可能依Version欄位或`Persistable`策略判斷。`save()`也不保證當場執行SQL，真正SQL通常由Hibernate在Flush或交易提交時依Entity映射與Dialect產生。
+
+```properties
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.orm.jdbc.bind=TRACE
+```
+
+`saveAndFlush()`會在儲存後要求立即Flush；適合確實需要先同步資料庫的情境，不應只為了「比較保險」而全面取代`save()`。
 
 <a id="derived-query"></a>
 ## 方法名稱查詢（Derived Query）

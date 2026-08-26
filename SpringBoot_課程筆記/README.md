@@ -37,7 +37,7 @@
 
 這是目前持續維護的正式筆記：
 
-- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～32章。
+- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～33章。
 
 1. [環境設定](純文字版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](純文字版/02_建立第一個SpringBoot專案.md)
@@ -71,6 +71,7 @@
 30. [React、Vite、JSX、元件與Props](純文字版/30_React_Vite_JSX元件與Props.md)
 31. [React列表、useState與受控表單](純文字版/31_React列表_useState與受控表單.md)
 32. [React TodoList、LoginForm與useEffect API資料擷取](純文字版/32_React_TodoList_LoginForm與useEffect_API資料擷取.md)
+33. [React Timer、Effect Cleanup與URL參數查詢](純文字版/33_React_Timer_cleanup與URL參數查詢.md)
 
 ### 延伸閱讀
 
@@ -112,6 +113,7 @@
 | React、Vite、JSX、元件與Props | 第30章 | React環境、入口渲染、JSX規則、元件拆分與父子資料傳遞 |
 | React列表、State與受控表單 | 第31章 | `map()`清單、`useState`更新、事件處理、Object State與表單同步 |
 | React TodoList、useEffect與Fetch | 第32章 | Array State CRUD、表單送出、Effect依賴與API載入／錯誤狀態 |
+| React Timer、Cleanup與URL參數 | 第33章 | Timer清理、網址路徑拆分、依動態ID查詢單筆文章 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 

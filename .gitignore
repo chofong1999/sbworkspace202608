@@ -1,0 +1,20 @@
+# Generated build output and installed dependencies
+**/target/
+**/node_modules/
+
+# Eclipse workspace/server state
+.metadata/
+Servers/
+
+# Internal working systems are not part of the public course notes repository
+SpringBoot_AI交接資料/
+SpringBoot_作圖系統/
+SpringBoot_圖文作業資料/
+
+# Preserved teacher/classroom source material is local-only
+SpringBoot_課程筆記/老師教材/
+
+# Common local noise
+*.class
+.DS_Store
+Thumbs.db
