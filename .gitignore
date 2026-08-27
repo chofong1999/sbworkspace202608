@@ -10,9 +10,11 @@ Servers/
 SpringBoot_AI交接資料/
 SpringBoot_作圖系統/
 SpringBoot_圖文作業資料/
+**/AI-Handoff-Template-ZH-v1.12/
 
 # Preserved teacher/classroom source material is local-only
 SpringBoot_課程筆記/老師教材/
+jscode/*.zip
 
 # Common local noise
 *.class
