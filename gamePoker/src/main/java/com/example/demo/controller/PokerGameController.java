@@ -1,12 +1,7 @@
 package com.example.demo.controller;
 
-import java.util.Map;
-
-import com.example.demo.exception.GameException;
-import com.example.demo.poker.GameRoom;
-import com.example.demo.service.impl.PokerGameService;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,57 +13,77 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ErrorResponse;
+import com.example.demo.dto.GameView;
+import com.example.demo.dto.JoinRequest;
+import com.example.demo.dto.JoinResult;
+import com.example.demo.dto.SelectionRequest;
+import com.example.demo.exception.GameException;
+import com.example.demo.model.GameRoom;
+import com.example.demo.service.PokerGameService;
+
 @RestController
 @RequestMapping("/api/poker")
 public class PokerGameController {
-    private final PokerGameService service;
-    public PokerGameController(PokerGameService service) { this.service = service; }
+    @Autowired
+    private PokerGameService pokerGameService;
 
     @PostMapping("/join")
-    public PokerGameService.JoinResult join(@RequestBody JoinRequest request) {
-        GameRoom.Mode mode;
-        try { mode = GameRoom.Mode.valueOf(request.mode().toUpperCase()); }
-        catch (Exception e) { throw new GameException("INVALID_MODE", "模式必須是 PLAYER 或 COMPUTER"); }
-        return service.join(request.roomId(), mode);
+    public JoinResult join(@RequestBody JoinRequest request) {
+        String mode=request.getMode();
+        if(mode!=null) mode=mode.toUpperCase();
+        if(!GameRoom.MODE_PLAYER.equals(mode) && !GameRoom.MODE_COMPUTER.equals(mode)) {
+            throw new GameException("INVALID_MODE", "模式必須是 PLAYER 或 COMPUTER");
+        }
+        return pokerGameService.join(request.getRoomId(), mode, request.getPlayerName());
     }
 
     @GetMapping("/rooms/{roomId}")
-    public PokerGameService.GameView state(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token) {
-        return service.view(roomId, token);
+    public GameView state(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token) {
+        return pokerGameService.view(roomId, token);
     }
 
     @PutMapping("/rooms/{roomId}/selection")
-    public PokerGameService.GameView select(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token,
-            @RequestBody SelectionRequest request) { return service.select(roomId, token, request.choices()); }
+    public GameView select(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token,
+            @RequestBody SelectionRequest request) {
+        return pokerGameService.select(roomId, token, request.getChoices());
+    }
 
     @PostMapping("/rooms/{roomId}/confirm")
-    public PokerGameService.GameView confirm(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token) {
-        return service.confirm(roomId, token);
+    public GameView confirm(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token) {
+        return pokerGameService.confirm(roomId, token);
     }
 
     @PostMapping("/rooms/{roomId}/next-round")
-    public PokerGameService.GameView nextRound(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token) {
-        return service.nextRound(roomId, token);
+    public GameView nextRound(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token) {
+        return pokerGameService.nextRound(roomId, token);
     }
 
     @PostMapping("/rooms/{roomId}/restart")
-    public PokerGameService.GameView restart(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token) {
-        return service.restart(roomId, token);
+    public GameView restart(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token) {
+        return pokerGameService.restart(roomId, token);
     }
 
     @PostMapping("/rooms/{roomId}/auto-select")
-    public PokerGameService.GameView autoSelect(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token) {
-        return service.autoSelect(roomId, token);
+    public GameView autoSelect(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token) {
+        return pokerGameService.autoSelect(roomId, token);
     }
 
     @DeleteMapping("/rooms/{roomId}/leave")
-    public void leave(@PathVariable String roomId, @RequestHeader("X-Player-Token") String token) { service.leave(roomId, token); }
-
-    @ExceptionHandler(GameException.class)
-    public ResponseEntity<Map<String, String>> gameError(GameException e) {
-        return ResponseEntity.badRequest().body(Map.of("code", e.getCode(), "message", e.getMessage()));
+    public void leave(@PathVariable String roomId,
+            @RequestHeader("X-Player-Token") String token) {
+        pokerGameService.leave(roomId, token);
     }
 
-    public record JoinRequest(String roomId, String mode) { }
-    public record SelectionRequest(Map<Integer, Integer> choices) { }
+    @ExceptionHandler(GameException.class)
+    public ResponseEntity<ErrorResponse> gameError(GameException e) {
+        ErrorResponse response=new ErrorResponse(e.getCode(), e.getMessage());
+        return ResponseEntity.badRequest().body(response);
+    }
 }

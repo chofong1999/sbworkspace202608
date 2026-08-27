@@ -1,198 +1,575 @@
-const api = "/api/poker";
-const $ = id => document.getElementById(id);
-let roomId = "", token = "", game = null, socket = null, pollTimer = null;
-let draftChoices = new Map(), saveChain = Promise.resolve(), lastRound = 0;
-let selectedOrder = [], sortByPoint = false;
+var api="/api/poker";
+var roomId="";
+var token="";
+var game=null;
+var socket=null;
+var pollTimer=null;
+var draftChoices={};
+var selectedOrder=[];
+var sortByPoint=false;
+var saving=false;
+var saveAgain=false;
+var confirmAfterSave=false;
+var lastRound=0;
+var playerName="";
+var resultPauseTimer=null;
+var resultPauseUntil=0;
+var pausedResultRound=0;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(location.search);
-  $("roomInput").value = params.get("roomId") || "room-1";
-  $("computerButton").onclick = () => join("COMPUTER", newComputerRoomId());
-  $("playerButton").onclick = () => join("PLAYER", $("roomInput").value.trim());
-  $("clearButton").onclick = clearCurrentRound;
-  $("sortButton").onclick = changeSort;
-  $("autoButton").onclick = autoSelect;
-  $("confirmButton").onclick = confirmRound;
-  $("nextButton").onclick = nextRound;
-  $("restartButton").onclick = restart;
-  $("leaveButton").onclick = leave;
-  if (params.get("mode") === "player" && params.get("roomId")) join("PLAYER", params.get("roomId"));
-  if (params.get("mode") === "computer") join("COMPUTER", newComputerRoomId());
-});
-
-function newComputerRoomId() { return `computer-${Date.now()}-${Math.floor(Math.random() * 1000000)}`; }
-
-async function request(path, options = {}) {
-  options.headers = { "Content-Type": "application/json", ...(token ? { "X-Player-Token": token } : {}), ...(options.headers || {}) };
-  const response = await fetch(api + path, options);
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: "伺服器連線失敗" }));
-    throw new Error(error.message || "操作失敗");
-  }
-  if (response.status === 204) return null;
-  return response.json();
+function element(id) {
+    return document.getElementById(id);
 }
 
-async function join(mode, id) {
-  if (!id) return showMessage("請輸入房間編號", true);
-  try {
-    const joined = await request("/join", { method: "POST", body: JSON.stringify({ roomId: id, mode }) });
-    roomId = joined.roomId; token = joined.token; game = joined.game; syncDraft();
-    $("lobby").classList.add("hidden"); $("game").classList.remove("hidden");
-    connectSocket(); render();
-    clearInterval(pollTimer); pollTimer = setInterval(refresh, 800);
-  } catch (error) { showMessage(error.message, true); }
+$(document).ready(function() {
+    var roomParameter=getParameter("roomId");
+    var modeParameter=getParameter("mode");
+    playerName=getParameter("playerName") || getParameter("username") || "";
+    element("nameInput").value=playerName || "玩家";
+    element("roomInput").value=roomParameter || "room-1";
+    element("computerButton").onclick=function() { join("COMPUTER", newComputerRoomId()); };
+    element("playerButton").onclick=function() { join("PLAYER", element("roomInput").value.trim()); };
+    element("sortButton").onclick=changeSort;
+    element("clearButton").onclick=clearCurrentRound;
+    element("restartButton").onclick=restart;
+    element("autoButton").onclick=autoSelect;
+    element("confirmButton").onclick=confirmRound;
+    element("nextButton").onclick=nextRound;
+    element("leaveButton").onclick=leave;
+
+    if(modeParameter==="player" && roomParameter) join("PLAYER", roomParameter);
+    if(modeParameter==="computer") join("COMPUTER", newComputerRoomId());
+});
+
+function getParameter(name) {
+    var query=location.search;
+    if(query.length>0) query=query.substring(1);
+    var items=query.split("&");
+    for(var i=0;i<items.length;i++) {
+        var pair=items[i].split("=");
+        if(decodeURIComponent(pair[0])===name) {
+            if(pair.length<2) return "";
+            return decodeURIComponent(pair[1].replace(/\+/g, " "));
+        }
+    }
+    return "";
+}
+
+function newComputerRoomId() {
+    return "computer-"+Date.now()+"-"+Math.floor(Math.random()*1000000);
+}
+
+function request(method, path, data, success) {
+    var options={
+        method:method,
+        url:api+path,
+        contentType:"application/json",
+        dataType:"json",
+        success:success,
+        error:function(response) {
+            var message="伺服器連線失敗";
+            if(response.status===404) {
+                message="找不到 Poker 後端，請確認目前執行的是 gamePoker 的 GamePokerApplication";
+            }
+            else if(response.responseJSON && response.responseJSON.message) {
+                message=response.responseJSON.message;
+            }
+            saving=false;
+            saveAgain=false;
+            confirmAfterSave=false;
+            showMessage(message);
+            render();
+        }
+    };
+    if(token) options.headers={"X-Player-Token":token};
+    if(data!==null) options.data=JSON.stringify(data);
+    $.ajax(options);
+}
+
+function join(mode, id) {
+    if(!id) {
+        showMessage("請輸入房間編號", true);
+        return;
+    }
+    playerName=element("nameInput").value.trim();
+    if(playerName==="") playerName="玩家";
+    var body={roomId:id, mode:mode, playerName:playerName};
+    request("POST", "/join", body, function(joined) {
+        roomId=joined.roomId;
+        token=joined.token;
+        game=joined.game;
+        syncDraft();
+        document.body.classList.add("playing");
+        element("lobby").classList.add("hidden");
+        element("game").classList.remove("hidden");
+        connectSocket();
+        render();
+        clearInterval(pollTimer);
+        pollTimer=setInterval(refresh, 800);
+    });
 }
 
 function connectSocket() {
-  const protocol = location.protocol === "https:" ? "wss" : "ws";
-  socket = new WebSocket(`${protocol}://${location.host}/ws/poker?roomId=${encodeURIComponent(roomId)}&token=${encodeURIComponent(token)}`);
-  socket.onopen = () => $("connectionBadge").textContent = "已連線";
-  socket.onclose = () => { if (token) $("connectionBadge").textContent = "連線已中斷"; };
+    var protocol=location.protocol==="https:" ? "wss" : "ws";
+    var url=protocol+"://"+location.host+"/ws/poker?roomId="+encodeURIComponent(roomId)+"&token="+encodeURIComponent(token);
+    socket=new WebSocket(url);
+    socket.onopen=function() { element("connectionBadge").textContent="已連線"; };
+    socket.onclose=function() {
+        if(token) element("connectionBadge").textContent="連線已中斷";
+    };
 }
 
-async function refresh() {
-  if (!token) return;
-  try {
-    const latest = await request(`/rooms/${encodeURIComponent(roomId)}`);
-    const roundChanged = game && latest.currentRound !== game.currentRound;
-    const handChanged = game && latest.hand.length !== game.hand.length;
-    game = latest;
-    if (roundChanged || handChanged || lastRound === 0) syncDraft();
-    render();
-  } catch (error) { showMessage(error.message); }
+function refresh() {
+    if(!token) return;
+    request("GET", "/rooms/"+encodeURIComponent(roomId), null, function(latest) {
+        var roundChanged=game && latest.currentRound!==game.currentRound;
+        startResultPause(latest);
+        game=latest;
+        if(roundChanged || lastRound===0) syncDraft();
+        render();
+    });
 }
 
 function syncDraft() {
-  draftChoices = new Map((game?.hand || []).map(card => [card.id, card.slot]));
-  selectedOrder = (game?.hand || []).filter(card => card.slot === game?.currentRound).map(card => card.id);
-  lastRound = game?.currentRound || 0;
+    draftChoices={};
+    selectedOrder=[];
+    if(game && game.hand) {
+        for(var i=0;i<game.hand.length;i++) {
+            var card=game.hand[i];
+            draftChoices[card.id]=card.slot;
+            if(card.slot===game.currentRound) selectedOrder.push(card.id);
+        }
+    }
+    lastRound=game ? game.currentRound : 0;
 }
 
 function render() {
-  if (!game) return;
-  $("roomLabel").textContent = game.mode === "COMPUTER" ? "電腦對戰" : `房間 ${game.roomId}`;
-  $("seatLabel").textContent = `你是玩家 ${game.seat} · 第 ${game.currentRound} 輪`;
-  seatStatus("player1Status", game.player1Connected, game.player1Confirmed);
-  seatStatus("player2Status", game.player2Connected, game.player2Confirmed);
-  if (game.status === "WAITING") $("gameMessage").textContent = "等待另一位玩家加入";
-  else if (game.status === "PLAYING") $("gameMessage").textContent = ownConfirmed() ? `第 ${game.currentRound} 輪已確認，等待對手` : `第 ${game.currentRound} 輪選牌中`;
-  else if (game.status === "ROUND_RESULT") $("gameMessage").textContent = `第 ${game.currentRound} 輪結果已公布`;
-  else $("gameMessage").textContent = "遊戲結束";
-  renderCards();
-  const canEdit = game.status === "PLAYING" && !ownConfirmed();
-  $("clearButton").disabled = !canEdit;
-  $("sortButton").disabled = !canEdit;
-  $("autoButton").disabled = !canEdit || game.currentRound !== 1;
-  $("confirmButton").disabled = !canEdit || selectedCount() !== cardsNeeded();
-  $("confirmButton").classList.toggle("hidden", game.status === "ROUND_RESULT" || game.status === "FINISHED");
-  $("nextButton").classList.toggle("hidden", game.status !== "ROUND_RESULT");
-  $("restartButton").classList.toggle("hidden", game.status !== "FINISHED");
-  renderResults();
+    if(!game) return;
+    element("roomLabel").textContent=game.mode==="COMPUTER" ? "電腦對戰" : "房間 "+game.roomId;
+    element("player1Name").textContent=game.player1Name || "玩家一";
+    element("player2Name").textContent=game.player2Name || "玩家二";
+    element("player1PreviewName").textContent=game.player1Name || "玩家一";
+    element("player2PreviewName").textContent=game.player2Name || "玩家二";
+    element("seatLabel").textContent="你是 "+(game.seat===1 ? game.player1Name : game.player2Name);
+    element("roundTitle").textContent=isResultPause() ? "第 "+pausedResultRound+" 輪結果" : "第 "+game.currentRound+" 輪";
+    element("roundHint").textContent="請選擇 "+cardsNeeded()+" 張牌";
+    seatStatus("player1Status", game.player1Connected, game.player1Confirmed);
+    seatStatus("player2Status", game.player2Connected, game.player2Confirmed);
+    element("player1Seat").classList.toggle("confirmed", game.player1Confirmed);
+    element("player2Seat").classList.toggle("confirmed", game.player2Confirmed);
+
+    if(isResultPause()) {
+        var seconds=Math.ceil((resultPauseUntil-Date.now())/1000);
+        element("gameMessage").textContent="結果已公布";
+        element("roundHint").textContent=seconds+" 秒後開放第 "+game.currentRound+" 輪";
+    }
+    else if(game.status==="WAITING") {
+        element("gameMessage").textContent="等待對手";
+        element("roundHint").textContent="另一位玩家加入後自動開始";
+    }
+    else if(game.status==="PLAYING" && ownConfirmed()) {
+        element("gameMessage").textContent="已鎖定";
+        element("roundHint").textContent="等待對手確認";
+    }
+    else if(game.status==="PLAYING") {
+        element("gameMessage").textContent="選牌中";
+        element("roundHint").textContent="選擇 "+cardsNeeded()+" 張牌";
+    }
+    else if(game.status==="ROUND_RESULT") {
+        element("gameMessage").textContent="結果已公布";
+        element("roundHint").textContent="4 秒後自動進入下一輪";
+    }
+    else {
+        element("gameMessage").textContent="本局結束";
+        element("roundHint").textContent="查看最終結果";
+    }
+
+    renderPreviews();
+    renderHand();
+    renderResults();
+
+    var canEdit=game.status==="PLAYING" && !ownConfirmed() && !isResultPause();
+    element("sortButton").disabled=!canEdit;
+    element("clearButton").disabled=!canEdit;
+    element("autoButton").disabled=!canEdit || game.currentRound!==1;
+    element("confirmButton").disabled=!canEdit || selectedCount()!==cardsNeeded();
+    element("confirmButton").classList.toggle("hidden", game.status==="FINISHED");
+    element("nextButton").classList.add("hidden");
+    element("handInstruction").textContent=canEdit ? "點擊手牌放入本輪出牌區" : "本輪手牌已鎖定";
 }
 
-function renderCards() {
-  const current = game.currentRound;
-  document.querySelectorAll(".slot").forEach(slot => slot.classList.toggle("active-slot", Number(slot.dataset.slot) === current));
-  for (let slot = 0; slot <= 3; slot++) {
-    const cards = orderedCards(game.hand.filter(card => draftChoices.get(card.id) === slot), slot === current);
-    const clickable = slot === current && game.status === "PLAYING" && !ownConfirmed();
-    $("slot" + slot).innerHTML = cards.map(card => miniCard(card, clickable)).join("");
-  }
-  document.querySelectorAll(".mini-card.selectable").forEach(card => card.onclick = () => removeCard(Number(card.dataset.id)));
-  const available = orderedCards(game.hand.filter(card => draftChoices.get(card.id) === 0));
-  $("hand").innerHTML = available.map(card => `<button class="playing-card ${isRed(card) ? "red" : ""}" data-id="${card.id}">${card.name}</button>`).join("");
-  const canEdit = game.status === "PLAYING" && !ownConfirmed();
-  document.querySelectorAll(".playing-card").forEach(card => { card.disabled = !canEdit; card.onclick = () => selectCard(Number(card.dataset.id)); });
-  for (let slot = 1; slot <= 3; slot++) {
-    const preview = game.preview[slot];
-    const localCount = [...draftChoices.values()].filter(value => value === slot).length;
-    $("preview" + slot).textContent = `${localCount} / ${preview.need}${slot === current && preview.type ? " · " + preview.type : ""}`;
-  }
+function startResultPause(latest) {
+    var oldCount=game && game.results ? game.results.length : 0;
+    var newCount=latest.results ? latest.results.length : 0;
+    if(newCount<=oldCount || latest.status==="FINISHED") return false;
+    pausedResultRound=latest.results[newCount-1].round;
+    resultPauseUntil=Date.now()+4000;
+    if(resultPauseTimer!==null) clearTimeout(resultPauseTimer);
+    resultPauseTimer=setTimeout(function() {
+        resultPauseTimer=null;
+        resultPauseUntil=0;
+        pausedResultRound=0;
+        syncDraft();
+        render();
+    }, 4000);
+    return true;
+}
+
+function isResultPause() {
+    return resultPauseUntil>Date.now();
+}
+
+function renderPreviews() {
+    renderOnePreview(1);
+    renderOnePreview(2);
+}
+
+function renderOnePreview(playerNumber) {
+    var isMe=game.seat===playerNumber;
+    var result=currentRoundResult();
+    var cards=[];
+    var type="--";
+    var countText="待開牌";
+    var canRemove=false;
+
+    if(result) {
+        cards=playerNumber===1 ? result.player1Cards : result.player2Cards;
+        type=playerNumber===1 ? result.player1Type : result.player2Type;
+        countText=cards.length+" / "+cardsNeededForRound(result.round);
+    }
+    else if(isMe) {
+        cards=currentSelectedCards();
+        var preview=game.preview[game.currentRound];
+        type=preview && preview.type ? preview.type : "張數不足";
+        countText=cards.length+" / "+cardsNeeded();
+        canRemove=game.status==="PLAYING" && !ownConfirmed() && !isResultPause();
+    }
+    else {
+        var confirmed=playerNumber===1 ? game.player1Confirmed : game.player2Confirmed;
+        countText=confirmed ? "已選好" : "待開牌";
+    }
+
+    element("player"+playerNumber+"Count").textContent=countText;
+    element("player"+playerNumber+"Type").textContent=type;
+    var panel=element("player"+playerNumber+"Preview");
+    panel.innerHTML="";
+
+    if(cards.length===0) {
+        var placeholder=document.createElement("span");
+        placeholder.className="preview-placeholder";
+        placeholder.textContent=countText;
+        panel.appendChild(placeholder);
+        return;
+    }
+
+    for(var i=0;i<cards.length;i++) {
+        var card=cards[i];
+        var button=document.createElement("button");
+        button.className="mini-card"+(isRed(card) ? " red" : "")+(canRemove ? " selectable" : "");
+        var previewImage=document.createElement("img");
+        previewImage.src=cardImagePath(card);
+        previewImage.alt=card.name || card;
+        button.appendChild(previewImage);
+        if(canRemove) {
+            button.dataset.id=card.id;
+            button.onclick=function() { removeCard(Number(this.dataset.id)); };
+        }
+        else button.disabled=true;
+        panel.appendChild(button);
+    }
+}
+
+function renderHand() {
+    var cards=orderedCards(game.hand);
+    var hand=element("hand");
+    hand.innerHTML="";
+    var canEdit=game.status==="PLAYING" && !ownConfirmed() && !isResultPause();
+
+    for(var i=0;i<cards.length;i++) {
+        var card=cards[i];
+        var slot=draftChoices[card.id];
+        var button=document.createElement("button");
+        button.className="playing-card slot-"+slot+(isRed(card) ? " red" : "");
+        var handImage=document.createElement("img");
+        handImage.src=cardImagePath(card);
+        handImage.alt=card.name;
+        button.appendChild(handImage);
+        button.dataset.id=card.id;
+
+        var canSelect=canEdit && slot===0;
+        if(canSelect) button.onclick=function() { selectCard(Number(this.dataset.id)); };
+        else {
+            button.disabled=true;
+            if(slot!==0) button.classList.add("locked");
+        }
+        hand.appendChild(button);
+    }
+}
+
+function currentSelectedCards() {
+    var cards=[];
+    for(var i=0;i<game.hand.length;i++) {
+        var card=game.hand[i];
+        if(draftChoices[card.id]===game.currentRound) cards.push(card);
+    }
+    cards.sort(function(a, b) { return selectedOrder.indexOf(a.id)-selectedOrder.indexOf(b.id); });
+    return cards;
+}
+
+function currentRoundResult() {
+    if(!game.results) return null;
+    var shownRound=isResultPause() ? pausedResultRound : game.currentRound;
+    for(var i=0;i<game.results.length;i++) {
+        if(game.results[i].round===shownRound) return game.results[i];
+    }
+    return null;
 }
 
 function selectCard(cardId) {
-  if (selectedCount() >= cardsNeeded()) {
-    const first = selectedOrder.shift();
-    if (first !== undefined) draftChoices.set(first, 0);
-  }
-  draftChoices.set(cardId, game.currentRound); selectedOrder.push(cardId); queueSave(); render();
+    if(selectedCount()>=cardsNeeded()) {
+        var first=selectedOrder.shift();
+        if(first!==undefined) draftChoices[first]=0;
+    }
+    draftChoices[cardId]=game.currentRound;
+    selectedOrder.push(cardId);
+    queueSave();
+    render();
 }
-function removeCard(cardId) { draftChoices.set(cardId, 0); selectedOrder = selectedOrder.filter(id => id !== cardId); queueSave(); render(); }
+
+function removeCard(cardId) {
+    draftChoices[cardId]=0;
+    selectedOrder=selectedOrder.filter(function(id) { return id!==cardId; });
+    queueSave();
+    render();
+}
+
 function clearCurrentRound() {
-  for (const [id, slot] of draftChoices) if (slot === game.currentRound) draftChoices.set(id, 0);
-  selectedOrder = [];
-  queueSave(); showMessage("本輪選牌已清除"); render();
+    for(var id in draftChoices) {
+        if(draftChoices[id]===game.currentRound) draftChoices[id]=0;
+    }
+    selectedOrder=[];
+    queueSave();
+    showMessage("本輪選牌已清除");
+    render();
 }
 
 function changeSort() {
-  sortByPoint = !sortByPoint;
-  showMessage(sortByPoint ? "依點數整理手牌" : "依花色整理手牌");
-  render();
+    sortByPoint=!sortByPoint;
+    showMessage(sortByPoint ? "依點數整理手牌" : "依花色整理手牌");
+    render();
 }
 
-function orderedCards(cards, preserveSelectionOrder = false) {
-  if (preserveSelectionOrder) return [...cards].sort((a, b) => selectedOrder.indexOf(a.id) - selectedOrder.indexOf(b.id));
-  if (sortByPoint) return [...cards].sort((a, b) => a.rank - b.rank || b.id - a.id);
-  return [...cards].sort((a, b) => a.id - b.id);
+function orderedCards(cards) {
+    var copy=cards.slice();
+    if(sortByPoint) {
+        copy.sort(function(a, b) { return a.rank-b.rank || a.id-b.id; });
+    }
+    else copy.sort(function(a, b) { return a.id-b.id; });
+    return copy;
 }
 
-async function autoSelect() {
-  try {
-    game = await request(`/rooms/${encodeURIComponent(roomId)}/auto-select`, { method: "POST" });
-    syncDraft(); showMessage("自動選牌完成"); render();
-  } catch (error) { showMessage(error.message); }
+function autoSelect() {
+    request("POST", "/rooms/"+encodeURIComponent(roomId)+"/auto-select", null, function(result) {
+        game=result;
+        syncDraft();
+        showMessage("自動選牌完成");
+        render();
+    });
 }
 
 function queueSave() {
-  const snapshot = Object.fromEntries(draftChoices);
-  saveChain = saveChain.then(async () => {
-    game = await request(`/rooms/${encodeURIComponent(roomId)}/selection`, { method: "PUT", body: JSON.stringify({ choices: snapshot }) });
-    render();
-  }).catch(error => showMessage(error.message));
-  return saveChain;
+    if(saving) {
+        saveAgain=true;
+        return;
+    }
+    saving=true;
+    var snapshot={};
+    for(var id in draftChoices) snapshot[id]=draftChoices[id];
+    request("PUT", "/rooms/"+encodeURIComponent(roomId)+"/selection",
+            {choices:snapshot}, function(result) {
+        game=result;
+        saving=false;
+        render();
+        if(saveAgain) {
+            saveAgain=false;
+            queueSave();
+        }
+        else if(confirmAfterSave) {
+            confirmAfterSave=false;
+            sendConfirm();
+        }
+    });
 }
 
-async function confirmRound() {
-  if (selectedCount() !== cardsNeeded()) return showMessage(`第 ${game.currentRound} 輪需要選 ${cardsNeeded()} 張牌`);
-  $("confirmButton").disabled = true;
-  try {
-    await saveChain;
-    game = await request(`/rooms/${encodeURIComponent(roomId)}/confirm`, { method: "POST" });
-    showMessage(game.status === "ROUND_RESULT" || game.status === "FINISHED" ? "雙方已確認，本輪開牌" : "本輪已確認，等待對手");
-    render();
-  } catch (error) { showMessage(error.message); render(); }
+function confirmRound() {
+    if(selectedCount()!==cardsNeeded()) {
+        showMessage("第 "+game.currentRound+" 輪需要選 "+cardsNeeded()+" 張牌");
+        return;
+    }
+    element("confirmButton").disabled=true;
+    confirmAfterSave=true;
+    if(!saving) queueSave();
 }
 
-async function nextRound() {
-  try { game = await request(`/rooms/${encodeURIComponent(roomId)}/next-round`, { method: "POST" }); syncDraft(); showMessage(`開始第 ${game.currentRound} 輪`); render(); }
-  catch (error) { showMessage(error.message); }
+function sendConfirm() {
+    request("POST", "/rooms/"+encodeURIComponent(roomId)+"/confirm", null, function(result) {
+        var paused=startResultPause(result);
+        game=result;
+        if(paused || game.status==="FINISHED") showMessage("雙方已確認，本輪開牌");
+        else showMessage("本輪已確認，等待對手");
+        if(paused) syncDraft();
+        render();
+    });
 }
-async function restart() {
-  try { game = await request(`/rooms/${encodeURIComponent(roomId)}/restart`, { method: "POST" }); syncDraft(); render(); }
-  catch (error) { showMessage(error.message); }
+
+function nextRound() {
+    request("POST", "/rooms/"+encodeURIComponent(roomId)+"/next-round", null, function(result) {
+        game=result;
+        syncDraft();
+        showMessage("開始第 "+game.currentRound+" 輪");
+        render();
+    });
+}
+
+function restart() {
+    request("POST", "/rooms/"+encodeURIComponent(roomId)+"/restart", null, function(result) {
+        game=result;
+        syncDraft();
+        showMessage("遊戲已重新開始");
+        render();
+    });
 }
 
 function renderResults() {
-  const panel = $("resultPanel");
-  if (!game.results.length) { panel.classList.add("hidden"); return; }
-  panel.classList.remove("hidden");
-  $("winnerTitle").textContent = game.status === "FINISHED" ? (game.winner === 0 ? "本局平手" : `玩家 ${game.winner} 獲勝`) : `第 ${game.currentRound} 輪結果`;
-  $("roundResults").innerHTML = game.results.map(r => `<div class="result-row"><strong>第 ${r.round} 輪</strong><span>玩家一：${r.player1Cards.join(" ")}（${r.player1Type}）</span><span>玩家二：${r.player2Cards.join(" ")}（${r.player2Type}）</span><strong>${r.winner === 0 ? "平手" : "玩家 " + r.winner + " 勝"}</strong></div>`).join("");
+    var panel=element("resultPanel");
+    var player1Panel=element("player1PreviewPanel");
+    var player2Panel=element("player2PreviewPanel");
+    panel.classList.remove("win", "lose", "draw");
+    player1Panel.classList.remove("winner", "loser");
+    player2Panel.classList.remove("winner", "loser");
+    panel.classList.remove("hidden");
+    var completed=game.results ? game.results.length : 0;
+    var winCount=0;
+    var loseCount=0;
+    for(var countIndex=0;countIndex<completed;countIndex++) {
+        if(game.results[countIndex].winner===game.seat) winCount++;
+        else loseCount++;
+    }
+
+    if(completed===0) {
+        element("resultCaption").textContent="三輪結果";
+        element("resultSymbol").textContent="…";
+        element("winnerTitle").textContent="尚未公布結果";
+    }
+    else if(isResultPause() || game.status==="FINISHED") {
+        var latest=game.results[completed-1];
+        var winner=game.status==="FINISHED" ? game.winner : latest.winner;
+        element("resultCaption").textContent=game.status==="FINISHED" ? "整局總結果" : "本輪結果";
+
+        var ownWin=winner===game.seat;
+        panel.classList.add(ownWin ? "win" : "lose");
+        element("resultSymbol").textContent=ownWin ? "✓" : "×";
+        if(game.status==="FINISHED") element("winnerTitle").textContent=(ownWin ? "整局獲勝" : "整局落敗")+"｜"+winCount+"勝 "+loseCount+"敗";
+        else element("winnerTitle").textContent="第 "+latest.round+" 輪"+(ownWin ? "獲勝" : "落敗");
+        element("player"+winner+"PreviewPanel").classList.add("winner");
+        element("player"+(winner===1 ? 2 : 1)+"PreviewPanel").classList.add("loser");
+    }
+    else {
+        element("resultCaption").textContent="目前戰績";
+        element("resultSymbol").textContent=completed+"/3";
+        element("winnerTitle").textContent=winCount+"勝 "+loseCount+"敗";
+    }
+
+    var html="";
+    for(var roundNumber=1;roundNumber<=3;roundNumber++) {
+        var result=null;
+        for(var resultIndex=0;resultIndex<completed;resultIndex++) {
+            if(game.results[resultIndex].round===roundNumber) result=game.results[resultIndex];
+        }
+
+        if(result===null) {
+            html+="<div class='result-row waiting'>";
+            html+="<div class='round-number'><b>第 "+roundNumber+" 輪</b><strong>等待</strong></div>";
+            html+="<div class='round-hand empty-hand'><small>你的牌</small><span>尚未公布</span></div>";
+            html+="<div class='versus'>VS</div>";
+            html+="<div class='round-hand empty-hand'><small>對手的牌</small><span>尚未公布</span></div>";
+            html+="</div>";
+        }
+        else {
+            var ownCards=game.seat===1 ? result.player1Cards : result.player2Cards;
+            var opponentCards=game.seat===1 ? result.player2Cards : result.player1Cards;
+            var ownType=game.seat===1 ? result.player1Type : result.player2Type;
+            var opponentType=game.seat===1 ? result.player2Type : result.player1Type;
+            var roundState=result.winner===game.seat ? "win" : "lose";
+            var roundText=result.winner===game.seat ? "你贏" : "你輸";
+
+            html+="<div class='result-row "+roundState+"'>";
+            html+="<div class='round-number'><b>第 "+roundNumber+" 輪</b><strong>"+roundText+"</strong></div>";
+            html+="<div class='round-hand own-hand'><small>你的牌</small><b>"+ownType+"</b><span class='result-cards'>"+resultCardImages(ownCards)+"</span></div>";
+            html+="<div class='versus'>VS</div>";
+            html+="<div class='round-hand opponent-hand'><small>對手的牌</small><b>"+opponentType+"</b><span class='result-cards'>"+resultCardImages(opponentCards)+"</span></div>";
+            html+="</div>";
+        }
+    }
+    element("roundResults").innerHTML=html;
 }
 
-function seatStatus(id, connected, confirmed) { $(id).textContent = !connected ? "離線／空缺" : confirmed ? "本輪已確認" : "在線"; }
-function ownConfirmed() { return game.seat === 1 ? game.player1Confirmed : game.player2Confirmed; }
-function cardsNeeded() { return game.currentRound === 1 ? 3 : 5; }
-function selectedCount() { return [...draftChoices.values()].filter(value => value === game.currentRound).length; }
-function isRed(card) { return card.suit === "♥" || card.suit === "♦" || card.suit === "♡" || card.suit === "♢"; }
-function miniCard(card, selectable) { return `<button class="mini-card ${isRed(card) ? "red" : ""} ${selectable ? "selectable" : ""}" data-id="${card.id}" ${selectable ? "" : "disabled"}>${card.name}</button>`; }
+function resultCardImages(cards) {
+    var html="";
+    for(var i=0;i<cards.length;i++) html+="<img src='"+cardImagePath(cards[i])+"' alt='"+cards[i]+"'>";
+    return html;
+}
+
+function seatStatus(id, connected, confirmed) {
+    if(!connected) element(id).textContent="離線／空缺";
+    else if(confirmed) element(id).textContent="本輪已確認";
+    else element(id).textContent="在線";
+}
+
+function ownConfirmed() {
+    return game.seat===1 ? game.player1Confirmed : game.player2Confirmed;
+}
+function cardsNeeded() { return game.currentRound===1 ? 3 : 5; }
+function cardsNeededForRound(round) { return round===1 ? 3 : 5; }
+function selectedCount() { return currentSelectedCards().length; }
+function isRed(card) {
+    var suit=card.suit || String(card).charAt(0);
+    return suit==="♡" || suit==="♢" || suit==="♥" || suit==="♦";
+}
+
+function cardImagePath(card) {
+    var cardName=card.name ? card.name : String(card);
+    var suit=card.suit ? card.suit : cardName.charAt(0);
+    var suitCode="s";
+    if(suit==="♡" || suit==="♥") suitCode="h";
+    else if(suit==="♢" || suit==="♦") suitCode="d";
+    else if(suit==="♣") suitCode="c";
+
+    var rank=card.rank;
+    if(rank===undefined) rank=cardName.substring(1);
+    var point=String(rank).toLowerCase();
+    if(rank===1 || point==="a") point="a";
+    else if(rank===11 || point==="j") point="j";
+    else if(rank===12 || point==="q") point="q";
+    else if(rank===13 || point==="k") point="k";
+    return "cards/card_a_"+suitCode+point+".png";
+}
 
 function leave() {
-  if (!token) return location.replace("poker_client.html");
-  const leaveToken = token;
-  fetch(`${api}/rooms/${encodeURIComponent(roomId)}/leave`, { method: "DELETE", headers: { "X-Player-Token": leaveToken }, keepalive: true }).catch(() => {});
-  token = ""; clearInterval(pollTimer); if (socket) socket.close();
-  setTimeout(() => location.replace("poker_client.html"), 30);
+    if(!token) {
+        location.replace("poker_client.html");
+        return;
+    }
+    $.ajax({
+        method:"DELETE",
+        url:api+"/rooms/"+encodeURIComponent(roomId)+"/leave",
+        headers:{"X-Player-Token":token}
+    });
+    token="";
+    clearInterval(pollTimer);
+    if(socket) socket.close();
+    setTimeout(function() { location.replace("poker_client.html"); }, 30);
 }
-function showMessage(message, lobby = false) { $(lobby ? "lobbyMessage" : "actionMessage").textContent = message; }
+
+function showMessage(message, lobby) {
+    element(lobby ? "lobbyMessage" : "actionMessage").textContent=message;
+}

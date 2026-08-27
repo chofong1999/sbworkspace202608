@@ -1,14 +1,41 @@
 package com.example.demo.model;
 
-/** 依舊專案 model.Player：玩家持有 15 張手牌與三個 Round。 */
 public class Player {
-    private String name;
-    private final Card[] hand = new Card[15];
-    private final Round[] rounds = { new Round(1, 3), new Round(2, 5), new Round(3, 5) };
+	private String name;
+	private Card hand[]=new Card[15];
+	private Round rounds[]=new Round[3];
+	
+	public Player()
+	{
+		super();
+		for(int i=0;i<hand.length;i++)
+		{
+			hand[i]=new Card();
+		}
+		rounds[0]=new Round(1, 3);
+		rounds[1]=new Round(2, 5);
+		rounds[2]=new Round(3, 5);
+		
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Card[] getHand() {
+		return hand;
+	}
+	public void setHand(Card[] hand) {
+		this.hand = hand;
+	}
+	public Round[] getRounds() {
+		return rounds;
+	}
+	public void setRounds(Round[] rounds) {
+		this.rounds = rounds;
+	}
+	
+	
 
-    public Player() { for (int i = 0; i < hand.length; i++) hand[i] = new Card(); }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public Card[] getHand() { return hand; }
-    public Round[] getRounds() { return rounds; }
 }

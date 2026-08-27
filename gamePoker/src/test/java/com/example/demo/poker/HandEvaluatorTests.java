@@ -3,33 +3,32 @@ package com.example.demo.poker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import com.example.demo.model.Card;
 import com.example.demo.model.Player;
 import com.example.demo.util.GameTool;
-import com.example.demo.util.HandEvaluator;
+import com.example.demo.model.HandResult;
+import com.example.demo.service.impl.PokerRuleServiceImpl;
 
 class HandEvaluatorTests {
-    private final HandEvaluator evaluator = new HandEvaluator();
+    private final PokerRuleServiceImpl evaluator = new PokerRuleServiceImpl();
 
     @Test
     void recognizesFiveCardHands() {
-        assertEquals("同花順", evaluator.evaluate(List.of(card("♠", 10), card("♠", 11), card("♠", 12), card("♠", 13), card("♠", 1))).type());
-        assertEquals("鐵支", evaluator.evaluate(List.of(card("♠", 9), card("♥", 9), card("♦", 9), card("♣", 9), card("♠", 2))).type());
-        assertEquals("葫蘆", evaluator.evaluate(List.of(card("♠", 8), card("♥", 8), card("♦", 8), card("♠", 3), card("♥", 3))).type());
-        assertEquals("順子", evaluator.evaluate(List.of(card("♠", 1), card("♥", 2), card("♦", 3), card("♣", 4), card("♠", 5))).type());
+        assertEquals("同花順", evaluate(card("♠", 10), card("♠", 11), card("♠", 12), card("♠", 13), card("♠", 1)).getName());
+        assertEquals("鐵支", evaluate(card("♠", 9), card("♡", 9), card("♢", 9), card("♣", 9), card("♠", 2)).getName());
+        assertEquals("葫蘆", evaluate(card("♠", 8), card("♡", 8), card("♢", 8), card("♠", 3), card("♡", 3)).getName());
+        assertEquals("順子", evaluate(card("♠", 1), card("♡", 2), card("♢", 3), card("♣", 4), card("♠", 5)).getName());
     }
 
     @Test
     void recognizesThreeCardHandsAndComparesThem() {
-        HandResult three = evaluator.evaluate(List.of(card("♠", 6), card("♥", 6), card("♦", 6)));
-        HandResult pair = evaluator.evaluate(List.of(card("♠", 11), card("♥", 11), card("♦", 2)));
-        assertEquals("三條", three.type());
-        assertEquals("一對", pair.type());
-        assertTrue(three.compareTo(pair) > 0);
+        HandResult three = evaluate(card("♠", 6), card("♡", 6), card("♢", 6));
+        HandResult pair = evaluate(card("♠", 11), card("♡", 11), card("♢", 2));
+        assertEquals("三條", three.getName());
+        assertEquals("一對", pair.getName());
+        assertTrue(three.compare(pair) > 0);
     }
 
     @Test
@@ -40,7 +39,7 @@ class HandEvaluatorTests {
             player.getHand()[i].copy(new Card(suits[i % 4], i % 13 + 1, i));
         }
         int[] choice = new int[52];
-        GameTool.autoChooseBest(player, choice);
+        GameTool.auto_choose_best(player, choice);
         assertEquals(3, count(choice, 1));
         assertEquals(5, count(choice, 2));
         assertEquals(5, count(choice, 3));
@@ -53,5 +52,7 @@ class HandEvaluatorTests {
         return count;
     }
 
-    private Card card(String suit, int rank) { return new Card(Math.abs((suit + rank).hashCode()), suit, rank); }
+    private HandResult evaluate(Card... cards) { return evaluator.evaluate(cards); }
+
+    private Card card(String suit, int rank) { return new Card(suit, rank, Math.abs((suit + rank).hashCode())); }
 }
