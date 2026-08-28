@@ -1,0 +1,49 @@
+/* components/Navbar.css */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #454556;
+  color: #99f0d4;
+}
+
+.navbar-brand {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color:chartreuse
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  color: #adb5bd;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 目前所在頁面 — 亮色 + 背景 */
+.nav-link.active {
+  color: #fff;
+  background: #0d6efd;
+  font-weight: 600;
+}
+
+/* 資料載入中（搭配 lazy route） */
+.nav-link.pending {
+  opacity: 0.6;
+}

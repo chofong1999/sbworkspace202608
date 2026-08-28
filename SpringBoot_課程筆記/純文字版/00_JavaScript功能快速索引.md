@@ -22,7 +22,12 @@
 - [14. React列表、State與受控表單](#14-react列表state與受控表單)
 - [15. React TodoList、表單送出與API資料擷取](#15-react-todolist表單送出與api資料擷取)
 - [16. React Timer、Cleanup與URL參數查詢](#16-react-timercleanup與url參數查詢)
-- [17. 容易找錯章節的情況](#17-容易找錯章節的情況)
+- [17. Spring Boot WebSocket即時聊天室](#17-spring-boot-websocket即時聊天室)
+- [18. HTTP Session與React跨來源Cookie](#18-http-session與react跨來源cookie)
+- [19. 庫存監控模組前後端整合](#19-庫存監控模組前後端整合)
+- [20. JWT登入與受保護API](#20-jwt登入與受保護api)
+- [21. React Router導覽與動態路由](#21-react-router導覽與動態路由)
+- [22. 容易找錯章節的情況](#22-容易找錯章節的情況)
 
 ## 1. 十秒找到對應章節
 
@@ -43,8 +48,13 @@
 | React互動資料 | map清單、useState、事件、Object State與受控表單 | [第31章](31_React列表_useState與受控表單.md) |
 | React副作用與API | TodoList CRUD、表單送出、useEffect、Fetch與載入／錯誤狀態 | [第32章](32_React_TodoList_LoginForm與useEffect_API資料擷取.md) |
 | React Timer與單筆文章 | Effect Cleanup、網址路徑、動態ID與單筆Fetch | [第33章](33_React_Timer_cleanup與URL參數查詢.md) |
+| 即時聊天室 | WebSocket連線、事件、JSON訊息與廣播 | [第34章](34_SpringBoot_WebSocket即時聊天室.md) |
+| Session跨多次Request | HttpSession、Cookie、Credentials與CORS | [第35章](35_HTTP_Session與React跨來源Cookie.md) |
+| 庫存監控完整系統 | 統計API、安全水位、Axios、React多頁儀表板 | [第36章](36_庫存監控模組_前後端整合.md) |
+| JWT登入 | 簽發Token、Bearer Header、受保護API與前端儲存 | [第37章](37_JWT登入_Token驗證與受保護API.md) |
+| React多網址頁面 | Router、Link、動態ID、Navigate與404 | [第38章](38_React_Router導覽_動態路由與404.md) |
 
-建議首次學習依第19章到第33章的順序閱讀；實作時則依功能直接跳至需要的章節。
+建議首次學習依第19章到第38章的順序閱讀；實作時則依功能直接跳至需要的章節。
 
 ## 2. HTML、CSS與執行環境
 
@@ -303,7 +313,66 @@
 | 依Prop重新取得單筆資料 | `useEffect(..., [postId])` |
 | 安全讀取可能尚未存在的Object | Optional Chaining `post?.title` |
 
-## 17. 容易找錯章節的情況
+## 17. Spring Boot WebSocket即時聊天室
+
+對應：[第34章：Spring Boot WebSocket即時聊天室](34_SpringBoot_WebSocket即時聊天室.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 建立瀏覽器與後端的持續連線 | `new WebSocket(...)`、`@EnableWebSocket` |
+| 接收及廣播文字訊息 | `TextWebSocketHandler`、`handleTextMessage()` |
+| 監聽連線成功、失敗與訊息 | `onopen`、`onerror`、`onmessage` |
+| 在不同電腦測試 | 區網IP、後端Port與防火牆 |
+
+## 18. HTTP Session與React跨來源Cookie
+
+對應：[第35章：HTTP Session與React跨來源Cookie](35_HTTP_Session與React跨來源Cookie.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 在後端保存跨Request資料 | `HttpSession.setAttribute()` |
+| 讀回同一份Session資料 | `HttpSession.getAttribute()` |
+| 讓跨來源Fetch攜帶Session Cookie | `credentials: 'include'` |
+| 允許前端帶憑證呼叫後端 | 明確CORS Origin與`allowCredentials` |
+
+## 19. 庫存監控模組前後端整合
+
+對應：[第36章：庫存監控模組前後端整合](36_庫存監控模組_前後端整合.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 建立統計與低庫存API | JPQL Aggregate、DTO與統一`ApiResponse<T>` |
+| 區分查詢及寫入交易 | `@Transactional(readOnly = true)`與方法層交易 |
+| 集中前端Request | `axios.create()`、Service模組與Generic解包 |
+| 同時載入多組Dashboard資料 | `Promise.all()` |
+| 定義前端資料型別 | TypeScript `interface` |
+
+## 20. JWT登入與受保護API
+
+對應：[第37章：JWT登入、Token驗證與受保護API](37_JWT登入_Token驗證與受保護API.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 登入後產生Token | JJWT Builder與Expiration |
+| 驗證Token | `parseClaimsJws()` |
+| 呼叫受保護API | `Authorization: Bearer <token>` |
+| 保存與清除登入資料 | `localStorage`、`sessionStorage` |
+| 過期或無效時回覆 | HTTP 401 |
+
+## 21. React Router導覽與動態路由
+
+對應：[第38章：React Router導覽、動態路由與404](38_React_Router導覽_動態路由與404.md)
+
+| 想完成的事情 | 主要寫法或功能 |
+|---|---|
+| 建立React路由表 | `BrowserRouter`、`Routes`、`Route` |
+| 站內切頁不重新載入 | `Link`、`NavLink` |
+| 依目前頁面套用Active樣式 | `NavLink`的`isActive` |
+| 以網址ID載入不同內容 | `:id`、`useParams()` |
+| 登入成功或按鈕後跳頁 | `useNavigate()` |
+| 處理不存在網址 | `path="*"` |
+
+## 22. 容易找錯章節的情況
 
 | 問題 | 應先閱讀 |
 |---|---|
@@ -330,3 +399,9 @@
 | Request成功、載入中與失敗畫面混在一起 | 第32章，拆分Data、Loading與Error State |
 | Timer切換元件後仍繼續執行 | 第33章，Effect必須回傳Cleanup |
 | `/12`可以取ID但`/posts/12`取得錯誤 | 第33章，`split()`索引取決於路徑格式 |
+| 網址列開WebSocket路徑得到404 | 第34章；WebSocket Endpoint不是一般HTTP頁面 |
+| Session create成功但get得到null | 第35章，檢查Cookie、Fetch Credentials與CORS |
+| 庫存頁API有回應但畫面沒有資料 | 第36章，檢查統一回應是否由Service解出`data` |
+| 登入成功但受保護API仍是401 | 第37章，檢查Bearer空白、Token期限及密鑰 |
+| React站內切頁會整頁重載 | 第38章，站內連結應使用`Link`／`NavLink` |
+| React路由直接重新整理得到伺服器404 | 第38章，部署伺服器需設定SPA fallback |

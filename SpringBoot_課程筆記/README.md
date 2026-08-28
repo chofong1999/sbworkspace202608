@@ -17,7 +17,7 @@
 - `sbfirstapp`、`sbemployee0812`等名稱只是範例原始碼的辨識資訊；沒有這些專案仍可依筆記步驟自行建立。
 - 複製時要複製整個資料夾，不要只複製單一Markdown檔，否則該頁引用的圖片與相關章節可能缺失。
 
-目前筆記包含語法字典、純文字版、正式圖文版、原始截圖素材與教材封存附錄：
+目前筆記包含語法字典、練習資料來源字典、純文字版、正式圖文版、原始截圖素材與教材封存附錄：
 
 ## 1. 語法字典
 
@@ -31,13 +31,26 @@
 
 字典主頁保持精簡；設計原因、效能、資料庫差異與容易混淆的情境放在`語法字典/延伸閱讀/`。
 
-## 2. 純文字版
+## 2. 練習資料來源字典
+
+位置：`練習資料來源字典/`
+
+需要使用者、文章、留言、待辦、商品、購物車或本機JSON練習資料時，可由以下入口查找：
+
+- [依資料內容與練習目標快速選擇](練習資料來源字典/README.md)
+- [JSONPlaceholder：使用者、文章與關聯資料](練習資料來源字典/01_JSONPlaceholder.md)
+- [Fake Store API：商品、購物車與商店使用者](練習資料來源字典/02_Fake_Store_API.md)
+- [課堂本機JSON資料](練習資料來源字典/03_課堂本機JSON資料.md)
+
+這個字典負責資料從哪裡取得、有哪些端點與欄位；實際的Fetch、AJAX與React寫法由語法字典及課程主章負責。
+
+## 3. 純文字版
 
 位置：`純文字版/`
 
 這是目前持續維護的正式筆記：
 
-- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～33章。
+- [JavaScript、jQuery與React課程功能快速索引](純文字版/00_JavaScript功能快速索引.md)：不知道語法名稱、只知道想完成什麼功能時，先從這裡查找第19～38章。
 
 1. [環境設定](純文字版/01_環境設定.md)
 2. [建立第一個Spring Boot專案](純文字版/02_建立第一個SpringBoot專案.md)
@@ -72,6 +85,11 @@
 31. [React列表、useState與受控表單](純文字版/31_React列表_useState與受控表單.md)
 32. [React TodoList、LoginForm與useEffect API資料擷取](純文字版/32_React_TodoList_LoginForm與useEffect_API資料擷取.md)
 33. [React Timer、Effect Cleanup與URL參數查詢](純文字版/33_React_Timer_cleanup與URL參數查詢.md)
+34. [Spring Boot WebSocket即時聊天室](純文字版/34_SpringBoot_WebSocket即時聊天室.md)
+35. [HTTP Session與React跨來源Cookie](純文字版/35_HTTP_Session與React跨來源Cookie.md)
+36. [庫存監控模組前後端整合](純文字版/36_庫存監控模組_前後端整合.md)
+37. [JWT登入、Token驗證與受保護API](純文字版/37_JWT登入_Token驗證與受保護API.md)
+38. [React Router導覽、動態路由與404](純文字版/38_React_Router導覽_動態路由與404.md)
 
 ### 延伸閱讀
 
@@ -114,10 +132,15 @@
 | React列表、State與受控表單 | 第31章 | `map()`清單、`useState`更新、事件處理、Object State與表單同步 |
 | React TodoList、useEffect與Fetch | 第32章 | Array State CRUD、表單送出、Effect依賴與API載入／錯誤狀態 |
 | React Timer、Cleanup與URL參數 | 第33章 | Timer清理、網址路徑拆分、依動態ID查詢單筆文章 |
+| WebSocket即時通訊 | 第34章 | Spring WebSocket Handler、瀏覽器連線事件與多人廣播 |
+| HTTP Session與跨來源Cookie | 第35章 | 同一Session辨識、Fetch Credentials與CORS憑證設定 |
+| 庫存監控完整模組 | 第36章 | JPA統計、交易邊界、統一回應、Axios Service與React儀表板 |
+| JWT登入與受保護API | 第37章 | Token簽發、驗證、Bearer Header與前端儲存 |
+| React Router | 第38章 | BrowserRouter、Link／NavLink、動態參數、Navigate與404 |
 
 閱讀某一個後續章時，不必重新背誦主章全部內容；只要確認該章列出的前置條件，再集中理解「相對前章新增什麼」。
 
-## 3. 圖文版
+## 4. 圖文版
 
 位置：`圖文版/`
 
@@ -166,7 +189,7 @@
 - [第16章延伸閱讀：JPA查詢效能、批次更新與關聯風險](圖文版/延伸閱讀/16_JPA查詢效能_批次更新與關聯風險.md)
 - [第32章延伸閱讀：React useEffect與Fetch穩定性](圖文版/延伸閱讀/32_React_useEffect與Fetch穩定性.md)
 
-## 4. 圖文版素材
+## 5. 圖文版素材
 
 位置：`圖文版素材_待製作/`
 
@@ -177,7 +200,7 @@
 
 原圖保持不變；若後續需要裁切或標記，使用另存的衍生圖並保留來源對照。
 
-## 5. 附錄：教材封存
+## 6. 附錄：教材封存
 
 位置：`老師教材/`
 
