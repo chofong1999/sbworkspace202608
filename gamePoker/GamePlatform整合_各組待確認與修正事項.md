@@ -170,6 +170,8 @@
 
   每次啟動都直接新增 account=`admin`，沒有先查詢或忽略重複。資料庫已有 admin 時會得到 `SQLITE_CONSTRAINT_UNIQUE: users.account`；刪 DB 只讓下一次啟動成功，再啟動仍會重現。
 
+  2026-09-03 的實際啟動日誌已確認錯誤發生在 `insertDefaultAdmin()` 第 84 行，並非 `GameMode.modeId` 問題。永久修正位置仍是此初始化器；`create-drop` 只會清空資料並掩蓋問題。
+
 - `java/com/example/demo/modules/user/security/SecurityConfig.java:37-49`
 
   只有 `/api/user/admin/**` 要求 ADMIN；Board 登入 matcher 寫成 `/api/auth/**`，實際路徑是 `/board/auth/**`。接著的 `/**.permitAll()` 使其他所有 API 公開，最後 `anyRequest().authenticated()` 沒有剩餘路徑。
